@@ -1,0 +1,241 @@
+body {
+  background-color: #CECFD3;
+}
+
+a {
+  outline: 0;
+}
+
+
+/* Навигационное меню */
+
+.fa-caret-right {
+  margin-top: 14px;
+}
+
+.nvidia-logo {
+  display: inline-block;
+  float: left;
+  margin-right: 10px;
+  -webkit-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+.nvidia-logo:hover {
+  -webkit-filter: drop-shadow( 0 0 5px #78BA01);
+  filter: drop-shadow( 0 0 5px #78BA01);
+}
+
+.navbar-toggle {
+  top: 15px;
+  height: 38px;
+  border-color: #78BA01;
+  -webkit-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+.icon-bar {
+  background-color: #78BA01;
+}
+
+.active-burger,
+.navbar-toggle:hover {
+  box-shadow: 0 0 5px 0 #78BA01;
+}
+
+.nvidia-navbar,
+.nvidia-navbar-mobile {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 80px;
+  line-height: 80px;
+  background-color: #000;
+}
+
+.nvidia-navbar-mobile {
+  height: 0px;
+  -webkit-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  overflow: hidden;
+}
+
+.nvidia-navbar-mobile-visible {
+  height: 560px;
+  overflow: hidden;
+}
+
+.nvidia-menu,
+.nvidia-menu-mobile {
+  margin: 0;
+  padding: 0;
+  float: left;
+  list-style: none;
+}
+
+.nvidia-menu-mobile {
+  width: 100%;
+}
+
+.nvidia-menu-point,
+.nvidia-menu-point-mobile,
+.nvidia-menu-link,
+.nvidia-menu-link-mobile {
+  display: inline-block;
+  margin-right: -5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #fff;
+  background-color: #000;
+  -webkit-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  cursor: pointer;
+}
+
+.nvidia-menu-point,
+.nvidia-menu-point-mobile {
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.fix-margin-menu {
+  margin-right: 0;
+}
+
+.nvidia-menu-link-mobile,
+.nvidia-menu-point-mobile {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.nvidia-menu-link:hover,
+.nvidia-menu-link:active,
+.nvidia-menu-link:focus,
+.nvidia-menu-link-mobile:hover,
+.nvidia-menu-link-mobile:active,
+.nvidia-menu-link-mobile:focus,
+.nvidia-menu-point:hover > a,
+.nvidia-submenu-point:hover > a {
+  text-decoration: none;
+  color: #78BA01;
+  background-color: #333;
+}
+
+.nvidia-submenu,
+.nvidia-sub-submenu {
+  position: absolute;
+  display: none;
+  margin: 0;
+  padding: 0;
+  line-height: 39px;
+  list-style: none;
+  z-index: 20;
+}
+
+.menu-sublink {
+  width: 100%;
+  height: 40px;
+  line-height: 39px;
+  border-top: 1px solid #333;
+  background-color: rgba(0, 0, 0, .9);
+}
+
+.menu-sublink-shadow {
+  box-shadow: inset 20px 0 20px -20px #000;
+}
+
+.nvidia-submenu-drivers {
+  width: 245px;
+  height: 160px;
+}
+
+.nvidia-submenu-product {
+  width: 125px;
+  height: 280px;
+}
+
+.nvidia-submenu-games {
+  width: 100px;
+  height: 81px;
+}
+
+.nvidia-submenu-com {
+  width: 230px;
+  height: 560px;
+}
+
+.nvidia-submenu-about {
+  margin-left: -75px;
+  width: 230px;
+  height: 320px;
+}
+
+.nvidia-sub-submenu {
+  left: 125px;
+}
+
+.nvidia-sub-submenu-processors {
+  top: 0px;
+  height: 280px;
+  width: 200px;
+}
+
+.nvidia-sub-submenu-tech {
+  top: 40px;
+  width: 210px;
+}
+
+.nvidia-sub-submenu-grid {
+  top: 80px;
+  width: 255px;
+}
+
+.nvidia-sub-submenu-platforms {
+  top: 200px;
+  width: 375px;
+}
+
+.nvidia-menu-drivers:hover .nvidia-submenu-drivers,
+.nvidia-menu-product:hover .nvidia-submenu-product,
+.nvidia-menu-games:hover .nvidia-submenu-games,
+.nvidia-menu-com:hover .nvidia-submenu-com,
+.nvidia-menu-about:hover .nvidia-submenu-about,
+.nvidia-submenu-point-processors:hover .nvidia-sub-submenu-processors,
+.nvidia-submenu-point-tech:hover .nvidia-sub-submenu-tech,
+.nvidia-submenu-point-grid:hover .nvidia-sub-submenu-grid,
+.nvidia-submenu-point-platforms:hover .nvidia-sub-submenu-platforms {
+  display: block;
+}
+
+
+/* Стили для слайдера */
+
+.carousel-background {
+  background-color: #333
+}
+
+.slide-img {
+  width: 100%;
+}
+
+.nvidia-carousel-indicators li {
+  border-color: #78BA01;
+  border-radius: 0;
+  opacity: 0.5
+}
+
+.nvidia-carousel-indicators .active {
+  background-color: #78BA01;
+  opacity: 0.9
+}
+
+.glyphicon-chevron-right,
+.glyphicon-chevron-left {
+  color: #78BA01;
+}

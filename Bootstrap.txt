@@ -1,0 +1,110 @@
+Классы, используемы в Bootstrap 3:
+-----------------------------------
+
+Основы:
+
+.container - основа макета с фиксированной шириной.
+.container-fluid - резиновая основа макета (ширина соотвествует ширене окна).
+.row - стрка, вмещающая колонки.
+-----------------------------------
+
+Грид-система:
+(n - цифра, обозначающая количество коллонок. Одна стрка содержит 12 колонок).
+
+1) .col-lg-n - для больших дисплеев (ширина от 1200px);
+2) .col-md-n - для средних дисплеев (ширина от 992px);
+3) .col-sm-n - для маленьких дисплеев (ширина от 768px);
+4) .col-xs-n - для экста маленьких дисплеев (ширина менее 768px);
+
+Пример использования:
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 col-md-8 col-sm-4 col-xs-2"></div>
+    <div class="col-lg-6 col-md-4 col-sm-8 col-xs-10"></div>
+  </div>
+</div>
+
+-----------------------------------
+
+Видимость:
+(class - класс из грид-системы, при котором этот блок будет принимать правило видимости).
+
+1) visible-class - при соотвествии ширины окна браузера и класса, этот блок будет видим.
+2) hidden-class - при соотвествии ширины окна браузера и класса, этот блок будет скрыт.
+
+Пример:
+...
+<div class="col-lg-12 visible-lg hidden-md"></div> - видим на больших устройствах и скрыт на дисплеях средних размеров. 
+...
+-----------------------------------
+
+Отступы:
+
+class-offset-n, где:
+-class - класс из грид-системы, при котором будет совершен отступ;
+-n - цифра, обозначающая размер отступа в эквиваленте коллонок.
+
+Пример:
+...
+<div class="col-lg-6"></div>
+<div class="col-lg-4 col-lg-offset-2"></div>
+...
+-----------------------------------
+
+Меню навигации:
+
+Используемые классы:
+1) navbar - указывает, что данный блок является навигационным;
+2) navbar-default или navbar-inverse - указывает стиль блока (например, светлый при default и темный при inverse);
+3) navbar-header - указывает шапку навигационного меню;
+4) navbar-brand - указывает название сайта или логотип в меню. Рекомендуется использовать в блоке с классом navbar-header.
+5) navbar-collapse - "тело" навигационного меню.
+6) navbar-toogle - класс для кнопки, которая показывает и скрывает пункты меню на малых дисплеях.
+7) icon-bar - класс для <span> внутри кнопки navbar-toogle для постройки "Бургера".
+8) sr-only - текстовый блок, адаптированный под режим "чтение".
+9) navbar-fixed-top - фиксированное меню сверху страници.
+10) navbar-static-top - статичное меню сверху.
+11) navbar-fixed-bottom - фиксированное меню снизу страници.
+12) navbar-static-bottom - статичное меню снизу.
+13) dropdown - пункт меню с еще одним меню выпадающего типа.
+14) dropdown-toogle - класс для пункта, скрывающего выпадающее меню.
+15) caret - создает стрелку, показывающую наличие выпадающего меню.
+16) dropdown-menu - скрытое выпадающее меню.
+17) divider - разделитель между пунктами выпадающего меню.
+
+Пример:
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#responsive-menu"> // data-toggle и data-target нужны для скрытия/развертывания меню
+          <span class="sr-only">Открыть навигацию</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Логотип</a>
+      </div>
+      <div class="navbar-collapse collapse" id="responsive-menu"> // внимание на идентификатор
+        <ul class="nav navbar-nav">
+          <li><a href="#">Пункт 1</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toogle" data-toggle="dropdown">Пункт 2 <b class="caret"></b></a> 
+            <ul class="dropdown-menu">
+              <li><a href="#">Пункт 1</a></li>
+              <li><a href="#">Пункт 2</a></li>
+              <li><a href="#">Пункт 3</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Пункт 4</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Пункт 3</a></li>
+          <li><a href="#">Пункт 4</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <h1>Название страницы</h1>
+    </div>
+  </div>
