@@ -239,3 +239,88 @@ a {
 .glyphicon-chevron-left {
   color: #78BA01;
 }
+
+
+/* Грид система для новостных блоков */
+
+@media screen and (max-width: 767px) {
+  .masonry[data-columns]:before {
+    content: "1 .col-xs-12";
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .masonry[data-columns]:before {
+    content: "2 .col-xs-6";
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  .masonry[data-columns]:before {
+    content: "3 .col-xs-4";
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .masonry[data-columns]:before {
+    content: "3 .col-xs-4";
+  }
+}
+
+
+/* Стили для новостных блоков */
+
+.article-block-title,
+.blog-block-title {
+  height: 80px;
+  padding-left: 15px;
+  line-height: 80px;
+  font-size: 30px;
+  color: #fff;
+  text-shadow: 0 0 5px #193839;
+  background-color: #78BA01;
+  background-image: -webkit-linear-gradient(-90deg, #000, #78BA01);
+  background-image: linear-gradient(-90deg, #000, #78BA01);
+}
+
+.article-bg {
+  padding-top: 15px;
+  background-color: #000;
+}
+
+.thumbnail {
+  border-color: #333;
+  background-color: rgba(120, 186, 1, .9);
+}
+
+.thumbnail h3 {
+  color: #fff;
+  text-shadow: 0 0 5px #193839;
+}
+
+.thumbnail p {
+  color: #193839;
+}
+
+.btn-nvidia-news {
+  color: #fff;
+  border-color: #333;
+  background-color: #000;
+  -webkit-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+.btn-nvidia-news:hover {
+  color: #78BA01;
+  border-color: #000;
+  background-color: #333;
+}
+
+
+/* Стили для блока блога */
+
+.blog-block-title {
+  background-image: -webkit-linear-gradient(90deg, #000, #78BA01);
+  background-image: linear-gradient(90deg, #000, #78BA01);
+}
