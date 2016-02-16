@@ -239,8 +239,33 @@
     </div>
   </div>
 
+  <!-- Кнопка подгрузки новостей -->
+  <div class="container button-load">
+    <div class="row">
+      <a href="" class="btn btn-default btn-block btn-nvidia-load" data-toggle="modal" data-target="#modal-error-load-news">Больше новостей</a>
+    </div>
+  </div>
+
+  <!--Модальное окно-->
+  <div class="modal fade" id="modal-error-load-news">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content modal-error">
+        <div class="modal-header">
+          <button class="close modal-error-close" type="button" data-dismiss="modal">✖</button>
+          <h4 class="modal-title">Ошибка соединения с сервером</h4>
+        </div>
+        <div class="modal-body">
+          <p class="modal-messege">При загрузке новостей произошла ошибка. На самом деле нет, просто на этой странице отсутсвует бэк-энд.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default btn-nvidia-news" type="button" data-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Блок с важными обновлениями блога -->
-  <div class="container">
+  <div class="container border-for-footer">
     <div class="row blog-block-title">NVIDIA Blog</div>
     <div class="row article-bg blog-padding-global">
       <div class="blog-block blog-block-enjoy cencel-padding col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -354,6 +379,18 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Футер -->
+  <div class="container-fluid footer">
+    <div class="container footer-content">
+      <p class="copyright hidden-xs hidden-sm visible-md visible-lg">
+        <span class="pull-left">Example © 2016 NVIDIA Corporation</span> <span class="pull-right footer-links"><a href="#">Юридическая информация</a> | <a href="#">Политика конфиденциальности</a> | <a href="#">RSS Feeds</a> | <a href="#">Информационные письма</a></span>
+      </p>
+      <p class="copyright visible-xs visible-sm hidden-md hidden-lg">
+        <span class="col-xs-12 footer-links-mobile"><a href="#">Юридическая информация</a> | <a href="#">Политика конфиденциальности</a> | <a href="#">RSS Feeds</a> | <a href="#">Информационные письма</a></span> <span class="col-xs-12 footer-links-mobile">Example © 2016 NVIDIA Corporation</span>
+      </p>
     </div>
   </div>
 

@@ -321,6 +321,35 @@ a {
 }
 
 
+/* Кнопка подгрузки новостей */
+
+.button-load {
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 15px;
+  box-sizing: border-box;
+  background-color: #000;
+}
+
+.btn-nvidia-load {
+  box-sizing: border-box;
+  color: #fff;
+  border-color: #333;
+  background-color: #000;
+}
+
+.btn-nvidia-load:hover,
+.btn-nvidia-load:active,
+.btn-nvidia-load:focus {
+  color: #78BA01;
+  border-color: #000;
+  background-color: #333;
+  -webkit-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+
 /* Стили для блока блога */
 
 .blog-block-title {
@@ -445,5 +474,85 @@ a {
   }
   .blog-block-buy {
     margin-right: 0;
+  }
+}
+
+
+/* Стили модального окна */
+
+.modal-error {
+  background-color: rgba(120, 186, 1, .9);
+}
+
+.modal-header {
+  color: #fff;
+  text-shadow: 0 0 5px #193839;
+  border-bottom-color: #78BA0C;
+}
+
+.modal-error-close {
+  -webkit-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+.modal-error-close:hover {
+  color: #193839;
+}
+
+.modal-messege {
+  color: #193839;
+}
+
+.modal-footer {
+  border-top-color: #78BA0C;
+}
+
+
+/* Стили для футера */
+
+.border-for-footer {
+  border-bottom: 1px solid #333;
+}
+
+.footer {
+  height: auto;
+  background-color: #000;
+}
+
+.footer-content {
+  color: #fff;
+  line-height: 80px;
+}
+
+.copyright {
+  margin-bottom: 0;
+}
+
+.footer-links a,
+.footer-links-mobile a {
+  color: #fff;
+}
+
+.footer-links-mobile {
+  text-align: center;
+}
+
+.footer-links a:hover,
+.footer-links-mobile a:hover,
+.footer-links a:active,
+.footer-links-mobile a:active,
+.footer-links a:focus,
+.footer-links-mobile a:focus {
+  text-decoration: none;
+  color: #78BA01;
+  -webkit-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+@media screen and (max-width: 991px) {
+  .footer-content {
+    line-height: 40px;
   }
 }
