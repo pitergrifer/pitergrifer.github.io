@@ -6,12 +6,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <title>Практика Bootstrap</title>
+  <title>Life Style - Let`s make perfect life</title>
 
   <!-- Bootstrap -->
   <link href="css/bootstrap.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
+  <!-- Font Awesome icons -->
   <link href="css/font-awesome.css" rel="stylesheet">
+  <!-- Main CSS -->
+  <link href="css/main-styles.css" rel="stylesheet">
+  <!-- Шрифты -->
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>
+  <link href="css/fonts.css" rel="stylesheet" type="text/css">
+
+
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,386 +29,158 @@
 </head>
 
 <body>
-
-  <!-- Навигационное меню -->
-  <div class="nvidia-navbar">
-    <a href="#" class="nvidia-logo hidden-xs visible-sm"><img src="images/nvidia_logo_small.png" alt="Nvidia"></a>
-    <div class="container">
+  <!-- Хедер с навигационным меню -->
+  <div class="life-style-navbar">
+    <div class="life-style-logo-header hidden-sm hidden-md hidden-lg pull-left"><a href="#">LifeStyle</a></div>
+    <div class="mobile-menu-button hidden-sm hidden-md hidden-lg pull-right"><i class="fa fa-bars"></i></div>
+    <div class="container hidden-xs">
       <div class="row">
-        <a href="#" class="nvidia-logo visible-xs hidden-sm visible-md visible-lg"><img src="images/nvidia_logo.png" alt="Nvidia"></a>
-        <ul class="nvidia-menu pull-right hidden-xs">
-          <li class="nvidia-menu-point nvidia-menu-drivers"><a href="#" class="nvidia-menu-link">Драйверы <i class="caret"></i></a>
-            <ul class="nvidia-submenu nvidia-submenu-drivers">
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Загрузить драйверы</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">GeForce Experience</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Бета и архивные драйверы</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Программное обеспечение Nvidia</a></li>
-            </ul>
-          </li>
-          <li class="nvidia-menu-point nvidia-menu-product"><a href="#" class="nvidia-menu-link">Продукция <i class="caret"></i></a>
-            <ul class="nvidia-submenu nvidia-submenu-product">
-              <li class="nvidia-submenu-point nvidia-submenu-point-processors"><a href="#" class="nvidia-menu-link menu-sublink">Процессоры<i class="fa fa-caret-right pull-right"></i></a>
-                <ul class="nvidia-sub-submenu nvidia-sub-submenu-processors">
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">GeForce</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Quadro</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Tegra</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Tesla</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">NVIDIA GRID</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">NVS</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Архив продуктов</a></li>
-                </ul>
-              </li>
-              <li class="nvidia-submenu-point nvidia-submenu-point-tech"><a href="#" class="nvidia-menu-link menu-sublink">Технологии<i class="fa fa-caret-right pull-right"></i></a>
-                <ul class="nvidia-sub-submenu nvidia-sub-submenu-tech">
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Фрхитектура GPU Maxwell</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Продвинутая визуализация</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Deep Lerning</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">OptiX</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">SLI</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">G-SYNC</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">PhysX</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Optimus</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Технология мульти-GPU</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">CUDA</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Все технологии</a></li>
-                </ul>
-              </li>
-              <li class="nvidia-submenu-point nvidia-submenu-point-grid"><a href="#" class="nvidia-menu-link menu-sublink">NVIDIA GRID<i class="fa fa-caret-right pull-right"></i></a>
-                <ul class="nvidia-sub-submenu nvidia-sub-submenu-grid">
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Виртуальные диски и приложения</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Облачные игры</a></li>
-                </ul>
-              </li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">NVIDIA DRIVE</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">3D Vision</a></li>
-              <li class="nvidia-submenu-point nvidia-submenu-point-platforms"><a href="#" class="nvidia-menu-link menu-sublink">Платформы<i class="fa fa-caret-right pull-right"></i></a>
-                <ul class="nvidia-sub-submenu nvidia-sub-submenu-platforms">
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Настольные ПК</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Ноутбуки</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Суперпланшеты</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Супертелефоны</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Рабочие станции</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Серверы</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Высокопроизводительные вычислительные решения</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Автомобили</a></li>
-                  <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink menu-sublink-shadow">Встроенные платформы для разработчиков</a></li>
-                </ul>
-              </li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">SHIELD</a></li>
-            </ul>
-          </li>
-          <li class="nvidia-menu-point nvidia-menu-games"><a href="#" class="nvidia-menu-link">Игры <i class="caret"></i></a>
-            <ul class="nvidia-submenu nvidia-submenu-games">
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Новые игры</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Архив игр</a></li>
-            </ul>
-          </li>
-          <li class="nvidia-menu-point nvidia-menu-com"><a href="#" class="nvidia-menu-link">Сообщества <i class="caret"></i></a>
-            <ul class="nvidia-submenu nvidia-submenu-com">
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Игры для ПК</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">SHIELD</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">TegraZone</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Партнерская программа NVIDIA</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">VKontakte</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">YouTube</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Twitter</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Instagram</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Блог NVIDIA</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Flickr</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Форум NVIDIA</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">CUDA Zone</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Developer Zone</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Исследовательский Центр</a></li>
-            </ul>
-          </li>
-          <li class="nvidia-menu-point"><a href="#" class="nvidia-menu-link">Купить</a></li>
-          <li class="nvidia-menu-point"><a href="#" class="nvidia-menu-link">Поддержка</a></li>
-          <li class="nvidia-menu-point nvidia-menu-about"><a href="#" class="nvidia-menu-link fix-margin-menu">О компании Nvidia <i class="caret"></i></a>
-            <ul class="nvidia-submenu nvidia-submenu-about">
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Информация о компании</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Визуальные вычисления</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Работа в Nvidia</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Новости NVIDIA</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Пресс-релизы партнеров</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">NVIDIA Blog</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Новостные рассылки</a></li>
-              <li class="nvidia-submenu-point"><a href="#" class="nvidia-menu-link menu-sublink">Партнерская программа NVIDIA</a></li>
-            </ul>
-          </li>
+        <form method="get" action="" class="search-submit pull-left col-lg-3">
+          <div class="ls-button search"><i class="fa fa-search"></i></div>
+          <input type="text" name="search" id="search" class="search-field" placeholder="search here">
+          <div class="submit-story">submit story</div>
+        </form>
+        <ul class="col-lg-6">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Post Types</a></li>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">travel</a></li>
+          <li><a href="#">Fashion</a></li>
+          <li><a href="#">Music</a></li>
+          <li><a href="#">Contact</a></li>
         </ul>
-        <button type="button" class="navbar-toggle visible-xs">
-          <span class="sr-only">Открыть меню</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
+        <div class="social-links pull-right col-lg-3">
+          <div class="ls-button visible-sm hidden-md social-links-drop-menu"><i class="fa fa-ellipsis-v"></i>
+            <div class="social-links-mobile">
+              <a href="#" class="ls-button visible-sm hidden-md"><i class="fa fa-rss"></i></a>
+              <a href="#" class="ls-button visible-sm hidden-md"><i class="fa fa-twitter"></i></a>
+              <a href="#" class="ls-button visible-sm hidden-md"><i class="fa fa-tumblr"></i></a>
+              <a href="#" class="ls-button visible-sm hidden-md"><i class="fa fa-google-plus"></i></a>
+              <a href="#" class="ls-button visible-sm hidden-md"><i class="fa fa-facebook"></i></a>
+            </div>
+          </div>
+          <a href="#" class="ls-button hidden-sm"><i class="fa fa-rss"></i></a>
+          <a href="#" class="ls-button hidden-sm"><i class="fa fa-twitter"></i></a>
+          <a href="#" class="ls-button hidden-sm"><i class="fa fa-tumblr"></i></a>
+          <a href="#" class="ls-button hidden-sm"><i class="fa fa-google-plus"></i></a>
+          <a href="#" class="ls-button hidden-sm"><i class="fa fa-facebook"></i></a>
+        </div>
       </div>
     </div>
   </div>
-  <div class="nvidia-navbar-mobile hidden-sm hidden-md hidden-lg">
-    <ul class="nvidia-menu-mobile">
-      <li class="nvidia-menu-point-mobile"><a href="#" class="nvidia-menu-link-mobile">Драйверы</a></li>
-      <li class="nvidia-menu-point-mobile"><a href="#" class="nvidia-menu-link-mobile">Продукция</a></li>
-      <li class="nvidia-menu-point-mobile"><a href="#" class="nvidia-menu-link-mobile">Игры</a></li>
-      <li class="nvidia-menu-point-mobile"><a href="#" class="nvidia-menu-link-mobile">Сообщества</a></li>
-      <li class="nvidia-menu-point-mobile"><a href="#" class="nvidia-menu-link-mobile">Купить</a></li>
-      <li class="nvidia-menu-point-mobile"><a href="#" class="nvidia-menu-link-mobile">Поддержка</a></li>
-      <li class="nvidia-menu-point-mobile"><a href="#" class="nvidia-menu-link-mobile">О компании Nvidia</a></li>
+  <div class="life-style-navbar-mobile hidden-sm hidden-md hidden-lg">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Post Types</a></li>
+      <li><a href="#">Features</a></li>
+      <li><a href="#">travel</a></li>
+      <li><a href="#">Fashion</a></li>
+      <li><a href="#">Music</a></li>
+      <li><a href="#">Contact</a></li>
     </ul>
+    <div class="social-links">
+      <a href="#" class="ls-button hidden-sm"><i class="fa fa-rss"></i></a>
+      <a href="#" class="ls-button hidden-sm"><i class="fa fa-twitter"></i></a>
+      <a href="#" class="ls-button hidden-sm"><i class="fa fa-tumblr"></i></a>
+      <a href="#" class="ls-button hidden-sm"><i class="fa fa-google-plus"></i></a>
+      <a href="#" class="ls-button hidden-sm"><i class="fa fa-facebook"></i></a>
+    </div>
+  </div>
+
+  <!-- Блок с логотипом -->
+  <div class="container life-style-logo-block hidden-xs">
+    <div class="ls-logo-big"><span class="ls-title">LifeStyle</span><span class="tag">Let`s make perfect life</span></div>
   </div>
 
   <!-- Слайдер -->
   <div class="container">
-    <div class="row">
-      <div id="carousel" class="carousel slide carousel-background" data-ride="carousel">
-        <ol class="carousel-indicators nvidia-carousel-indicators">
-          <li class="active" data-target="#carousel" data-slide-to="0"></li>
-          <li data-target="#carousel" data-slide-to="1"></li>
-          <li data-target="#carousel" data-slide-to="2"></li>
-          <li data-target="#carousel" data-slide-to="3"></li>
-        </ol>
-        <div class="carousel-inner">
-          <div class="item active">
-            <img class="slide-img" src="images/slide-1.jpg" alt="">
-          </div>
-          <div class="item">
-            <img class="slide-img" src="images/slide-2.jpg" alt="">
-          </div>
-          <div class="item">
-            <img class="slide-img" src="images/slide-3.jpg" alt="">
-          </div>
-          <div class="item">
-            <img class="slide-img" src="images/slide-4.jpg" alt="">
-          </div>
-          <a href="#carousel" class="left carousel-control" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left"></span>
-          </a>
-          <a href="#carousel" class="right carousel-control" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right"></span>
-          </a>
+    <div class="row" id="ls-carousel">
+      <div class="life-style-carousel">
+        <div class="ls-arrow left pull-left"><span>&larr;</span></div>
+        <div class="ls-arrow right pull-right"><span>&rarr;</span></div>
+        <div class="image active">
+          <img src="http://placehold.it/1200x500" alt="slide-1">
         </div>
+        <div class="image">
+          <img src="http://placehold.it/1200x500" alt="slide-2">
+        </div>
+        <div class="image">
+          <img src="http://placehold.it/1200x500" alt="slide-3">
+        </div>
+      </div>
+      <ul class="life-style-carousel-indi">
+        <li id="carousel-title-1" class="pull-left active">01. Enjoye Life Style</li>
+        <li id="carousel-title-2">02. Enjoye Life Style</li>
+        <li id="carousel-title-3" class="pull-right">03. Enjoye Life Style</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Большая галерея Инстаграмма -->
+  <div class="instagram-big container">
+    <div class="row">
+      <div class="insta-title">instagram</div>
+      <div class="insta-slider">
+        <div class="instagram-arrow left insta-arrow-disabled"><i class="fa fa-chevron-left"></i></div>
+        <div class="instagram-arrow right"><i class="fa fa-chevron-right"></i></div>
+        <ul id="test">
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+          <li><img src="http://placehold.it/290x200"></li>
+        </ul>
       </div>
     </div>
   </div>
 
-  <!-- Блок с последними статьями -->
+  <!-- Основной контент сайта -->
   <div class="container">
-    <div class="row article-block-title">Последние пресс-релизы</div>
-    <div class="row masonry article-bg" data-columns>
-      <div class="thumbnail">
-        <img src="http://placehold.it/735x400" alt="">
-        <div class="caption">
-          <h3>Некоторый заголовок для статьи с большим количеством символов</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis iste assumenda dolor neque aut dignissimos dolore. Repudiandae unde laborum expedita officiis totam voluptas, possimus repellat iste dolor commodi libero neque. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus numquam est, dolorum, nostrum dolorem vel ullam, odit odio sit fuga velit. Autem repellendus libero nemo officiis commodi dolores repellat voluptate.</p>
-          <a href="" class="btn btn-default btn-block btn-nvidia-news">Подробнее</a>
-        </div>
-      </div>
-      <div class="thumbnail">
-        <img src="http://placehold.it/735x400" alt="">
-        <div class="caption">
-          <h3>Название поста</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus numquam est, dolorum, nostrum dolorem vel ullam, odit odio sit fuga velit. Autem repellendus libero nemo officiis commodi dolores repellat voluptate.</p>
-          <a href="" class="btn btn-default btn-block btn-nvidia-news">Подробнее</a>
-        </div>
-      </div>
-      <div class="thumbnail">
-        <img src="http://placehold.it/735x400" alt="">
-        <div class="caption">
-          <h3>Некоторое название для статьи</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio harum explicabo sequi quis error qui provident incidunt, at, earum quidem enim ex autem atque. Minima recusandae deserunt, reiciendis non fugit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus numquam est, dolorum, nostrum dolorem vel ullam, odit odio sit fuga velit. Autem repellendus libero nemo officiis commodi dolores repellat voluptate.</p>
-          <a href="" class="btn btn-default btn-block btn-nvidia-news">Подробнее</a>
-        </div>
-      </div>
-      <div class="thumbnail">
-        <img src="http://placehold.it/735x400" alt="">
-        <div class="caption">
-          <h3>Название поста</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus numquam est, dolorum, nostrum dolorem vel ullam, odit odio sit fuga velit. Autem repellendus libero nemo officiis commodi dolores repellat voluptate.</p>
-          <a href="" class="btn btn-default btn-block btn-nvidia-news">Подробнее</a>
-        </div>
-      </div>
-      <div class="thumbnail">
-        <img src="http://placehold.it/735x400" alt="">
-        <div class="caption">
-          <h3>Некоторое название для статьи чуть большего размера</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus numquam est, dolorum, nostrum dolorem vel ullam, odit odio sit fuga velit. Autem repellendus libero nemo officiis commodi dolores repellat voluptate. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit exercitationem in enim voluptatum sed quas, eius aut alias veritatis iure provident deserunt praesentium ratione dolorem earum. Excepturi delectus, illum explicabo.</p>
-          <a href="" class="btn btn-default btn-block btn-nvidia-news">Подробнее</a>
-        </div>
-      </div>
-      <div class="thumbnail">
-        <img src="http://placehold.it/735x400" alt="">
-        <div class="caption">
-          <h3>Название поста</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus numquam est, dolorum, nostrum dolorem vel ullam, odit odio sit fuga velit. Autem repellendus libero nemo officiis commodi dolores repellat voluptate.</p>
-          <a href="" class="btn btn-default btn-block btn-nvidia-news">Подробнее</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Кнопка подгрузки новостей -->
-  <div class="container button-load">
     <div class="row">
-      <a href="" class="btn btn-default btn-block btn-nvidia-load" data-toggle="modal" data-target="#modal-error-load-news">Больше новостей</a>
-    </div>
-  </div>
-
-  <!--Модальное окно-->
-  <div class="modal fade" id="modal-error-load-news">
-    <div class="modal-dialog modal-md">
-      <div class="modal-content modal-error">
-        <div class="modal-header">
-          <button class="close modal-error-close" type="button" data-dismiss="modal">✖</button>
-          <h4 class="modal-title">Ошибка соединения с сервером</h4>
-        </div>
-        <div class="modal-body">
-          <p class="modal-messege">При загрузке новостей произошла ошибка. На самом деле нет, просто на этой странице отсутсвует бэк-энд.</p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-default btn-nvidia-news" type="button" data-dismiss="modal">Закрыть</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Блок с важными обновлениями блога -->
-  <div class="container border-for-footer">
-    <div class="row blog-block-title">NVIDIA Blog</div>
-    <div class="row article-bg blog-padding-global">
-      <div class="blog-block blog-block-enjoy cencel-padding col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="enjoy-block-title">Развлекайся</div>
-        <div class="blog-content enjoy-block-1">
-          <img class="img-for-blog" src="images/lara.jpg">
-          <div class="blog-caption blog-caption-enjoy-1">
-            <p class="blog-block-h"><strong>Погрузись в легенду!</strong></p>
-            <p class="blog-block-p">Купите видеокарту GeForce® GTX или ноутбук и получите игру бесплатно*.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
-        </div>
-        <div class="blog-content enjoy-block-2 ">
-          <img class="img-for-blog" src="images/sfg-virtual-reality.jpg">
-          <div class="blog-caption blog-caption-enjoy-2">
-            <p class="blog-block-h"><strong>Открой новый мир!</strong></p>
-            <p class="blog-block-p">Твой ПК готов к виртуальной реальности?</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
-        </div>
-        <div class="blog-content enjoy-block-3">
-          <img class="img-for-blog" src="images/dota-2-cup.jpg">
-          <div class="blog-caption blog-caption-enjoy-3">
-            <p class="blog-block-h"><strong>Присоединяйся!</strong></p>
-            <p class="blog-block-p">Серия турниров NVIDIA Dota 2 Cup.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
+      <!-- Правый контейнер -->
+      <div class="container left-container col-xs-12 col-sm-12 col-md-9 col-xs-9">
+        <div class="row">
+          <div class="title-section"><span class="rc">ricent post</span></div>
+          <div class="post">
+            <img src="http://placehold.it/870x370" alt="image-post">
+            <div class="preview-post">
+              <h3>Exploring San Francisco’s Cuisine</h3>
+              <div class="post-info">by <span class="author">Samanta Fox</span><span class="date">September 11 2015</span></div>
+              <div class="divider"></div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit, odio, sunt. Fugiat mollitia praesentium beatae iste accusantium minima numquam, tempora tempore, dicta harum delectus, omnis maiores, quidem quisquam repudiandae deserunt. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque nulla quas obcaecati laboriosam quisquam accusamus dicta. Repellendus reprehenderit at culpa ex? Natus accusamus, aliquid beatae pariatur suscipit illum molestiae iusto.</p>
+              <a href="#" class="btn btn-default main-button">continue reading</a>
+              <div class="post-social-links">
+                <i class="fa fa-facebook"></i>
+                <i class="fa fa-twitter"></i>
+                <i class="fa fa-tumblr"></i>
+                <i class="fa fa-google-plus"></i>
+              </div>
+              <a href="#" class="btn btn-default main-button"><i class="fa fa-share-alt"></i></a>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="blog-block blog-block-make cencel-padding col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="enjoy-block-title">Создавай</div>
-        <div class="blog-content make-block-1">
-          <img class="img-for-blog" src="images/sf_wepod.jpg">
-          <div class="blog-caption blog-caption-make-1">
-            <p class="blog-block-h"><strong>Wepod</strong></p>
-            <p class="blog-block-p">Первый беспилотный общественный транспорт на большой дороге.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
-        </div>
-        <div class="blog-content make-block-2 ">
-          <img class="img-for-blog" src="images/sf_dataline.jpg">
-          <div class="blog-caption blog-caption-make-2">
-            <p class="blog-block-h"><strong>DataLine</strong></p>
-            <p class="blog-block-p">Виртуальные рабочие места для 3D-проектирования теперь доступны в DataLine.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
-        </div>
-        <div class="blog-content make-block-3">
-          <img class="img-for-blog" src="images/nv_sf_200_grid_test_drive.jpg">
-          <div class="blog-caption blog-caption-make-3">
-            <p class="blog-block-h"><strong>Бесплатный тест-драйв GRID</strong></p>
-            <p class="blog-block-p">Оцените преимущества виртуализации GPU.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
+      <!-- Левый контейнер (сайд бар) -->
+      <div class="container right-container hidden-xs hidden-sm col-md-3 col-xs-3">
+        <div class="row">
+          <div class="title-section"><span class="sd">side bar</span></div>
         </div>
       </div>
-
-      <div class="blog-block blog-block-res cencel-padding col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="enjoy-block-title">Исследуй</div>
-        <div class="blog-content res-block-1">
-          <img class="img-for-blog" src="images/sfg_ntechlab-blog.jpg">
-          <div class="blog-caption blog-caption-res-1">
-            <p class="blog-block-h"><strong>N-Tech.Lab</strong></p>
-            <p class="blog-block-p">Решение N-Tech.Lab – лидер мирового чемпионата по распознаванию лиц.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
-        </div>
-        <div class="blog-content res-block-2 ">
-          <img class="img-for-blog" src="images/nv_sf_200_t-systems-contest.png">
-          <div class="blog-caption blog-caption-res-2">
-            <p class="blog-block-h"><strong>T-FLEX CAD: перевооружение</strong></p>
-            <p class="blog-block-p">Компания «Топ Системы» объявляет конкурс 3D моделирования.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
-        </div>
-        <div class="blog-content res-block-3">
-          <img class="img-for-blog" src="images/sfg-cuda-200x95.jpg">
-          <div class="blog-caption blog-caption-res-3">
-            <p class="blog-block-h"><strong>Программа стипендий для аспирантов</strong></p>
-            <p class="blog-block-p">Получить финансирование в размере $25000.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="blog-block blog-block-buy cencel-padding col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="enjoy-block-title">Покупай</div>
-        <div class="blog-content buy-block-1">
-          <img class="img-for-blog" src="images/nv_sf_200_forsite_ru.jpg">
-          <div class="blog-caption blog-caption-buy-1">
-            <p class="blog-block-h"><strong>BlackWidow от DigitalRazor</strong></p>
-            <p class="blog-block-p">Компактный игровой ПК на базе GeForce GTX.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
-        </div>
-        <div class="blog-content buy-block-2 ">
-          <img class="img-for-blog" src="images/meijin-titan-x-sli.jpg">
-          <div class="blog-caption blog-caption-buy-2">
-            <p class="blog-block-h"><strong>Meijin GTX TITAN X SLI</strong></p>
-            <p class="blog-block-p">Игровой компьютер на базе двух видеокарт TITAN X.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
-        </div>
-        <div class="blog-content buy-block-3">
-          <img class="img-for-blog" src="images/sf-nvidia-iray.png">
-          <div class="blog-caption blog-caption-buy-3">
-            <p class="blog-block-h"><strong>Плагины NVIDIA® Iray®</strong></p>
-            <p class="blog-block-p">Купить или попробовать бесплатную версию.</p>
-            <a href="" class="btn btn-default btn-block btn-nvidia-news">Узнать больше</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Футер -->
-  <div class="container-fluid footer">
-    <div class="container footer-content">
-      <p class="copyright hidden-xs hidden-sm visible-md visible-lg">
-        <span class="pull-left">Example © 2016 NVIDIA Corporation</span> <span class="pull-right footer-links"><a href="#">Юридическая информация</a> | <a href="#">Политика конфиденциальности</a> | <a href="#">RSS Feeds</a> | <a href="#">Информационные письма</a></span>
-      </p>
-      <p class="copyright visible-xs visible-sm hidden-md hidden-lg">
-        <span class="col-xs-12 footer-links-mobile"><a href="#">Юридическая информация</a> | <a href="#">Политика конфиденциальности</a> | <a href="#">RSS Feeds</a> | <a href="#">Информационные письма</a></span> <span class="col-xs-12 footer-links-mobile">Example © 2016 NVIDIA Corporation</span>
-      </p>
     </div>
   </div>
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
   <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="js/bootstrap.js"></script>
-  <script src="js/jquery-2.2.0.min.js"></script>
-  <script src="js/myscripts.js"></script>
-  <script src="js/salvattore.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/scripts.js"></script>
 </body>
 
 </html>
