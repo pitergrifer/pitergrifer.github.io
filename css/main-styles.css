@@ -145,6 +145,10 @@ body,
   color: #313131;
 }
 
+.life-style-logo-header a {
+  font-family: 'Notera';
+}
+
 .mobile-menu-button {
   position: relative;
   display: inline-block;
