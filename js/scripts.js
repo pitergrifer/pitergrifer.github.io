@@ -182,7 +182,8 @@ $(document).ready(function () {
 
   /* Скрипт работы инстаграмной карусели */
   var imgInstaArray = $('.insta-slider ul li');
-  var width = 290;
+  var checkImgWidth = parseInt($('.insta-slider ul li').width());
+  var width = 200;
   var count = imgInstaArray.length;
   var currentPosition = 0;
   var sliderSelect = $('.insta-slider ul');
@@ -195,7 +196,7 @@ $(document).ready(function () {
       currentPosition = Math.min(currentPosition + width);
       $('.instagram-arrow.right').removeClass('insta-arrow-disabled');
       $('.instagram-arrow.left').removeClass('insta-arrow-disabled');
-      $('#test').css('margin-left', currentPosition);
+      $('#rotator').css('margin-left', currentPosition);
     };
   });
 
@@ -206,8 +207,22 @@ $(document).ready(function () {
       currentPosition = Math.max(currentPosition - width);
       $('.instagram-arrow.right').removeClass('insta-arrow-disabled');
       $('.instagram-arrow.left').removeClass('insta-arrow-disabled');
-      $('#test').css('margin-left', currentPosition);
+      $('#rotator').css('margin-left', currentPosition);
     };
   });
+
+  /* Скрипт модального окна */
+  $('.can-be-big').click(function () {
+    $(this).clone(false, false).prependTo('.container-big-img');
+    $('.modal-img').toggleClass('slide-down-modal');
+    $('.container-big-img .can-be-big').removeClass('can-be-big');
+  });
+  $('.toggle-modal').click(function () {
+    $('.modal-img').toggleClass('slide-down-modal');
+    setTimeout(function () {
+      $('.container-big-img img').remove();
+    }, 300);
+  });
+
 
 }); // Ready end
