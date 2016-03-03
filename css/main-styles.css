@@ -663,16 +663,21 @@ body,
   background-color: #ffb79b;
 }
 
-.preview-post {
+.post-content {
   padding: 40px 30px;
 }
 
-.preview-post h3 {
+.post-content h3,
+.leave-comment h3 {
   margin-top: 0;
   margin-bottom: 15px;
   text-transform: uppercase;
   font-size: 17px;
   font-weight: bold;
+}
+
+.post-content p {
+  margin-bottom: 30px;
 }
 
 .divider {
@@ -704,11 +709,7 @@ body,
   margin-left: 15px;
 }
 
-.preview-post p {
-  margin-bottom: 30px;
-}
-
-.regular .preview-post p {
+.regular .post-content p {
   max-height: 40px;
   overflow: hidden;
 }
@@ -803,7 +804,7 @@ body,
     height: 237px;
     float: left;
   }
-  .regular .preview-post {
+  .regular .post-content {
     position: relative;
     display: inline-block;
     max-width: 490px;
@@ -831,7 +832,7 @@ body,
     height: 237px;
     float: left;
   }
-  .regular .preview-post {
+  .regular .post-content {
     position: relative;
     display: inline-block;
     max-width: 476px;
@@ -852,7 +853,7 @@ body,
     height: 285px;
     float: left;
   }
-  .regular .preview-post {
+  .regular .post-content {
     position: relative;
     display: inline-block;
     max-width: 576px;
@@ -867,8 +868,7 @@ body,
 
 /* Поле поиска */
 
-.main-search-field input,
-.subscribe-field input:not(:last-child) {
+.form-field {
   position: relative;
   display: inline-block;
   width: 100%;
@@ -1138,7 +1138,7 @@ body,
   width: 90px;
 }
 
-.about-me,
+.about-me-mini,
 .s-and-n {
   padding-right: 15px;
 }
@@ -1148,13 +1148,13 @@ body,
   padding-left: 15px;
 }
 
-.about-me img,
-.about-me .main-button {
+.about-me-mini img,
+.about-me-mini .main-button {
   width: 100%;
 }
 
-.about-me img,
-.about-me p {
+.about-me-mini img,
+.about-me-mini p {
   margin-bottom: 20px;
 }
 
@@ -1162,7 +1162,7 @@ body,
 /* Грид-система для футера */
 
 @media screen and (max-width: 767px) {
-  .about-me,
+  .about-me-mini,
   .s-and-n {
     padding: 0;
     margin-bottom: 30px;

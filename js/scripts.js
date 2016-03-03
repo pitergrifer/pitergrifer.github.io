@@ -188,7 +188,6 @@ $(document).ready(function () {
   var currentPosition = 0;
   var sliderSelect = $('.insta-slider ul');
   var limitRotation = Math.min(((count * width) - width) * -1);
-
   $('.instagram-arrow.left').click(function () {
     if (currentPosition == 0) {
       $('.instagram-arrow.left').addClass('insta-arrow-disabled');
@@ -199,7 +198,6 @@ $(document).ready(function () {
       $('#rotator').css('margin-left', currentPosition);
     };
   });
-
   $('.instagram-arrow.right').click(function () {
     if (currentPosition == limitRotation) {
       $('.instagram-arrow.right').addClass('insta-arrow-disabled');
@@ -223,6 +221,5 @@ $(document).ready(function () {
       $('.container-big-img img').remove();
     }, 300);
   });
-
 
 }); // Ready end

@@ -14,6 +14,7 @@
   <link href="css/font-awesome.css" rel="stylesheet">
   <!-- Main CSS -->
   <link href="css/main-styles.css" rel="stylesheet">
+  <link href="css/about-me.css" rel="stylesheet">
   <!-- Шрифты -->
   <link href='https://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>
   <link href="css/fonts.css" rel="stylesheet" type="text/css">
@@ -94,7 +95,42 @@
 
   <!-- Блок про меня -->
   <div class="container">
-    <div class="row"></div>
+    <div class="row">
+      <!-- Основная информация -->
+      <div class="post about-me">
+        <img src="http://placehold.it/1200x500">
+        <div class="post-content">
+          <h3>About Me</h3>
+          <div class="divider">
+            <div></div>
+          </div>
+          <p>Hi! i am <span>DAISY</span></p>
+          <p>Welcome to my Blog. Want to learn more about me? You’re in the right place. Keep reading to find out who I am, how I got here, and what fuels my desire to write.by This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non mauris vitae erat consequat auctor eu in elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi. Proin condimentum fermentum nunc. Etiam pharetra, erat sed fermentum feugiat, velit mauris egestas quam, ut aliquam massa nisl quis neque. Suspendisse in orci enim.</p>
+          <p>About me More</p>
+          <ul>
+            <li><span>Birthday Date:</span> May 01, 2015</li>
+            <li><span>Qualification:</span> Lorem ipsum dolar</li>
+            <li><span>Blog Links:</span> http://www.myblog.com</li>
+            <li><span>My Hobbies:</span> Book reading, Traveling, Blog Posting, Study about culture.</li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <!-- Форма комментария -->
+      <form method="post" action="" class="leave-comment">
+        <h3>Leave a comments</h3>
+        <div class="divider">
+          <div></div>
+        </div>
+        <div class="clearfix"></div>
+        <input class="form-field pull-left" type="text" id="name" name="name" value="Your name">
+        <input class="form-field pull-right" type="text" id="email" name="email" value="Your email address">
+        <div class="clearfix"></div>
+        <input class="form-field" type="text" id="website" name="website" value="Website address">
+        <textarea class="form-field">Please write a message here!</textarea>
+        <input class="btn btn-default main-button" type="submit" value="Send Message">
+      </form>
+    </div>
   </div>
 
   <!-- Футер -->
@@ -110,14 +146,14 @@
         </div>
         <!-- Блок "Про меня" -->
         <div class="container col-xs-12 col-sm-6 col-md-6 col-lg-4">
-          <div class="row about-me">
+          <div class="row about-me-mini">
             <h3>About me</h3>
             <div class="divider">
               <div></div>
             </div>
             <p>Hi, i am Nathaliya Jhione m massa have been a great idea of iSuspendisse time have great idea in orci enim.</p>
-            <img src="http://placehold.it/370x230">
-            <a href="#" class="btn btn-default main-button">read more abut me</a>
+            <img class="hidden-xs" src="http://placehold.it/370x230">
+            <a href="/about-me.html" class="btn btn-default main-button">read more about me</a>
           </div>
         </div>
         <!-- Блок с оформлением подписки -->
@@ -129,9 +165,9 @@
             </div>
             <p>On the other hand, we denounce with righteous nation and have a great dislike men.</p>
             <form method="post" action="" class="subscribe-field">
-              <input type="text" name="name" id="name" placeholder="Your name">
-              <input type="email" name="email" id="email" placeholder="Your email address">
-              <input type="submit" class="btn btn-default main-button" value="Subscribed Now">
+              <input class="form-field" type="text" name="name" id="name" placeholder="Your name">
+              <input class="form-field" type="email" name="email" id="email" placeholder="Your email address">
+              <input class="btn btn-default main-button" type="submit" value="Subscribed Now">
             </form>
           </div>
         </div>

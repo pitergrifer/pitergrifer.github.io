@@ -12,8 +12,9 @@
   <link href="css/bootstrap.css" rel="stylesheet">
   <!-- Font Awesome icons -->
   <link href="css/font-awesome.css" rel="stylesheet">
-  <!-- Main CSS -->
+  <!-- Личные наборы CSS -->
   <link href="css/main-styles.css" rel="stylesheet">
+  <link href="css/about-me.css" rel="stylesheet">
   <!-- Шрифты -->
   <link href='https://fonts.googleapis.com/css?family=Raleway:400,600' rel='stylesheet' type='text/css'>
   <link href="css/fonts.css" rel="stylesheet" type="text/css">
@@ -152,7 +153,7 @@
           <div class="post top-post">
             <i class="fa fa-camera"></i>
             <img src="http://placehold.it/870x370" alt="image-post">
-            <div class="preview-post">
+            <div class="post-content">
               <a href="#" class="title-link"><h3>Exploring San Francisco’s Cuisine</h3></a>
               <div class="post-info">by: <span class="author"><a href="#" class="reg-link">Samanta Fox</a></span><span class="date">September 11 2015</span></div>
               <div class="divider">
@@ -174,7 +175,7 @@
           <div class="post mini-top-left">
             <i class="fa fa-camera"></i>
             <img src="http://placehold.it/870x370" alt="image-post">
-            <div class="preview-post">
+            <div class="post-content">
               <a href="#" class="title-link"><h3>Exploring San Francisco’s Cuisine</h3></a>
               <div class="post-info">by: <span class="author"><a href="#" class="reg-link">Samanta Fox</a></span><span class="date">September 11 2015</span></div>
               <div class="divider">
@@ -196,7 +197,7 @@
           <div class="post mini-top-right">
             <i class="fa fa-camera"></i>
             <img src="http://placehold.it/870x370" alt="image-post">
-            <div class="preview-post">
+            <div class="post-content">
               <a href="#" class="title-link"><h3>Exploring San Francisco’s Cuisine</h3></a>
               <div class="post-info">by: <span class="author"><a href="#" class="reg-link">Samanta Fox</a></span><span class="date">September 11 2015</span></div>
               <div class="divider">
@@ -218,7 +219,7 @@
           <div class="post regular">
             <img src="http://placehold.it/870x370" alt="image-post" class="visible-xs hidden-sm hidden-md hidden-lg">
             <img src="http://placehold.it/300x285" alt="image-post" class="hidden-xs visible-sm visible-md visible-lg">
-            <div class="preview-post">
+            <div class="post-content">
               <a href="#" class="title-link"><h3>Exploring San Francisco’s Cuisine</h3></a>
               <div class="post-info">by: <span class="author"><a href="#" class="reg-link">Samanta Fox</a></span><span class="date">September 11 2015</span></div>
               <div class="divider">
@@ -235,7 +236,7 @@
           <div class="post regular">
             <img src="http://placehold.it/870x370" alt="image-post" class="visible-xs hidden-sm hidden-md hidden-lg">
             <img src="http://placehold.it/300x285" alt="image-post" class="hidden-xs visible-sm visible-md visible-lg">
-            <div class="preview-post">
+            <div class="post-content">
               <a href="#" class="title-link"><h3>Exploring San Francisco’s Cuisine</h3></a>
               <div class="post-info">by: <span class="author"><a href="#" class="reg-link">Samanta Fox</a></span><span class="date">September 11 2015</span></div>
               <div class="divider">
@@ -252,7 +253,7 @@
           <div class="post regular">
             <img src="http://placehold.it/870x370" alt="image-post" class="visible-xs hidden-sm hidden-md hidden-lg">
             <img src="http://placehold.it/300x285" alt="image-post" class="hidden-xs visible-sm visible-md visible-lg">
-            <div class="preview-post">
+            <div class="post-content">
               <a href="#" class="title-link"><h3>Exploring San Francisco’s Cuisine</h3></a>
               <div class="post-info">by: <span class="author"><a href="#" class="reg-link">Samanta Fox</a></span><span class="date">September 11 2015</span></div>
               <div class="divider">
@@ -269,7 +270,7 @@
           <div class="post regular">
             <img src="http://placehold.it/870x370" alt="image-post" class="visible-xs hidden-sm hidden-md hidden-lg">
             <img src="http://placehold.it/300x285" alt="image-post" class="hidden-xs visible-sm visible-md visible-lg">
-            <div class="preview-post">
+            <div class="post-content">
               <a href="#" class="title-link"><h3>Exploring San Francisco’s Cuisine</h3></a>
               <div class="post-info">by: <span class="author"><a href="#" class="reg-link">Samanta Fox</a></span><span class="date">September 11 2015</span></div>
               <div class="divider">
@@ -291,7 +292,7 @@
           <!-- Поле поиска -->
           <form method="get" action="" class="main-search-field">
             <i class="fa fa-search"></i>
-            <input type="text" name="search" placeholder="search">
+            <input class="form-field" type="text" name="search" placeholder="search">
           </form>
           <!-- Блок с популяпными постами -->
           <div class="popular-posts">
@@ -411,14 +412,14 @@
         </div>
         <!-- Блок "Про меня" -->
         <div class="container col-xs-12 col-sm-6 col-md-6 col-lg-4">
-          <div class="row about-me">
+          <div class="row about-me-mini">
             <h3>About me</h3>
             <div class="divider">
               <div></div>
             </div>
             <p>Hi, i am Nathaliya Jhione m massa have been a great idea of iSuspendisse time have great idea in orci enim.</p>
-            <img src="http://placehold.it/370x230">
-            <a href="/about-me.html" class="btn btn-default main-button">read more abut me</a>
+            <img class="hidden-xs" src="http://placehold.it/370x230">
+            <a href="/about-me.html" class="btn btn-default main-button">read more about me</a>
           </div>
         </div>
         <!-- Блок с оформлением подписки -->
@@ -430,9 +431,9 @@
             </div>
             <p>On the other hand, we denounce with righteous nation and have a great dislike men.</p>
             <form method="post" action="" class="subscribe-field">
-              <input type="text" name="name" id="name" placeholder="Your name">
-              <input type="email" name="email" id="email" placeholder="Your email address">
-              <input type="submit" class="btn btn-default main-button" value="Subscribed Now">
+              <input class="form-field" type="text" name="name" id="name" placeholder="Your name">
+              <input class="form-field" type="email" name="email" id="email" placeholder="Your email address">
+              <input class="btn btn-default main-button" type="submit" value="Subscribed Now">
             </form>
           </div>
         </div>
