@@ -340,7 +340,7 @@ body,
   width: 280px;
   height: 95px;
   margin: 48px auto;
-  border-top: 1px solid #fff;
+  border-top: 1px solid rgba(0, 0, 0, .0);
   border-bottom: 1px solid #000;
 }
 
@@ -523,8 +523,9 @@ body,
 /* Большая галерея Инстаграмма */
 
 .instagram-big {
-  margin-top: 20px;
+  width: 100% margin-top: 20px;
   margin-bottom: 50px;
+  overflow: hidden;
 }
 
 .insta-title {
@@ -640,7 +641,11 @@ body,
 
 /* Стили для предпросмотра статьи */
 
-.post {
+.post,
+.pop-post,
+.author-block,
+.posted-comments,
+.contact-us {
   margin-bottom: 30px;
   padding: 0;
   border-right: 1px solid #eaeaeb;
@@ -663,12 +668,19 @@ body,
   background-color: #ffb79b;
 }
 
-.post-content {
+.post-content,
+.pop-post-content,
+.author-block-content,
+.posted-comments,
+.contact-us {
   padding: 40px 30px;
 }
 
 .post-content h3,
-.leave-comment h3 {
+.leave-comment h3,
+.pop-post-content h3,
+.posted-comments h3,
+.contact-us h3 {
   margin-top: 0;
   margin-bottom: 15px;
   text-transform: uppercase;
@@ -1241,10 +1253,10 @@ body,
 /* Модальное окно */
 
 .can-be-big {
-  border: 1px solid #fff;
-  -webkit-transition: all .3s ease-in-out;
-  -ms-transition: all .3s ease-in-out;
-  transition: all .3s ease-in-out;
+  border: 1px solid #cecece;
+  -webkit-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
   cursor: pointer;
 }
 
@@ -1262,6 +1274,7 @@ body,
   -webkit-transition: all .3s ease-in-out;
   -ms-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
+  overflow-y: scroll;
   z-index: 30;
 }
 
@@ -1273,13 +1286,17 @@ body,
   position: relative;
   display: block;
   min-width: 620px;
-  width: 620px;
+  max-width: 1000px;
   height: auto;
-  margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 30px auto;
   padding: 20px;
   background-color: #fff;
+}
+
+.container-big-img .fa {
+  height: 40px;
+  line-height: 40px;
+  font-size: 30px;
 }
 
 .container-big-img img {

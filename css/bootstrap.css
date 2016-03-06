@@ -1858,6 +1858,8 @@ abbr[data-original-title] {
   text-transform: uppercase;
 }
 
+
+/*
 blockquote {
   padding: 10px 20px;
   margin: 0 0 20px;
@@ -1912,6 +1914,7 @@ blockquote.pull-right small:after,
 blockquote.pull-right .small:after {
   content: '\00A0 \2014';
 }
+*/
 
 address {
   margin-bottom: 20px;

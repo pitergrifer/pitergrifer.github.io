@@ -12,7 +12,7 @@
   <link href="css/bootstrap.css" rel="stylesheet">
   <!-- Font Awesome icons -->
   <link href="css/font-awesome.css" rel="stylesheet">
-  <!-- Main CSS -->
+  <!-- Личные наборы CSS -->
   <link href="css/main-styles.css" rel="stylesheet">
   <link href="css/about-me.css" rel="stylesheet">
   <link href="css/detail.css" rel="stylesheet">
@@ -97,43 +97,147 @@
     </a>
   </div>
 
-  <!-- Блок про меня -->
+  <!-- Основной контент сайта -->
   <div class="container">
     <div class="row">
-      <!-- Основная информация -->
-      <div class="post about-me">
-        <img src="http://placehold.it/1200x500">
-        <div class="post-content">
-          <h3>About Me</h3>
-          <div class="divider">
-            <div></div>
+      <!-- Правый контейнер -->
+      <div class="container left-container col-xs-12 col-sm-12 col-md-9 col-lg-9">
+        <div class="row">
+          <div class="map-location">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11289.314800833557!2d-123.08218565707114!3d44.97763339440376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54bfffd9abf93f65%3A0x8426a414464a5df7!2z0KHQsNC70LXQvNGC0LDRg9C9LCDQodC10LnQu9C10LwsINCe0YDQtdCz0L7QvSA5NzMwNCwg0KHQqNCQ!5e0!3m2!1sru!2sua!4v1457275058361" width="100%" height="290px" frameborder="0" style="border:0" allowfullscreen></iframe>
           </div>
-          <p>Hi! i am <span>DAISY</span></p>
-          <p>Welcome to my Blog. Want to learn more about me? You’re in the right place. Keep reading to find out who I am, how I got here, and what fuels my desire to write.by This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non mauris vitae erat consequat auctor eu in elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris in erat justo. Nullam ac urna eu felis dapibus condimentum sit amet a augue. Sed non neque elit. Sed ut imperdiet nisi. Proin condimentum fermentum nunc. Etiam pharetra, erat sed fermentum feugiat, velit mauris egestas quam, ut aliquam massa nisl quis neque. Suspendisse in orci enim.</p>
-          <p>About me More</p>
-          <ul>
-            <li><span>Birthday Date:</span> May 01, 2015</li>
-            <li><span>Qualification:</span> Lorem ipsum dolar</li>
-            <li><span>Blog Links:</span> http://www.myblog.com</li>
-            <li><span>My Hobbies:</span> Book reading, Traveling, Blog Posting, Study about culture.</li>
-          </ul>
-          <div class="clearfix"></div>
+          <div class="contact-us">
+            <h3>Contact Information</h3>
+            <div class="divider">
+              <div></div>
+            </div>
+            <p>In case you some aquestions popped in your’s mind, Feel email or even visit us.</p>
+            <span><i class="fa fa-home"></i> Address: 123 Street Name, City Name, United States.</span>
+            <span><i class="fa fa-envelope-o"></i> Email: info@lifestyle.com</span>
+            <span><i class="fa fa-globe"></i> www.lifestyle.com</span>
+          </div>
+          <!-- Форма комментария -->
+          <form method="post" action="" class="leave-comment">
+            <input class="form-field pull-left" type="text" id="name" name="name" value="Your name">
+            <input class="form-field pull-right" type="text" id="email" name="email" value="Your email address">
+            <div class="clearfix"></div>
+            <input class="form-field" type="text" id="website" name="website" value="Website address">
+            <textarea class="form-field">Please write a message here!</textarea>
+            <input class="btn btn-default main-button" type="submit" value="Send Message">
+          </form>
         </div>
       </div>
-      <!-- Форма комментария -->
-      <form method="post" action="" class="leave-comment">
-        <h3>Leave a comments</h3>
-        <div class="divider">
-          <div></div>
+      <!-- Левый контейнер (сайд бар) -->
+      <div class="container right-container hidden-xs hidden-sm col-md-3 col-lg-3">
+        <div class="row">
+          <div class="title-section"><span class="sd">side bar</span></div>
+          <!-- Поле поиска -->
+          <form method="get" action="" class="main-search-field">
+            <i class="fa fa-search"></i>
+            <input class="form-field" type="text" name="search" placeholder="search">
+          </form>
+          <!-- Блок с популяпными постами -->
+          <div class="popular-posts">
+            <h3>popular post</h3>
+            <div class="divider">
+              <div></div>
+            </div>
+            <!-- Пост -->
+            <div class="previwe-mini-post">
+              <img src="http://placehold.it/70x50" class="pull-left">
+              <div class="post-info">
+                <a href="#" class="title-link"><h4>Beauty Fashion</h4></a> <span>sep. 26 2015</span></div>
+            </div>
+            <!-- Пост -->
+            <div class="previwe-mini-post">
+              <img src="http://placehold.it/70x50" class="pull-left">
+              <div class="post-info">
+                <a href="#" class="title-link"><h4>Beauty Fashion</h4></a> <span>sep. 26 2015</span></div>
+            </div>
+            <!-- Пост -->
+            <div class="previwe-mini-post">
+              <img src="http://placehold.it/70x50" class="pull-left">
+              <div class="post-info">
+                <a href="#" class="title-link"><h4>Beauty Fashion</h4></a> <span>sep. 26 2015</span></div>
+            </div>
+            <!-- Пост -->
+            <div class="previwe-mini-post">
+              <img src="http://placehold.it/70x50" class="pull-left">
+              <div class="post-info">
+                <a href="#" class="title-link"><h4>Beauty Fashion</h4></a> <span>sep. 26 2015</span></div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <!-- Спонсорский блок -->
+          <div class="ads">
+            <img src="http://placehold.it/250x250">
+          </div>
+          <!-- Блок с категориями -->
+          <div class="side-bar-catagoreis">
+            <h3>Catagories</h3>
+            <div class="divider">
+              <div></div>
+            </div>
+            <ul>
+              <li id="charity"><a href="#" class="title-link">Charity (<span>28</span>)</a></li>
+              <li id="images"><a href="#" class="title-link">Images (<span>95</span>)</a></li>
+              <li id="life-style"><a href="#" class="title-link">Life Style (<span>65</span>)</a></li>
+              <li id="music-top"><a href="#" class="title-link">Music Top (<span>49</span>)</a></li>
+              <li id="travel"><a href="#" class="title-link">Travel (<span>98</span>)</a></li>
+              <li id="web-desing"><a href="#" class="title-link">Web Desing (<span>25</span>)</a></li>
+            </ul>
+          </div>
+          <!-- Блок-плитка Инстаграма -->
+          <div class="mini-instagram">
+            <h3>instagram</h3>
+            <div class="divider">
+              <div></div>
+            </div>
+            <div class="img-picker">
+              <img class="can-be-big" src="http://placehold.it/1080x1080">
+              <img class="can-be-big" src="http://placehold.it/1080x1080">
+              <img class="can-be-big" src="http://placehold.it/1080x1080">
+              <img class="can-be-big" src="http://placehold.it/1080x1080">
+              <img class="can-be-big" src="http://placehold.it/1080x1080">
+              <img class="can-be-big" src="http://placehold.it/1080x1080">
+              <img class="can-be-big" src="http://placehold.it/1080x1080">
+              <img class="can-be-big" src="http://placehold.it/1080x1080">
+              <img class="can-be-big hidden-md visible-lg" src="http://placehold.it/1080x1080">
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <!-- Спонсорский блок -->
+          <div class="ads">
+            <img src="http://placehold.it/250x250">
+          </div>
+          <!-- Блок с социальными ссылками -->
+          <div class="mini-social-links">
+            <h3>Social Media</h3>
+            <div class="divider">
+              <div></div>
+            </div>
+            <div class="post-social-links">
+              <a href="#"><i class="fa fa-rss"></i></a>
+              <a href="#"><i class="fa fa-facebook"></i></a>
+              <a href="#"><i class="fa fa-twitter"></i></a>
+              <a href="#"><i class="fa fa-tumblr"></i></a>
+              <a href="#"><i class="fa fa-google-plus"></i></a>
+            </div>
+            <a href="#" class="btn btn-default main-button share pull-right"><i class="fa fa-share-alt"></i></a>
+          </div>
+          <!-- Слайдер постов -->
+          <div class="post-slider">
+            <h3>Post Slider</h3>
+            <div class="divider">
+              <div></div>
+            </div>
+            <div class="little-slider-post">
+              <div class="post-slider-arrow ps-left"><i class="fa fa-chevron-left"></i></div>
+              <div class="post-slider-arrow ps-right"><i class="fa fa-chevron-right"></i></div>
+            </div>
+          </div>
         </div>
-        <div class="clearfix"></div>
-        <input class="form-field pull-left" type="text" id="name" name="name" value="Your name">
-        <input class="form-field pull-right" type="text" id="email" name="email" value="Your email address">
-        <div class="clearfix"></div>
-        <input class="form-field" type="text" id="website" name="website" value="Website address">
-        <textarea class="form-field">Please write a message here!</textarea>
-        <input class="btn btn-default main-button" type="submit" value="Send Message">
-      </form>
+      </div>
     </div>
   </div>
 
