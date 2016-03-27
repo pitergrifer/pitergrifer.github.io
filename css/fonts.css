@@ -1,9 +1,0 @@
-/* Notera */
-
-@font-face {
-  font-family: 'Notera';
-  src: url('../fonts/notera_personaluseonly-webfont.eot');
-  src: url('../fonts/notera_personaluseonly-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/notera_personaluseonly-webfont.woff2') format('woff2'), url('../fonts/notera_personaluseonly-webfont.woff') format('woff'), url('../fonts/notera_personaluseonly-webfont.ttf') format('truetype'), url('../fonts/notera_personaluseonly-webfont.svg#notera_personal_use_onlyRg') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}

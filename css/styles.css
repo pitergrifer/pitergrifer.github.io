@@ -1,0 +1,1520 @@
+@charset "UTF-8";
+html, body, div, .masonry-column .post .picture .mask a span, .masonry-column .advertise .picture .mask a span, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li, .navbar .menu .share ul li a, .footer .menu .share ul li a,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+html {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+q, blockquote {
+  quotes: none;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+a img {
+  border: none;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+/* ╨Ю╤Б╨╜╨╛╨▓╨╜╤Л╨╡ ╤Ж╨▓╨╡╤В╨░ */
+/* ╨ж╨▓╨╡╤В╨░ ╨╜╨░╨▓╨╕╨│╨░╤Ж╨╕╨╛╨╜╨╜╨╛╨│╨╛ ╨╝╨╡╨╜╤О */
+@keyframes drop-share {
+  25% {
+    -moz-transform: perspective(1000px) rotateX(45deg);
+    -ms-transform: perspective(1000px) rotateX(45deg);
+    -webkit-transform: perspective(1000px) rotateX(45deg);
+    transform: perspective(1000px) rotateX(45deg);
+  }
+  50% {
+    -moz-transform: perspective(1000px) rotateX(-45deg);
+    -ms-transform: perspective(1000px) rotateX(-45deg);
+    -webkit-transform: perspective(1000px) rotateX(-45deg);
+    transform: perspective(1000px) rotateX(-45deg);
+  }
+  75% {
+    -moz-transform: perspective(1000px) rotateX(10deg);
+    -ms-transform: perspective(1000px) rotateX(10deg);
+    -webkit-transform: perspective(1000px) rotateX(10deg);
+    transform: perspective(1000px) rotateX(10deg);
+  }
+  100% {
+    -moz-transform: perspective(1000px) rotateX(0deg);
+    -ms-transform: perspective(1000px) rotateX(0deg);
+    -webkit-transform: perspective(1000px) rotateX(0deg);
+    transform: perspective(1000px) rotateX(0deg);
+  }
+}
+@keyframes jump-profile {
+  50% {
+    top: 55%;
+  }
+  100% {
+    top: -50%;
+  }
+}
+@keyframes jump-big-img {
+  50% {
+    top: 55%;
+  }
+  100% {
+    top: -100%;
+  }
+}
+.categories-sprite, .categories a:nth-child(1) li, .categories a:nth-child(1) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(1) a, .categories a:nth-child(1) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(1) a, .categories a:nth-child(2) li, .categories a:nth-child(2) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(2) a, .categories a:nth-child(2) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(2) a, .categories a:nth-child(3) li, .categories a:nth-child(3) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(3) a, .categories a:nth-child(3) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(3) a, .categories a:nth-child(4) li, .categories a:nth-child(4) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(4) a, .categories a:nth-child(4) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(4) a, .categories a:nth-child(5) li, .categories a:nth-child(5) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(5) a, .categories a:nth-child(5) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(5) a, .categories a:nth-child(6) li, .categories a:nth-child(6) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(6) a, .categories a:nth-child(6) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(6) a, .categories a:nth-child(7) li, .categories a:nth-child(7) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(7) a, .categories a:nth-child(7) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(7) a, .categories a:nth-child(8) li, .categories a:nth-child(8) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(8) a, .categories a:nth-child(8) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(8) a, .categories a:nth-child(9) li, .categories a:nth-child(9) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(9) a, .categories a:nth-child(9) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(9) a {
+  background-image: url('../images/categories-s81f7aca8e1.png');
+  background-repeat: no-repeat;
+}
+
+.social-sprite, .navbar .menu .share ul li:nth-child(1) a::before, .footer .menu .share ul li:nth-child(1) a::before, .navbar .menu .share ul li a:nth-child(1) a::before, .footer .menu .share ul li a:nth-child(1) a::before, .navbar .menu .share ul li:nth-child(2) a::before, .footer .menu .share ul li:nth-child(2) a::before, .navbar .menu .share ul li a:nth-child(2) a::before, .footer .menu .share ul li a:nth-child(2) a::before, .navbar .menu .share ul li:nth-child(3) a::before, .footer .menu .share ul li:nth-child(3) a::before, .navbar .menu .share ul li a:nth-child(3) a::before, .footer .menu .share ul li a:nth-child(3) a::before, .navbar .menu .share ul li:nth-child(4) a::before, .footer .menu .share ul li:nth-child(4) a::before, .navbar .menu .share ul li a:nth-child(4) a::before, .footer .menu .share ul li a:nth-child(4) a::before, .post-full .info-share div ul li:nth-of-type(1), .post-full .info-share .masonry-column .post .picture .mask a span ul li:nth-of-type(1), .masonry-column .post .picture .mask a .post-full .info-share span ul li:nth-of-type(1), .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:nth-of-type(1), .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:nth-of-type(1), .post-full .info-share div .navbar .menu .share ul li a:nth-of-type(1), .navbar .menu .share .post-full .info-share div ul li a:nth-of-type(1), .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:nth-of-type(1), .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(1), .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(1), .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(1), .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:nth-of-type(1), .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(1), .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(1), .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(1), .post-full .info-share div .footer .menu .share ul li a:nth-of-type(1), .footer .menu .share .post-full .info-share div ul li a:nth-of-type(1), .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:nth-of-type(1), .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(1), .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(1), .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(1), .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:nth-of-type(1), .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(1), .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(1), .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(1), .post-full .info-share div ul li:nth-of-type(2), .post-full .info-share .masonry-column .post .picture .mask a span ul li:nth-of-type(2), .masonry-column .post .picture .mask a .post-full .info-share span ul li:nth-of-type(2), .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:nth-of-type(2), .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:nth-of-type(2), .post-full .info-share div .navbar .menu .share ul li a:nth-of-type(2), .navbar .menu .share .post-full .info-share div ul li a:nth-of-type(2), .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:nth-of-type(2), .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(2), .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(2), .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(2), .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:nth-of-type(2), .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(2), .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(2), .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(2), .post-full .info-share div .footer .menu .share ul li a:nth-of-type(2), .footer .menu .share .post-full .info-share div ul li a:nth-of-type(2), .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:nth-of-type(2), .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(2), .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(2), .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(2), .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:nth-of-type(2), .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(2), .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(2), .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(2), .post-full .info-share div ul li:nth-of-type(3), .post-full .info-share .masonry-column .post .picture .mask a span ul li:nth-of-type(3), .masonry-column .post .picture .mask a .post-full .info-share span ul li:nth-of-type(3), .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:nth-of-type(3), .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:nth-of-type(3), .post-full .info-share div .navbar .menu .share ul li a:nth-of-type(3), .navbar .menu .share .post-full .info-share div ul li a:nth-of-type(3), .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:nth-of-type(3), .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(3), .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(3), .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(3), .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:nth-of-type(3), .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(3), .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(3), .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(3), .post-full .info-share div .footer .menu .share ul li a:nth-of-type(3), .footer .menu .share .post-full .info-share div ul li a:nth-of-type(3), .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:nth-of-type(3), .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(3), .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(3), .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(3), .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:nth-of-type(3), .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(3), .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(3), .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(3), .post-full .info-share div ul li:nth-of-type(4), .post-full .info-share .masonry-column .post .picture .mask a span ul li:nth-of-type(4), .masonry-column .post .picture .mask a .post-full .info-share span ul li:nth-of-type(4), .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:nth-of-type(4), .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:nth-of-type(4), .post-full .info-share div .navbar .menu .share ul li a:nth-of-type(4), .navbar .menu .share .post-full .info-share div ul li a:nth-of-type(4), .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:nth-of-type(4), .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(4), .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(4), .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(4), .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:nth-of-type(4), .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(4), .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(4), .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(4), .post-full .info-share div .footer .menu .share ul li a:nth-of-type(4), .footer .menu .share .post-full .info-share div ul li a:nth-of-type(4), .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:nth-of-type(4), .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(4), .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(4), .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(4), .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:nth-of-type(4), .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(4), .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(4), .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(4) {
+  background-image: url('../images/social-se092e8ec9c.png');
+  background-repeat: no-repeat;
+}
+
+.interface-sprite {
+  background-image: url('../images/interface-s228b6cf864.png');
+  background-repeat: no-repeat;
+}
+
+.header-sprite, .navbar .logo, .footer .logo, .navbar .menu .search, .footer .menu .search, .navbar .menu .profile, .footer .menu .profile {
+  background-image: url('../images/header-s42e13f150b.png');
+  background-repeat: no-repeat;
+}
+
+.date-comments-sprite, .masonry-column .post .preview span:nth-child(1), .masonry-column .advertise .preview span:nth-child(1), .masonry-column .post .preview span:nth-child(2), .masonry-column .advertise .preview span:nth-child(2) {
+  background-image: url('../images/date-comments-s074863331c.png');
+  background-repeat: no-repeat;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.clearfix {
+  display: block;
+  width: 100%;
+  clear: both;
+}
+
+.container {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: auto;
+  padding-left: 70px;
+}
+.container:first-of-type {
+  padding: 0;
+}
+
+.navbar, .footer {
+  position: relative;
+  display: block;
+  width: auto;
+  height: 80px;
+  line-height: 80px;
+  text-transform: uppercase;
+  font-family: "Montserrat";
+  font-weight: normal;
+  color: #ebebeb;
+  background-color: #242424;
+}
+.navbar .logo, .footer .logo {
+  float: left;
+  width: auto;
+  min-height: 80px;
+  padding-left: 70px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #ebebeb;
+  background-position: 0 0;
+}
+.navbar .logo:hover, .footer .logo:hover, .navbar .menu .menu-button:hover, .footer .menu .menu-button:hover, .navbar .menu-button-active, .footer .menu-button-active, .navbar .burger:hover, .footer .burger:hover {
+  color: white;
+}
+.navbar .menu, .footer .menu {
+  float: right;
+  width: auto;
+  height: 100%;
+}
+.navbar .menu .menu-button, .footer .menu .menu-button {
+  position: relative;
+  display: inline-block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  min-width: 80px;
+  min-height: 80px;
+  margin-left: -5.5px;
+  text-align: center;
+  vertical-align: top;
+  border-left: 1px solid #2e2e2e;
+  border-right: 1px solid #2e2e2e;
+  cursor: pointer;
+}
+.navbar .menu .menu-button:hover, .footer .menu .menu-button:hover {
+  border-left-color: #000000;
+  border-right-color: #000000;
+  background-color: #1e1e1e;
+  -moz-box-shadow: inset 0 0 10px 1px #000000;
+  -webkit-box-shadow: inset 0 0 10px 1px #000000;
+  box-shadow: inset 0 0 10px 1px #000000;
+  z-index: 2;
+}
+.navbar .menu .share, .footer .menu .share {
+  padding-right: 30px;
+  padding-left: 30px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.navbar .menu .share ul, .footer .menu .share ul {
+  position: absolute;
+  display: block;
+  width: auto;
+  margin-left: -31px;
+  border: 1px solid #242424;
+  border-top: 0;
+  -moz-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  transform-origin: top;
+  -moz-transform: perspective(1000px) rotateX(-90deg);
+  -ms-transform: perspective(1000px) rotateX(-90deg);
+  -webkit-transform: perspective(1000px) rotateX(-90deg);
+  transform: perspective(1000px) rotateX(-90deg);
+  overflow: hidden;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  z-index: 5;
+}
+.navbar .menu .share ul li, .footer .menu .share ul li, .navbar .menu .share ul li a, .footer .menu .share ul li a {
+  position: relative;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 190px;
+  height: 45px;
+  padding-left: 65px;
+  line-height: 45px;
+  text-align: left;
+  text-decoration: none;
+  font-family: "Open Sans";
+  font-weight: bold;
+  color: #1e1e1e;
+  border-bottom: 1px solid #e7e7e7;
+  background-color: #ffffff;
+}
+.navbar .menu .share ul li a, .footer .menu .share ul li a {
+  position: absolute;
+  margin-left: -65px;
+}
+.navbar .menu .share ul li a::before, .footer .menu .share ul li a::before {
+  content: "";
+  position: absolute;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 50px;
+  height: 45px;
+  margin-left: -65px;
+  border-right: 1px solid #e7e7e7;
+  border-bottom: 1px solid #e7e7e7;
+  background-color: #ffffff;
+}
+.navbar .menu .share ul li a:hover, .footer .menu .share ul li a:hover, .navbar .menu .share ul li a:hover::before, .footer .menu .share ul li a:hover::before {
+  background-color: #f2f2f2;
+}
+.navbar .menu .share ul li:nth-child(1) a::before, .footer .menu .share ul li:nth-child(1) a::before, .navbar .menu .share ul li a:nth-child(1) a::before, .footer .menu .share ul li a:nth-child(1) a::before {
+  background-position: 0 0;
+}
+.navbar .menu .share ul li:nth-child(2) a::before, .footer .menu .share ul li:nth-child(2) a::before, .navbar .menu .share ul li a:nth-child(2) a::before, .footer .menu .share ul li a:nth-child(2) a::before {
+  background-position: 0 -135px;
+}
+.navbar .menu .share ul li:nth-child(3) a::before, .footer .menu .share ul li:nth-child(3) a::before, .navbar .menu .share ul li a:nth-child(3) a::before, .footer .menu .share ul li a:nth-child(3) a::before {
+  background-position: 0 -45px;
+}
+.navbar .menu .share ul li:nth-child(4) a::before, .footer .menu .share ul li:nth-child(4) a::before, .navbar .menu .share ul li a:nth-child(4) a::before, .footer .menu .share ul li a:nth-child(4) a::before {
+  background-position: 0 -90px;
+}
+.navbar .menu .search, .footer .menu .search {
+  background-position: 0 -240px;
+}
+.navbar .menu .search:hover, .footer .menu .search:hover, .navbar .menu .search.search-hover, .footer .menu .search.search-hover {
+  background-position: 0 -320px;
+}
+.navbar .menu .profile, .footer .menu .profile {
+  background-position: 0 -80px;
+}
+.navbar .menu .profile:hover, .footer .menu .profile:hover, .navbar .menu .profile.profile-hover, .footer .menu .profile.profile-hover {
+  background-position: 0 -160px;
+}
+
+.menu-button-active {
+  border-left: 1px solid #000000 !important;
+  border-right: 1px solid #000000 !important;
+  background-color: #1e1e1e;
+  -moz-box-shadow: inset 0 0 10px 1px #000000;
+  -webkit-box-shadow: inset 0 0 10px 1px #000000;
+  box-shadow: inset 0 0 10px 1px #000000;
+  z-index: 2;
+}
+
+.drop-share {
+  animation-name: drop-share;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+.nav-search {
+  position: absolute;
+  left: -5px;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 0%;
+  height: 80px;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Montserrat";
+  font-size: 20px;
+  color: #ebebeb;
+  background-color: #1e1e1e;
+  border: 1px solid #000000 !important;
+  -moz-transition: 1s, all;
+  -o-transition: 1s, all;
+  -webkit-transition: 1s, all;
+  transition: 1s, all;
+  z-index: 2;
+}
+
+.nav-search-active {
+  left: 0;
+  width: 100%;
+}
+
+.nav-search-close, .login-window form .nav-profile-close {
+  position: absolute;
+  top: -80px;
+  left: 100%;
+  display: block;
+  min-width: 80px;
+  min-height: 80px;
+  margin-left: -80px;
+  text-align: center;
+  font-size: 40px;
+  color: #6c6c6c;
+  -moz-transition: all 0.5s 0s;
+  -o-transition: all 0.5s 0s;
+  -webkit-transition: all 0.5s;
+  -webkit-transition-delay: 0s;
+  transition: all 0.5s 0s;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.nav-search-close-visible {
+  top: 0;
+  -moz-transition: top 0.5s 1s, color 0.5s;
+  -o-transition: top 0.5s 1s, color 0.5s;
+  -webkit-transition: top 0.5s, color 0.5s;
+  -webkit-transition-delay: 1s, 0s;
+  transition: top 0.5s 1s, color 0.5s;
+}
+.nav-search-close-visible:hover {
+  color: #ebebeb;
+}
+
+.login-window {
+  position: fixed;
+  top: -100%;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(36, 36, 36, 0.5);
+  z-index: 10;
+}
+.login-window form {
+  position: relative;
+  top: -50%;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 500px;
+  height: auto;
+  margin: auto;
+  margin-top: -105px;
+  padding: 30px;
+  background-color: #242424;
+  -moz-transition: all 1s;
+  -o-transition: all 1s;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+}
+.login-window form .nav-profile-close {
+  line-height: 80px;
+  margin-top: 40px;
+  margin-left: -40px;
+}
+.login-window form .nav-profile-close:hover {
+  color: #ebebeb;
+}
+.login-window form input, .login-window form button {
+  position: relative;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 15px;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Montserrat";
+  font-size: 20px;
+  color: #ebebeb;
+  border: 1px solid #2e2e2e;
+  background-color: rgba(255, 255, 255, 0.1);
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.login-window form input:focus, .login-window form button:focus, .login-window form button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.login-window form button {
+  width: auto;
+  margin: auto;
+  cursor: pointer;
+}
+
+.login-window-active {
+  top: 0;
+}
+.login-window-active form {
+  top: 50%;
+}
+
+.jump-profile {
+  animation-name: jump-profile;
+  animation-duration: 0.6s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+.categories {
+  position: relative;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  width: 70px;
+  height: auto;
+  margin-left: -70px;
+  border-left: 1px solid #e7e7e7;
+  border-right: 1px solid #e7e7e7;
+  background-color: #ffffff;
+  transform-origin: top left;
+  -moz-transition: -moz-transform 0.2s;
+  -o-transition: -o-transform 0.2s;
+  -webkit-transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  z-index: 5;
+}
+.categories a {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: "Montserrat";
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+}
+.categories li, .categories .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a, .categories .footer .menu .share ul li a, .footer .menu .share ul li .categories a {
+  position: relative;
+  display: block;
+  float: left;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: 70px;
+  min-height: 70px;
+  padding-left: 69px;
+  line-height: 70px;
+  border-bottom: 1px solid #e7e7e7;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  overflow: hidden;
+  z-index: 5;
+}
+.categories a:nth-child(1) li, .categories a:nth-child(1) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(1) a, .categories a:nth-child(1) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(1) a {
+  background-position: 0 -840px;
+}
+.categories a:nth-child(1) li:hover, .categories a:nth-child(1) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(1) a:hover, .categories a:nth-child(1) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(1) a:hover, .categories a:nth-child(1) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(1) a:hover::before, .categories a:nth-child(1) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(1) a:hover::before, .categories a:nth-child(1) li.paint-hover, .categories a:nth-child(1) .navbar .menu .share ul li a.paint-hover, .navbar .menu .share ul li .categories a:nth-child(1) a.paint-hover, .categories a:nth-child(1) .footer .menu .share ul li a.paint-hover, .footer .menu .share ul li .categories a:nth-child(1) a.paint-hover {
+  background-position: 0 -910px;
+}
+.categories a:nth-child(1) li:hover, .categories a:nth-child(1) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(1) a:hover, .categories a:nth-child(1) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(1) a:hover, .categories a:nth-child(1) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(1) a:hover::before, .categories a:nth-child(1) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(1) a:hover::before {
+  width: auto;
+  padding-right: 25px;
+  border-bottom-color: #14b9d6;
+  background-color: #14b9d6;
+  -moz-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+}
+.categories a:nth-child(1) li:hover:active, .categories a:nth-child(1) .navbar .menu .share ul li a:hover:active, .navbar .menu .share ul li .categories a:nth-child(1) a:hover:active, .categories a:nth-child(1) .footer .menu .share ul li a:hover:active, .footer .menu .share ul li .categories a:nth-child(1) a:hover:active, .categories a:nth-child(1) .navbar .menu .share ul li a:active:hover::before, .navbar .menu .share ul li .categories a:nth-child(1) a:active:hover::before, .categories a:nth-child(1) .footer .menu .share ul li a:active:hover::before, .footer .menu .share ul li .categories a:nth-child(1) a:active:hover::before {
+  padding-right: 100%;
+}
+.categories a:nth-child(2) li, .categories a:nth-child(2) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(2) a, .categories a:nth-child(2) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(2) a {
+  background-position: 0 -700px;
+}
+.categories a:nth-child(2) li:hover, .categories a:nth-child(2) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(2) a:hover, .categories a:nth-child(2) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(2) a:hover, .categories a:nth-child(2) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(2) a:hover::before, .categories a:nth-child(2) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(2) a:hover::before, .categories a:nth-child(2) li.music-hover, .categories a:nth-child(2) .navbar .menu .share ul li a.music-hover, .navbar .menu .share ul li .categories a:nth-child(2) a.music-hover, .categories a:nth-child(2) .footer .menu .share ul li a.music-hover, .footer .menu .share ul li .categories a:nth-child(2) a.music-hover {
+  background-position: 0 -770px;
+}
+.categories a:nth-child(2) li:hover, .categories a:nth-child(2) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(2) a:hover, .categories a:nth-child(2) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(2) a:hover, .categories a:nth-child(2) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(2) a:hover::before, .categories a:nth-child(2) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(2) a:hover::before {
+  width: auto;
+  padding-right: 25px;
+  border-bottom-color: #e76049;
+  background-color: #e76049;
+  -moz-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+}
+.categories a:nth-child(2) li:hover:active, .categories a:nth-child(2) .navbar .menu .share ul li a:hover:active, .navbar .menu .share ul li .categories a:nth-child(2) a:hover:active, .categories a:nth-child(2) .footer .menu .share ul li a:hover:active, .footer .menu .share ul li .categories a:nth-child(2) a:hover:active, .categories a:nth-child(2) .navbar .menu .share ul li a:active:hover::before, .navbar .menu .share ul li .categories a:nth-child(2) a:active:hover::before, .categories a:nth-child(2) .footer .menu .share ul li a:active:hover::before, .footer .menu .share ul li .categories a:nth-child(2) a:active:hover::before {
+  padding-right: 100%;
+}
+.categories a:nth-child(3) li, .categories a:nth-child(3) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(3) a, .categories a:nth-child(3) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(3) a {
+  background-position: 0 -280px;
+}
+.categories a:nth-child(3) li:hover, .categories a:nth-child(3) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(3) a:hover, .categories a:nth-child(3) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(3) a:hover, .categories a:nth-child(3) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(3) a:hover::before, .categories a:nth-child(3) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(3) a:hover::before, .categories a:nth-child(3) li.camera-hover, .categories a:nth-child(3) .navbar .menu .share ul li a.camera-hover, .navbar .menu .share ul li .categories a:nth-child(3) a.camera-hover, .categories a:nth-child(3) .footer .menu .share ul li a.camera-hover, .footer .menu .share ul li .categories a:nth-child(3) a.camera-hover {
+  background-position: 0 -350px;
+}
+.categories a:nth-child(3) li:hover, .categories a:nth-child(3) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(3) a:hover, .categories a:nth-child(3) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(3) a:hover, .categories a:nth-child(3) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(3) a:hover::before, .categories a:nth-child(3) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(3) a:hover::before {
+  width: auto;
+  padding-right: 25px;
+  border-bottom-color: #2eb398;
+  background-color: #2eb398;
+  -moz-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+}
+.categories a:nth-child(3) li:hover:active, .categories a:nth-child(3) .navbar .menu .share ul li a:hover:active, .navbar .menu .share ul li .categories a:nth-child(3) a:hover:active, .categories a:nth-child(3) .footer .menu .share ul li a:hover:active, .footer .menu .share ul li .categories a:nth-child(3) a:hover:active, .categories a:nth-child(3) .navbar .menu .share ul li a:active:hover::before, .navbar .menu .share ul li .categories a:nth-child(3) a:active:hover::before, .categories a:nth-child(3) .footer .menu .share ul li a:active:hover::before, .footer .menu .share ul li .categories a:nth-child(3) a:active:hover::before {
+  padding-right: 100%;
+}
+.categories a:nth-child(4) li, .categories a:nth-child(4) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(4) a, .categories a:nth-child(4) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(4) a {
+  background-position: 0 -420px;
+}
+.categories a:nth-child(4) li:hover, .categories a:nth-child(4) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(4) a:hover, .categories a:nth-child(4) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(4) a:hover, .categories a:nth-child(4) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(4) a:hover::before, .categories a:nth-child(4) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(4) a:hover::before, .categories a:nth-child(4) li.cinema-hover, .categories a:nth-child(4) .navbar .menu .share ul li a.cinema-hover, .navbar .menu .share ul li .categories a:nth-child(4) a.cinema-hover, .categories a:nth-child(4) .footer .menu .share ul li a.cinema-hover, .footer .menu .share ul li .categories a:nth-child(4) a.cinema-hover {
+  background-position: 0 -490px;
+}
+.categories a:nth-child(4) li:hover, .categories a:nth-child(4) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(4) a:hover, .categories a:nth-child(4) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(4) a:hover, .categories a:nth-child(4) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(4) a:hover::before, .categories a:nth-child(4) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(4) a:hover::before {
+  width: auto;
+  padding-right: 25px;
+  border-bottom-color: #90899c;
+  background-color: #90899c;
+  -moz-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+}
+.categories a:nth-child(4) li:hover:active, .categories a:nth-child(4) .navbar .menu .share ul li a:hover:active, .navbar .menu .share ul li .categories a:nth-child(4) a:hover:active, .categories a:nth-child(4) .footer .menu .share ul li a:hover:active, .footer .menu .share ul li .categories a:nth-child(4) a:hover:active, .categories a:nth-child(4) .navbar .menu .share ul li a:active:hover::before, .navbar .menu .share ul li .categories a:nth-child(4) a:active:hover::before, .categories a:nth-child(4) .footer .menu .share ul li a:active:hover::before, .footer .menu .share ul li .categories a:nth-child(4) a:active:hover::before {
+  padding-right: 100%;
+}
+.categories a:nth-child(5) li, .categories a:nth-child(5) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(5) a, .categories a:nth-child(5) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(5) a {
+  background-position: 0 -140px;
+}
+.categories a:nth-child(5) li:hover, .categories a:nth-child(5) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(5) a:hover, .categories a:nth-child(5) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(5) a:hover, .categories a:nth-child(5) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(5) a:hover::before, .categories a:nth-child(5) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(5) a:hover::before, .categories a:nth-child(5) li.busines-hover, .categories a:nth-child(5) .navbar .menu .share ul li a.busines-hover, .navbar .menu .share ul li .categories a:nth-child(5) a.busines-hover, .categories a:nth-child(5) .footer .menu .share ul li a.busines-hover, .footer .menu .share ul li .categories a:nth-child(5) a.busines-hover {
+  background-position: 0 -210px;
+}
+.categories a:nth-child(5) li:hover, .categories a:nth-child(5) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(5) a:hover, .categories a:nth-child(5) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(5) a:hover, .categories a:nth-child(5) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(5) a:hover::before, .categories a:nth-child(5) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(5) a:hover::before {
+  width: auto;
+  padding-right: 25px;
+  border-bottom-color: #5692b1;
+  background-color: #5692b1;
+  -moz-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+}
+.categories a:nth-child(5) li:hover:active, .categories a:nth-child(5) .navbar .menu .share ul li a:hover:active, .navbar .menu .share ul li .categories a:nth-child(5) a:hover:active, .categories a:nth-child(5) .footer .menu .share ul li a:hover:active, .footer .menu .share ul li .categories a:nth-child(5) a:hover:active, .categories a:nth-child(5) .navbar .menu .share ul li a:active:hover::before, .navbar .menu .share ul li .categories a:nth-child(5) a:active:hover::before, .categories a:nth-child(5) .footer .menu .share ul li a:active:hover::before, .footer .menu .share ul li .categories a:nth-child(5) a:active:hover::before {
+  padding-right: 100%;
+}
+.categories a:nth-child(6) li, .categories a:nth-child(6) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(6) a, .categories a:nth-child(6) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(6) a {
+  background-position: 0 -980px;
+}
+.categories a:nth-child(6) li:hover, .categories a:nth-child(6) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(6) a:hover, .categories a:nth-child(6) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(6) a:hover, .categories a:nth-child(6) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(6) a:hover::before, .categories a:nth-child(6) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(6) a:hover::before, .categories a:nth-child(6) li.plane-hover, .categories a:nth-child(6) .navbar .menu .share ul li a.plane-hover, .navbar .menu .share ul li .categories a:nth-child(6) a.plane-hover, .categories a:nth-child(6) .footer .menu .share ul li a.plane-hover, .footer .menu .share ul li .categories a:nth-child(6) a.plane-hover {
+  background-position: 0 -1050px;
+}
+.categories a:nth-child(6) li:hover, .categories a:nth-child(6) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(6) a:hover, .categories a:nth-child(6) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(6) a:hover, .categories a:nth-child(6) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(6) a:hover::before, .categories a:nth-child(6) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(6) a:hover::before {
+  width: auto;
+  padding-right: 25px;
+  border-bottom-color: #f9b704;
+  background-color: #f9b704;
+  -moz-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+}
+.categories a:nth-child(6) li:hover:active, .categories a:nth-child(6) .navbar .menu .share ul li a:hover:active, .navbar .menu .share ul li .categories a:nth-child(6) a:hover:active, .categories a:nth-child(6) .footer .menu .share ul li a:hover:active, .footer .menu .share ul li .categories a:nth-child(6) a:hover:active, .categories a:nth-child(6) .navbar .menu .share ul li a:active:hover::before, .navbar .menu .share ul li .categories a:nth-child(6) a:active:hover::before, .categories a:nth-child(6) .footer .menu .share ul li a:active:hover::before, .footer .menu .share ul li .categories a:nth-child(6) a:active:hover::before {
+  padding-right: 100%;
+}
+.categories a:nth-child(7) li, .categories a:nth-child(7) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(7) a, .categories a:nth-child(7) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(7) a {
+  background-position: 0 0;
+}
+.categories a:nth-child(7) li:hover, .categories a:nth-child(7) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(7) a:hover, .categories a:nth-child(7) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(7) a:hover, .categories a:nth-child(7) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(7) a:hover::before, .categories a:nth-child(7) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(7) a:hover::before, .categories a:nth-child(7) li.bag-hover, .categories a:nth-child(7) .navbar .menu .share ul li a.bag-hover, .navbar .menu .share ul li .categories a:nth-child(7) a.bag-hover, .categories a:nth-child(7) .footer .menu .share ul li a.bag-hover, .footer .menu .share ul li .categories a:nth-child(7) a.bag-hover {
+  background-position: 0 -70px;
+}
+.categories a:nth-child(7) li:hover, .categories a:nth-child(7) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(7) a:hover, .categories a:nth-child(7) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(7) a:hover, .categories a:nth-child(7) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(7) a:hover::before, .categories a:nth-child(7) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(7) a:hover::before {
+  width: auto;
+  padding-right: 25px;
+  border-bottom-color: #dd1787;
+  background-color: #dd1787;
+  -moz-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+}
+.categories a:nth-child(7) li:hover:active, .categories a:nth-child(7) .navbar .menu .share ul li a:hover:active, .navbar .menu .share ul li .categories a:nth-child(7) a:hover:active, .categories a:nth-child(7) .footer .menu .share ul li a:hover:active, .footer .menu .share ul li .categories a:nth-child(7) a:hover:active, .categories a:nth-child(7) .navbar .menu .share ul li a:active:hover::before, .navbar .menu .share ul li .categories a:nth-child(7) a:active:hover::before, .categories a:nth-child(7) .footer .menu .share ul li a:active:hover::before, .footer .menu .share ul li .categories a:nth-child(7) a:active:hover::before {
+  padding-right: 100%;
+}
+.categories a:nth-child(8) li, .categories a:nth-child(8) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(8) a, .categories a:nth-child(8) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(8) a {
+  background-position: 0 -560px;
+}
+.categories a:nth-child(8) li:hover, .categories a:nth-child(8) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(8) a:hover, .categories a:nth-child(8) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(8) a:hover, .categories a:nth-child(8) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(8) a:hover::before, .categories a:nth-child(8) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(8) a:hover::before, .categories a:nth-child(8) li.more-hover, .categories a:nth-child(8) .navbar .menu .share ul li a.more-hover, .navbar .menu .share ul li .categories a:nth-child(8) a.more-hover, .categories a:nth-child(8) .footer .menu .share ul li a.more-hover, .footer .menu .share ul li .categories a:nth-child(8) a.more-hover {
+  background-position: 0 -630px;
+}
+.categories a:nth-child(8) li:hover, .categories a:nth-child(8) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(8) a:hover, .categories a:nth-child(8) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(8) a:hover, .categories a:nth-child(8) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(8) a:hover::before, .categories a:nth-child(8) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(8) a:hover::before {
+  width: auto;
+  padding-right: 25px;
+  border-bottom-color: #e76049;
+  background-color: #e76049;
+  -moz-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+}
+.categories a:nth-child(8) li:hover:active, .categories a:nth-child(8) .navbar .menu .share ul li a:hover:active, .navbar .menu .share ul li .categories a:nth-child(8) a:hover:active, .categories a:nth-child(8) .footer .menu .share ul li a:hover:active, .footer .menu .share ul li .categories a:nth-child(8) a:hover:active, .categories a:nth-child(8) .navbar .menu .share ul li a:active:hover::before, .navbar .menu .share ul li .categories a:nth-child(8) a:active:hover::before, .categories a:nth-child(8) .footer .menu .share ul li a:active:hover::before, .footer .menu .share ul li .categories a:nth-child(8) a:active:hover::before {
+  padding-right: 100%;
+}
+.categories a:nth-child(9) li, .categories a:nth-child(9) .navbar .menu .share ul li a, .navbar .menu .share ul li .categories a:nth-child(9) a, .categories a:nth-child(9) .footer .menu .share ul li a, .footer .menu .share ul li .categories a:nth-child(9) a {
+  background-position: 0 -1120px;
+}
+.categories a:nth-child(9) li:hover, .categories a:nth-child(9) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(9) a:hover, .categories a:nth-child(9) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(9) a:hover, .categories a:nth-child(9) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(9) a:hover::before, .categories a:nth-child(9) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(9) a:hover::before, .categories a:nth-child(9) li.setting-hover, .categories a:nth-child(9) .navbar .menu .share ul li a.setting-hover, .navbar .menu .share ul li .categories a:nth-child(9) a.setting-hover, .categories a:nth-child(9) .footer .menu .share ul li a.setting-hover, .footer .menu .share ul li .categories a:nth-child(9) a.setting-hover {
+  background-position: 0 -1190px;
+}
+.categories a:nth-child(9) li:hover, .categories a:nth-child(9) .navbar .menu .share ul li a:hover, .navbar .menu .share ul li .categories a:nth-child(9) a:hover, .categories a:nth-child(9) .footer .menu .share ul li a:hover, .footer .menu .share ul li .categories a:nth-child(9) a:hover, .categories a:nth-child(9) .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .categories a:nth-child(9) a:hover::before, .categories a:nth-child(9) .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .categories a:nth-child(9) a:hover::before {
+  width: auto;
+  padding-right: 25px;
+  border-bottom-color: #585858;
+  background-color: #585858;
+  -moz-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.1);
+}
+.categories a:nth-child(9) li:hover:active, .categories a:nth-child(9) .navbar .menu .share ul li a:hover:active, .navbar .menu .share ul li .categories a:nth-child(9) a:hover:active, .categories a:nth-child(9) .footer .menu .share ul li a:hover:active, .footer .menu .share ul li .categories a:nth-child(9) a:hover:active, .categories a:nth-child(9) .navbar .menu .share ul li a:active:hover::before, .navbar .menu .share ul li .categories a:nth-child(9) a:active:hover::before, .categories a:nth-child(9) .footer .menu .share ul li a:active:hover::before, .footer .menu .share ul li .categories a:nth-child(9) a:active:hover::before {
+  padding-right: 100%;
+}
+
+.categories-show {
+  -moz-transform: rotate(0deg) !important;
+  -ms-transform: rotate(0deg) !important;
+  -webkit-transform: rotate(0deg) !important;
+  transform: rotate(0deg) !important;
+}
+
+.burger {
+  display: none;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  width: 50px;
+  height: 80px;
+  text-align: center;
+  font-size: 20px;
+  border-right: 1px solid #2e2e2e;
+  background-color: #242424;
+  cursor: pointer;
+}
+.burger:hover {
+  border-right-color: #000000;
+  background-color: #1e1e1e;
+  -moz-box-shadow: inset 0 0 10px 1px #000000;
+  -webkit-box-shadow: inset 0 0 10px 1px #000000;
+  box-shadow: inset 0 0 10px 1px #000000;
+  z-index: 2;
+}
+
+.masonry-column {
+  float: left;
+  width: 491px;
+  margin: 10px;
+}
+.masonry-column .post, .masonry-column .advertise {
+  position: relative;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  float: left;
+  margin-bottom: 10px;
+  border: 1px solid #e7e7e7;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+.masonry-column .post a, .masonry-column .advertise a {
+  color: inherit;
+  text-decoration: none;
+}
+.masonry-column .post a:hover, .masonry-column .advertise a:hover, .masonry-column .post .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .masonry-column .post a:hover::before, .masonry-column .advertise .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .masonry-column .advertise a:hover::before, .masonry-column .post .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .masonry-column .post a:hover::before, .masonry-column .advertise .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .masonry-column .advertise a:hover::before {
+  text-decoration: underline;
+}
+.masonry-column .post .picture, .masonry-column .advertise .picture {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.masonry-column .post .picture .mask, .masonry-column .advertise .picture .mask {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin-left: -100%;
+  background-color: rgba(231, 231, 231, 0.8);
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.masonry-column .post .picture .mask a, .masonry-column .advertise .picture .mask a {
+  position: relative;
+  top: 50%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  width: 250px;
+  height: 60px;
+  margin: auto;
+  margin-top: -30px;
+  line-height: 50px;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  color: #ffffff;
+  border: 5px solid #ffffff;
+}
+.masonry-column .post .picture .mask a .fake, .masonry-column .advertise .picture .mask a .fake {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.masonry-column .post .picture .mask a .fake:hover, .masonry-column .advertise .picture .mask a .fake:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.masonry-column .post .picture .mask a div, .masonry-column .advertise .picture .mask a div, .masonry-column .post .picture .mask a span, .masonry-column .advertise .picture .mask a span {
+  position: relative;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  float: left;
+  width: 60px;
+  height: 100%;
+  border-right: 5px solid #ffffff;
+}
+.masonry-column .post .picture .mask a span, .masonry-column .advertise .picture .mask a span {
+  width: 180px;
+  border: 0;
+}
+.masonry-column .post .picture img, .masonry-column .advertise .picture img {
+  width: 100%;
+  height: auto;
+  margin-bottom: -2.5px;
+}
+.masonry-column .post :hover .mask, .masonry-column .advertise :hover .mask {
+  margin-left: 0%;
+}
+.masonry-column .post .preview, .masonry-column .advertise .preview {
+  position: relative;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  padding: 30px;
+}
+.masonry-column .post .preview::before, .masonry-column .advertise .preview::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 15px;
+  height: 15px;
+  margin-top: -38px;
+  margin-left: 25px;
+  background-color: #ffffff;
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.masonry-column .post .preview span, .masonry-column .advertise .preview span {
+  display: inline-block;
+  height: 15px;
+  margin-right: 25px;
+  margin-bottom: 20px;
+  padding-left: 25px;
+  vertical-align: bottom;
+  font-family: "Open Sans";
+  font-weight: bold;
+  font-size: 12px;
+  color: #9d9d9d;
+}
+.masonry-column .post .preview span:nth-child(1), .masonry-column .advertise .preview span:nth-child(1) {
+  background-position: 0 -15px;
+  background-position: 0 -16px;
+}
+.masonry-column .post .preview span:nth-child(2), .masonry-column .advertise .preview span:nth-child(2) {
+  background-position: 0 0;
+  background-position: 0 -1px;
+}
+.masonry-column .post .preview h1, .masonry-column .advertise .preview h1 {
+  margin-bottom: 20px;
+  font-family: "Monteserrat", sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: #313131;
+}
+.masonry-column .post .preview p, .masonry-column .advertise .preview p {
+  line-height: 21px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: normal;
+  font-size: 14px;
+  color: #626262;
+}
+
+.advertise {
+  padding: 5px;
+}
+.advertise img {
+  width: 100%;
+}
+
+.footer {
+  overflow: hidden;
+}
+.footer .container {
+  padding-left: 38px;
+  padding-right: 38px;
+}
+.footer .container .links {
+  float: left;
+}
+.footer .container .links a {
+  text-decoration: none;
+  color: #6c6c6c;
+}
+.footer .container .links a:not(:last-of-type) {
+  margin-right: 5px;
+}
+.footer .container .links a:hover, .navbar .menu .share ul li .footer .container .links a:hover::before, .footer .container .links .menu .share ul li a:hover::before, .footer .menu .share ul li .container .links a:hover::before {
+  color: #ebebeb;
+}
+.footer .container span {
+  float: right;
+}
+
+.post-full {
+  position: relative;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+.post-full .header-image {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-bottom: 35px;
+}
+.post-full .header-image img {
+  width: 100%;
+}
+.post-full .info-share {
+  position: relative;
+  display: block;
+  float: left;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: auto;
+  margin-right: 35px;
+  text-align: right;
+  font-family: "Open Sans";
+  font-size: 13px;
+  color: #313131;
+}
+.post-full .info-share div, .post-full .info-share .masonry-column .post .picture .mask a span, .masonry-column .post .picture .mask a .post-full .info-share span, .post-full .info-share .masonry-column .advertise .picture .mask a span, .masonry-column .advertise .picture .mask a .post-full .info-share span {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-top: 10px;
+  line-height: 25px;
+}
+.post-full .info-share div:not(:last-child), .post-full .info-share .masonry-column .post .picture .mask a span:not(:last-child), .masonry-column .post .picture .mask a .post-full .info-share span:not(:last-child), .post-full .info-share .masonry-column .advertise .picture .mask a span:not(:last-child), .masonry-column .advertise .picture .mask a .post-full .info-share span:not(:last-child) {
+  height: 70px;
+  border-bottom: 1px solid #e7e7e7;
+}
+.post-full .info-share div span, .post-full .info-share .masonry-column .post .picture .mask a span span, .masonry-column .post .picture .mask a .post-full .info-share span span, .post-full .info-share .masonry-column .advertise .picture .mask a span span, .masonry-column .advertise .picture .mask a .post-full .info-share span span {
+  display: block;
+}
+.post-full .info-share div ul, .post-full .info-share .masonry-column .post .picture .mask a span ul, .masonry-column .post .picture .mask a .post-full .info-share span ul, .post-full .info-share .masonry-column .advertise .picture .mask a span ul, .masonry-column .advertise .picture .mask a .post-full .info-share span ul {
+  position: relative;
+  display: block;
+}
+.post-full .info-share div ul li, .post-full .info-share .masonry-column .post .picture .mask a span ul li, .masonry-column .post .picture .mask a .post-full .info-share span ul li, .post-full .info-share .masonry-column .advertise .picture .mask a span ul li, .masonry-column .advertise .picture .mask a .post-full .info-share span ul li, .post-full .info-share div .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share div ul li a, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a, .post-full .info-share div .footer .menu .share ul li a, .footer .menu .share .post-full .info-share div ul li a, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 45px;
+  border-bottom: 1px solid transparent;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.post-full .info-share div ul li:nth-of-type(1), .post-full .info-share .masonry-column .post .picture .mask a span ul li:nth-of-type(1), .masonry-column .post .picture .mask a .post-full .info-share span ul li:nth-of-type(1), .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:nth-of-type(1), .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:nth-of-type(1), .post-full .info-share div .navbar .menu .share ul li a:nth-of-type(1), .navbar .menu .share .post-full .info-share div ul li a:nth-of-type(1), .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:nth-of-type(1), .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(1), .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(1), .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(1), .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:nth-of-type(1), .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(1), .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(1), .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(1), .post-full .info-share div .footer .menu .share ul li a:nth-of-type(1), .footer .menu .share .post-full .info-share div ul li a:nth-of-type(1), .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:nth-of-type(1), .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(1), .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(1), .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(1), .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:nth-of-type(1), .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(1), .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(1), .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(1) {
+  background-position: 0 0;
+  background-position: 50% 0;
+}
+.post-full .info-share div ul li:hover, .post-full .info-share .masonry-column .post .picture .mask a span ul li:hover, .masonry-column .post .picture .mask a .post-full .info-share span ul li:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:hover, .post-full .info-share div .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share div ul li a:hover, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share div .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share div ul li a:hover, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share div .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share div ul li a:hover::before, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover::before, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover::before, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share div .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share div ul li a:hover::before, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover::before, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover::before, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover::before, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover::before, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover::before {
+  -moz-transform: translateY(-5px);
+  -ms-transform: translateY(-5px);
+  -webkit-transform: translateY(-5px);
+  transform: translateY(-5px);
+}
+.post-full .info-share div ul li, .post-full .info-share .masonry-column .post .picture .mask a span ul li, .masonry-column .post .picture .mask a .post-full .info-share span ul li, .post-full .info-share .masonry-column .advertise .picture .mask a span ul li, .masonry-column .advertise .picture .mask a .post-full .info-share span ul li, .post-full .info-share div .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share div ul li a, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a, .post-full .info-share div .footer .menu .share ul li a, .footer .menu .share .post-full .info-share div ul li a, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 45px;
+  border-bottom: 1px solid transparent;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.post-full .info-share div ul li:nth-of-type(2), .post-full .info-share .masonry-column .post .picture .mask a span ul li:nth-of-type(2), .masonry-column .post .picture .mask a .post-full .info-share span ul li:nth-of-type(2), .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:nth-of-type(2), .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:nth-of-type(2), .post-full .info-share div .navbar .menu .share ul li a:nth-of-type(2), .navbar .menu .share .post-full .info-share div ul li a:nth-of-type(2), .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:nth-of-type(2), .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(2), .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(2), .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(2), .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:nth-of-type(2), .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(2), .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(2), .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(2), .post-full .info-share div .footer .menu .share ul li a:nth-of-type(2), .footer .menu .share .post-full .info-share div ul li a:nth-of-type(2), .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:nth-of-type(2), .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(2), .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(2), .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(2), .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:nth-of-type(2), .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(2), .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(2), .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(2) {
+  background-position: 0 -135px;
+  background-position: 50% -135px;
+}
+.post-full .info-share div ul li:hover, .post-full .info-share .masonry-column .post .picture .mask a span ul li:hover, .masonry-column .post .picture .mask a .post-full .info-share span ul li:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:hover, .post-full .info-share div .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share div ul li a:hover, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share div .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share div ul li a:hover, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share div .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share div ul li a:hover::before, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover::before, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover::before, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share div .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share div ul li a:hover::before, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover::before, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover::before, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover::before, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover::before, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover::before {
+  -moz-transform: translateY(-5px);
+  -ms-transform: translateY(-5px);
+  -webkit-transform: translateY(-5px);
+  transform: translateY(-5px);
+}
+.post-full .info-share div ul li, .post-full .info-share .masonry-column .post .picture .mask a span ul li, .masonry-column .post .picture .mask a .post-full .info-share span ul li, .post-full .info-share .masonry-column .advertise .picture .mask a span ul li, .masonry-column .advertise .picture .mask a .post-full .info-share span ul li, .post-full .info-share div .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share div ul li a, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a, .post-full .info-share div .footer .menu .share ul li a, .footer .menu .share .post-full .info-share div ul li a, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 45px;
+  border-bottom: 1px solid transparent;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.post-full .info-share div ul li:nth-of-type(3), .post-full .info-share .masonry-column .post .picture .mask a span ul li:nth-of-type(3), .masonry-column .post .picture .mask a .post-full .info-share span ul li:nth-of-type(3), .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:nth-of-type(3), .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:nth-of-type(3), .post-full .info-share div .navbar .menu .share ul li a:nth-of-type(3), .navbar .menu .share .post-full .info-share div ul li a:nth-of-type(3), .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:nth-of-type(3), .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(3), .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(3), .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(3), .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:nth-of-type(3), .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(3), .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(3), .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(3), .post-full .info-share div .footer .menu .share ul li a:nth-of-type(3), .footer .menu .share .post-full .info-share div ul li a:nth-of-type(3), .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:nth-of-type(3), .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(3), .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(3), .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(3), .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:nth-of-type(3), .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(3), .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(3), .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(3) {
+  background-position: 0 -45px;
+  background-position: 50% -45px;
+}
+.post-full .info-share div ul li:hover, .post-full .info-share .masonry-column .post .picture .mask a span ul li:hover, .masonry-column .post .picture .mask a .post-full .info-share span ul li:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:hover, .post-full .info-share div .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share div ul li a:hover, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share div .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share div ul li a:hover, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share div .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share div ul li a:hover::before, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover::before, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover::before, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share div .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share div ul li a:hover::before, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover::before, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover::before, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover::before, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover::before, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover::before {
+  -moz-transform: translateY(-5px);
+  -ms-transform: translateY(-5px);
+  -webkit-transform: translateY(-5px);
+  transform: translateY(-5px);
+}
+.post-full .info-share div ul li, .post-full .info-share .masonry-column .post .picture .mask a span ul li, .masonry-column .post .picture .mask a .post-full .info-share span ul li, .post-full .info-share .masonry-column .advertise .picture .mask a span ul li, .masonry-column .advertise .picture .mask a .post-full .info-share span ul li, .post-full .info-share div .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share div ul li a, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a, .post-full .info-share div .footer .menu .share ul li a, .footer .menu .share .post-full .info-share div ul li a, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 45px;
+  border-bottom: 1px solid transparent;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.post-full .info-share div ul li:nth-of-type(4), .post-full .info-share .masonry-column .post .picture .mask a span ul li:nth-of-type(4), .masonry-column .post .picture .mask a .post-full .info-share span ul li:nth-of-type(4), .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:nth-of-type(4), .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:nth-of-type(4), .post-full .info-share div .navbar .menu .share ul li a:nth-of-type(4), .navbar .menu .share .post-full .info-share div ul li a:nth-of-type(4), .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:nth-of-type(4), .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(4), .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(4), .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(4), .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:nth-of-type(4), .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(4), .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:nth-of-type(4), .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(4), .post-full .info-share div .footer .menu .share ul li a:nth-of-type(4), .footer .menu .share .post-full .info-share div ul li a:nth-of-type(4), .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:nth-of-type(4), .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:nth-of-type(4), .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(4), .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:nth-of-type(4), .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:nth-of-type(4), .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:nth-of-type(4), .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:nth-of-type(4), .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:nth-of-type(4) {
+  background-position: 0 -90px;
+  background-position: 50% -90px;
+}
+.post-full .info-share div ul li:hover, .post-full .info-share .masonry-column .post .picture .mask a span ul li:hover, .masonry-column .post .picture .mask a .post-full .info-share span ul li:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span ul li:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span ul li:hover, .post-full .info-share div .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share div ul li a:hover, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:hover, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share div .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share div ul li a:hover, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:hover, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover, .post-full .info-share div .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share div ul li a:hover::before, .post-full .info-share .masonry-column .post .picture .mask a span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover::before, .masonry-column .post .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share .masonry-column .advertise .picture .mask a span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover::before, .masonry-column .advertise .picture .mask a .post-full .info-share span .navbar .menu .share ul li a:hover::before, .navbar .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share div .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share div ul li a:hover::before, .post-full .info-share .masonry-column .post .picture .mask a span .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share .masonry-column .post .picture .mask a span ul li a:hover::before, .masonry-column .post .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover::before, .footer .menu .share .masonry-column .post .picture .mask a .post-full .info-share span ul li a:hover::before, .post-full .info-share .masonry-column .advertise .picture .mask a span .footer .menu .share ul li a:hover::before, .footer .menu .share .post-full .info-share .masonry-column .advertise .picture .mask a span ul li a:hover::before, .masonry-column .advertise .picture .mask a .post-full .info-share span .footer .menu .share ul li a:hover::before, .footer .menu .share .masonry-column .advertise .picture .mask a .post-full .info-share span ul li a:hover::before {
+  -moz-transform: translateY(-5px);
+  -ms-transform: translateY(-5px);
+  -webkit-transform: translateY(-5px);
+  transform: translateY(-5px);
+}
+.post-full .main-content {
+  position: relative;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+}
+.post-full .main-content h1 {
+  margin-bottom: 25px;
+  font-family: "Montserrat";
+  font-weight: bold;
+  font-size: 50px;
+  color: #313131;
+}
+.post-full .main-content .description, .post-full .main-content .masonry-column-text p {
+  display: block;
+  margin-bottom: 30px;
+  line-height: 25px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  color: #626262;
+}
+.post-full .main-content .masonry-column-text {
+  float: left;
+}
+.post-full .main-content .masonry-column-text p {
+  line-height: 19px;
+  font-weight: normal;
+  font-size: 14px;
+}
+.post-full .main-content .masonry-column-text .inpost-img {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+.post-full .main-content .masonry-column-text .inpost-img img {
+  width: 100%;
+  cursor: pointer;
+}
+.post-full .main-content .masonry-column-text .inpost-img p {
+  position: absolute;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  margin-bottom: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.5);
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  -moz-transform: translateX(-100%);
+  -ms-transform: translateX(-100%);
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+.post-full .main-content .masonry-column-text .inpost-img:hover p {
+  -moz-transform: translateX(0%);
+  -ms-transform: translateX(0%);
+  -webkit-transform: translateX(0%);
+  transform: translateX(0%);
+}
+
+.big-img-window {
+  position: fixed;
+  top: 0;
+  display: none;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(36, 36, 36, 0.5);
+  z-index: 9;
+}
+.big-img-window .img-wrapper {
+  position: relative;
+  top: -100%;
+  left: 50%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 90%;
+  padding: 30px;
+  background-color: #242424;
+  -moz-transition: top 1.2s;
+  -o-transition: top 1.2s;
+  -webkit-transition: top 1.2s;
+  transition: top 1.2s;
+}
+.big-img-window .img-wrapper-drop {
+  top: 50%;
+}
+.big-img-window .img-wrapper .big-img-close {
+  position: absolute;
+  left: 100%;
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin-top: -30px;
+  margin-left: -30px;
+  text-align: center;
+  font-size: 30px;
+  color: #6c6c6c;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+  z-index: 10;
+}
+.big-img-window .img-wrapper .big-img-close:hover {
+  color: #ebebeb;
+}
+.big-img-window .img-wrapper img {
+  position: relative;
+  display: block;
+  max-width: 100%;
+}
+.big-img-window .img-wrapper a {
+  position: relative;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: auto;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: "Montserrat";
+  font-size: 20px;
+  color: #ebebeb;
+  border: 1px solid #2e2e2e;
+  background-color: rgba(255, 255, 255, 0.1);
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.big-img-window .img-wrapper a:hover, .big-img-window .img-wrapper .navbar .menu .share ul li a:hover::before, .navbar .menu .share ul li .big-img-window .img-wrapper a:hover::before, .big-img-window .img-wrapper .footer .menu .share ul li a:hover::before, .footer .menu .share ul li .big-img-window .img-wrapper a:hover::before {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.big-img-window-active {
+  display: block;
+}
+
+.img-wrapper-drop {
+  top: 50%;
+}
+
+.jump-big-img {
+  animation-name: jump-big-img;
+  animation-duration: 0.6s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: none;
+  width: 100px;
+  height: 100px;
+  margin-top: -50px;
+  margin-left: -50px;
+  text-align: center;
+  font-size: 100px;
+  color: #242424;
+}
+
+.loader-on {
+  display: block;
+}
+
+/* ╨Ь╨╛╨▒╨╕╨╗╤М╨╜╤Л╨╡ ╤Г╤Б╤В╤А╨╛╨╣╤Б╤В╨▓╨░ */
+@media screen and (max-width: 767px) {
+  .container {
+    width: 100%;
+    padding: 0;
+    border: 0;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .login-window form {
+    width: 100%;
+  }
+  .login-window form .nav-profile-close {
+    margin-left: -55px;
+  }
+
+  .categories {
+    position: absolute;
+    margin-left: 0;
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
+  .burger {
+    display: block;
+  }
+
+  .masonry[data-columns]::before {
+    content: '1 .masonry-column';
+  }
+
+  .masonry-column {
+    width: 100%;
+    margin: 0;
+  }
+
+  .footer {
+    height: 160px;
+  }
+  .footer .container {
+    padding: 0;
+  }
+  .footer .container .links {
+    clear: both;
+    width: 100%;
+    text-align: center;
+  }
+  .footer .container span {
+    clear: both;
+    width: 100%;
+    text-align: center;
+  }
+
+  .masonry-text[data-columns]::before {
+    content: '1 .masonry-column-text';
+  }
+
+  .masonry-column-text {
+    width: 100%;
+  }
+
+  .header-image {
+    margin-bottom: 0 !important;
+  }
+
+  .info-share {
+    float: none;
+    width: 100%;
+    margin-right: 0 !important;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  .info-share div, .info-share .masonry-column .post .picture .mask a span, .masonry-column .post .picture .mask a .info-share span, .info-share .masonry-column .advertise .picture .mask a span, .masonry-column .advertise .picture .mask a .info-share span {
+    display: inline-block;
+    width: 32.5% !important;
+    height: 70px !important;
+    text-align: center;
+    border: 0 !important;
+    overflow: hidden;
+  }
+  .info-share div:nth-of-type(2), .info-share .masonry-column .post .picture .mask a span:nth-of-type(2), .masonry-column .post .picture .mask a .info-share span:nth-of-type(2), .info-share .masonry-column .advertise .picture .mask a span:nth-of-type(2), .masonry-column .advertise .picture .mask a .info-share span:nth-of-type(2) {
+    border-left: 1px solid #e7e7e7 !important;
+    border-right: 1px solid #e7e7e7 !important;
+  }
+  .info-share div ul, .info-share .masonry-column .post .picture .mask a span ul, .masonry-column .post .picture .mask a .info-share span ul, .info-share .masonry-column .advertise .picture .mask a span ul, .masonry-column .advertise .picture .mask a .info-share span ul {
+    top: -10px;
+  }
+
+  .main-content {
+    float: none;
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .main-content h1 {
+    font-size: 20px !important;
+    margin-bottom: 15px !important;
+  }
+  .main-content .description, .post-full .main-content .masonry-column-text p {
+    font-size: 17px !important;
+    line-height: 20px !important;
+    margin-bottom: 15px !important;
+  }
+}
+/* ╨Я╨╗╨░╨╜╤И╨╡╤В╨╜╤Л╨╡ ╤А╨╡╤И╨╡╨╜╨╕╤П */
+@media screen and (min-width: 768px) and (max-width: 979px) {
+  .container {
+    width: 100%;
+  }
+
+  .masonry-column {
+    width: 47.5%;
+  }
+  .masonry-column:nth-of-type(2n) {
+    margin-right: 0;
+  }
+  .masonry-column h1 {
+    font-size: 22px !important;
+  }
+
+  .masonry-column-text {
+    width: 100%;
+  }
+
+  .masonry[data-columns]::before {
+    content: '2 .masonry-column';
+  }
+
+  .masonry-text[data-columns]::before {
+    content: '1 .masonry-column-text';
+  }
+
+  .header-image {
+    margin-bottom: 0 !important;
+  }
+
+  .info-share {
+    float: none;
+    width: 100%;
+    margin-right: 0 !important;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  .info-share div, .info-share .masonry-column .post .picture .mask a span, .masonry-column .post .picture .mask a .info-share span, .info-share .masonry-column .advertise .picture .mask a span, .masonry-column .advertise .picture .mask a .info-share span {
+    display: inline-block;
+    width: 33% !important;
+    height: 70px !important;
+    text-align: center;
+    border: 0 !important;
+    overflow: hidden;
+  }
+  .info-share div:nth-of-type(2), .info-share .masonry-column .post .picture .mask a span:nth-of-type(2), .masonry-column .post .picture .mask a .info-share span:nth-of-type(2), .info-share .masonry-column .advertise .picture .mask a span:nth-of-type(2), .masonry-column .advertise .picture .mask a .info-share span:nth-of-type(2) {
+    border-left: 1px solid #e7e7e7 !important;
+    border-right: 1px solid #e7e7e7 !important;
+  }
+  .info-share div ul, .info-share .masonry-column .post .picture .mask a span ul, .masonry-column .post .picture .mask a .info-share span ul, .info-share .masonry-column .advertise .picture .mask a span ul, .masonry-column .advertise .picture .mask a .info-share span ul {
+    top: -10px;
+  }
+
+  .main-content {
+    float: none;
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .main-content h1 {
+    font-size: 35px !important;
+  }
+}
+/* ╨г╤Б╤В╤А╨╛╨╣╤Б╤В╨▓╨░ ╨╝╨░╨╗╨╡╨╜╤М╨║╨╕╤Е ╤А╨░╤Б╤И╨╕╤А╨╡╨╜╨╕╨╣ */
+@media screen and (min-width: 980px) and (max-width: 1279px) {
+  .container {
+    width: 980px;
+  }
+
+  .masonry-column {
+    width: 440px;
+  }
+  .masonry-column:nth-of-type(2n) {
+    margin-right: 0;
+  }
+
+  .masonry-column-text {
+    width: 425px;
+  }
+  .masonry-column-text:first-of-type {
+    margin-right: 30px;
+  }
+
+  .masonry[data-columns]::before {
+    content: '2 .masonry-column';
+  }
+
+  .masonry-text[data-columns]::before {
+    content: '2 .masonry-column-text';
+  }
+
+  .header-image {
+    margin-bottom: 0 !important;
+  }
+
+  .info-share {
+    float: none;
+    width: 100%;
+    margin-right: 0 !important;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  .info-share div, .info-share .masonry-column .post .picture .mask a span, .masonry-column .post .picture .mask a .info-share span, .info-share .masonry-column .advertise .picture .mask a span, .masonry-column .advertise .picture .mask a .info-share span {
+    display: inline-block;
+    width: 33% !important;
+    height: 70px !important;
+    text-align: center;
+    border: 0 !important;
+    overflow: hidden;
+  }
+  .info-share div:nth-of-type(2), .info-share .masonry-column .post .picture .mask a span:nth-of-type(2), .masonry-column .post .picture .mask a .info-share span:nth-of-type(2), .info-share .masonry-column .advertise .picture .mask a span:nth-of-type(2), .masonry-column .advertise .picture .mask a .info-share span:nth-of-type(2) {
+    border-left: 1px solid #e7e7e7 !important;
+    border-right: 1px solid #e7e7e7 !important;
+  }
+  .info-share div ul, .info-share .masonry-column .post .picture .mask a span ul, .masonry-column .post .picture .mask a .info-share span ul, .info-share .masonry-column .advertise .picture .mask a span ul, .masonry-column .advertise .picture .mask a .info-share span ul {
+    top: -10px;
+  }
+
+  .main-content {
+    float: none;
+    width: 100%;
+    padding-left: 30px;
+  }
+}
+/* ╨г╤Б╤В╤А╨╛╨╣╤Б╤В╨▓╨░ ╤Б ╨╜╨╛╤А╨╝╨░╨╗╤М╨╜╤Л╨╝╨╕ ╤А╨░╤Б╤И╨╕╤А╨╡╨╜╨╕╤П╨╝╨╕ */
+@media screen and (min-width: 1280px) and (max-width: 1599px) {
+  .container {
+    width: 1280px;
+  }
+
+  .masonry-column {
+    width: 386.6px;
+  }
+  .masonry-column:nth-of-type(3n) {
+    margin-right: 0;
+  }
+
+  .masonry-column-text {
+    width: 485px;
+  }
+  .masonry-column-text:first-of-type {
+    margin-right: 30px;
+  }
+
+  .masonry[data-columns]::before {
+    content: '3 .masonry-column';
+  }
+
+  .masonry-text[data-columns]::before {
+    content: '2 .masonry-column-text';
+  }
+
+  .info-share {
+    width: 175px;
+  }
+
+  .main-content {
+    width: 1000px;
+  }
+}
+/* ╨г╤Б╤В╤А╨╛╨╣╤Б╤В╨▓╨░ ╤Б ╨▒╨╛╨╗╤М╤И╨╕╨╝╨╕ ╤А╨░╤Б╤И╨╕╤А╨╡╨╜╨╕╤П╨╝╨╕ */
+@media screen and (min-width: 1600px) {
+  .container {
+    width: 1600px;
+  }
+
+  .masonry-column {
+    width: 493.3px;
+  }
+  .masonry-column:nth-of-type(3n) {
+    margin-right: 0;
+  }
+
+  .masonry-column-text {
+    width: 600px;
+  }
+  .masonry-column-text:first-of-type {
+    margin-right: 30px;
+  }
+
+  .masonry[data-columns]::before {
+    content: '3 .masonry-column';
+  }
+
+  .masonry-text[data-columns]::before {
+    content: '2 .masonry-column-text';
+  }
+
+  .info-share {
+    width: 265px;
+  }
+
+  .main-content {
+    width: 1230px;
+  }
+}
