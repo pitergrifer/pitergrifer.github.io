@@ -93,6 +93,13 @@
       margin-bottom: 15px !important;
     }
   }
+  .comments {
+    form {
+      textarea {
+        width: 80%;  
+      }
+    }
+  }
 }
 
 /* Планшетные решения */
@@ -152,6 +159,13 @@
       font-size: 35px !important;
     }
   }
+  .comments {
+    form {
+      textarea {
+        width: 90%;  
+      } 
+    }
+  }
 }
 
 /* Устройства маленьких расширений */
@@ -205,7 +219,14 @@
   .main-content {
     float: none;
     width: 100%;
-    padding-left: 30px;
+    padding-left: 30px; 
+  }
+  .comments {
+    form {
+      textarea {
+        width: 810px;  
+      }
+    }
   }
 }
  
@@ -238,6 +259,13 @@
   .main-content {
     width: 1000px;
   }
+  .comments {
+    form {
+      textarea {
+        width: 930px;  
+      }
+    }
+  }
 }
 
 /* Устройства с большими расширениями */
@@ -268,5 +296,12 @@
   }
   .main-content {
     width: 1230px;
+  }
+  .comments {
+    form {
+      textarea {
+        width: 1160px;  
+      }
+    }
   }
 }

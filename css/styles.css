@@ -1211,6 +1211,184 @@ strong {
   display: block;
 }
 
+.comments {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.comments .header {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 55px;
+}
+.comments .header .counter, .comments .header .like {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: auto;
+  height: 100%;
+  line-height: 55px;
+  font-family: "Open Sans";
+  font-weight: bold;
+  color: #313131;
+}
+.comments .header .like {
+  float: right;
+}
+.comments .header .like i {
+  margin-right: 10px;
+  color: #ffbf03;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.comments .header .like i:hover {
+  color: #e76049;
+}
+.comments .header .like .like-count {
+  position: relative;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  color: #626262;
+  background-color: #e7e7e7;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.comments .header .like .like-count div, .comments .header .like .like-count .masonry-column .post .picture .mask a span, .masonry-column .post .picture .mask a .comments .header .like .like-count span, .comments .header .like .like-count .masonry-column .advertise .picture .mask a span, .masonry-column .advertise .picture .mask a .comments .header .like .like-count span {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  margin-top: 8px;
+  margin-left: -3px;
+  border: 5px solid #e7e7e7;
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.comments form {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 55px;
+  margin-bottom: 10px;
+}
+.comments form div:first-of-type, .comments form .masonry-column .post .picture .mask a span:first-of-type, .masonry-column .post .picture .mask a .comments form span:first-of-type, .comments form .masonry-column .advertise .picture .mask a span:first-of-type, .masonry-column .advertise .picture .mask a .comments form span:first-of-type {
+  position: absolute;
+  display: inline-block;
+  float: right;
+  width: 55px;
+  height: 55px;
+  margin-right: 15px;
+  line-height: 55px;
+  text-align: center;
+  font-size: 30px;
+  color: #ffffff;
+  background-color: #e76049;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.comments form textarea {
+  position: relative;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  float: right;
+  height: 55px;
+  max-height: 55px;
+  margin: 0;
+  padding-left: 20px;
+  line-height: 50px;
+  font-family: "open Sans";
+  font-size: 14px;
+  color: #626262;
+  border: 2px solid #e7e7e7;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.comments form textarea:focus {
+  border: 2px solid #242424;
+}
+.comments .tabs {
+  position: relative;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 55px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #e7e7e7;
+}
+.comments .tabs ul:first-of-type, .comments .tabs ul:last-of-type {
+  position: relative;
+  display: inline-block;
+  float: left;
+  height: 100%;
+}
+.comments .tabs ul:first-of-type li, .comments .tabs ul:last-of-type li, .comments .tabs .navbar .menu .share ul:first-of-type li a, .navbar .menu .share .comments .tabs ul:first-of-type li a, .comments .tabs .navbar .menu .share ul:last-of-type li a, .navbar .menu .share .comments .tabs ul:last-of-type li a, .comments .tabs .footer .menu .share ul:first-of-type li a, .footer .menu .share .comments .tabs ul:first-of-type li a, .comments .tabs .footer .menu .share ul:last-of-type li a, .footer .menu .share .comments .tabs ul:last-of-type li a {
+  position: relative;
+  top: 2px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 100px;
+  height: 100%;
+  padding-top: 18.5px;
+  text-align: center;
+  font-family: "Open Sans";
+  font-size: 12px;
+  font-weight: bold;
+  color: #626262;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.comments .tabs ul:first-of-type li:hover, .comments .tabs ul:last-of-type li:hover, .comments .tabs .navbar .menu .share ul:first-of-type li a:hover, .navbar .menu .share .comments .tabs ul:first-of-type li a:hover, .comments .tabs .navbar .menu .share ul:last-of-type li a:hover, .navbar .menu .share .comments .tabs ul:last-of-type li a:hover, .comments .tabs .footer .menu .share ul:first-of-type li a:hover, .footer .menu .share .comments .tabs ul:first-of-type li a:hover, .comments .tabs .footer .menu .share ul:last-of-type li a:hover, .footer .menu .share .comments .tabs ul:last-of-type li a:hover, .comments .tabs .navbar .menu .share ul:first-of-type li a:hover::before, .navbar .menu .share .comments .tabs ul:first-of-type li a:hover::before, .comments .tabs .navbar .menu .share ul:last-of-type li a:hover::before, .navbar .menu .share .comments .tabs ul:last-of-type li a:hover::before, .comments .tabs .footer .menu .share ul:first-of-type li a:hover::before, .footer .menu .share .comments .tabs ul:first-of-type li a:hover::before, .comments .tabs .footer .menu .share ul:last-of-type li a:hover::before, .footer .menu .share .comments .tabs ul:last-of-type li a:hover::before {
+  border-bottom: 3px solid #242424;
+}
+.comments .tabs ul:first-of-type li span, .comments .tabs ul:last-of-type li span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 17px;
+  line-height: 17px;
+  border-right: 1px solid #e7e7e7;
+}
+.comments .tabs ul:first-of-type li span i, .comments .tabs ul:last-of-type li span i {
+  margin-left: 5px;
+  color: #afafaf;
+}
+.comments .tabs i {
+  margin-left: 5px;
+  color: #afafaf;
+}
+.comments .tabs ul:last-of-type {
+  float: right;
+}
+.comments .tabs ul:last-of-type li, .comments .tabs .navbar .menu .share ul:last-of-type li a, .navbar .menu .share .comments .tabs ul:last-of-type li a, .comments .tabs .footer .menu .share ul:last-of-type li a, .footer .menu .share .comments .tabs ul:last-of-type li a {
+  width: 50px;
+}
+
 /* ╨Ь╨╛╨▒╨╕╨╗╤М╨╜╤Л╨╡ ╤Г╤Б╤В╤А╨╛╨╣╤Б╤В╨▓╨░ */
 @media screen and (max-width: 767px) {
   .container {
@@ -1319,6 +1497,10 @@ strong {
     line-height: 20px !important;
     margin-bottom: 15px !important;
   }
+
+  .comments form textarea {
+    width: 80%;
+  }
 }
 /* ╨Я╨╗╨░╨╜╤И╨╡╤В╨╜╤Л╨╡ ╤А╨╡╤И╨╡╨╜╨╕╤П */
 @media screen and (min-width: 768px) and (max-width: 979px) {
@@ -1384,6 +1566,10 @@ strong {
   .main-content h1 {
     font-size: 35px !important;
   }
+
+  .comments form textarea {
+    width: 90%;
+  }
 }
 /* ╨г╤Б╤В╤А╨╛╨╣╤Б╤В╨▓╨░ ╨╝╨░╨╗╨╡╨╜╤М╨║╨╕╤Е ╤А╨░╤Б╤И╨╕╤А╨╡╨╜╨╕╨╣ */
 @media screen and (min-width: 980px) and (max-width: 1279px) {
@@ -1445,6 +1631,10 @@ strong {
     width: 100%;
     padding-left: 30px;
   }
+
+  .comments form textarea {
+    width: 810px;
+  }
 }
 /* ╨г╤Б╤В╤А╨╛╨╣╤Б╤В╨▓╨░ ╤Б ╨╜╨╛╤А╨╝╨░╨╗╤М╨╜╤Л╨╝╨╕ ╤А╨░╤Б╤И╨╕╤А╨╡╨╜╨╕╤П╨╝╨╕ */
 @media screen and (min-width: 1280px) and (max-width: 1599px) {
@@ -1481,6 +1671,10 @@ strong {
   .main-content {
     width: 1000px;
   }
+
+  .comments form textarea {
+    width: 930px;
+  }
 }
 /* ╨г╤Б╤В╤А╨╛╨╣╤Б╤В╨▓╨░ ╤Б ╨▒╨╛╨╗╤М╤И╨╕╨╝╨╕ ╤А╨░╤Б╤И╨╕╤А╨╡╨╜╨╕╤П╨╝╨╕ */
 @media screen and (min-width: 1600px) {
@@ -1516,5 +1710,9 @@ strong {
 
   .main-content {
     width: 1230px;
+  }
+
+  .comments form textarea {
+    width: 1160px;
   }
 }
