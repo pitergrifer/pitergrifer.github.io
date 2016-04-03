@@ -100,6 +100,12 @@
       }
     }
   }
+  .comment-content {
+    max-width: 80%;
+  }
+  .comment.re-comment {
+    padding-left: 25px;
+  }
 }
 
 /* Планшетные решения */
@@ -166,6 +172,9 @@
       } 
     }
   }
+  .comment-content {
+    max-width: 92.1%;
+  }
 }
 
 /* Устройства маленьких расширений */
@@ -228,6 +237,9 @@
       }
     }
   }
+  .comment-content {
+    max-width: 830px;
+  }
 }
  
 /* Устройства с нормальными расширениями */
@@ -266,6 +278,9 @@
       }
     }
   }
+  .comment-content {
+    max-width: 950px;
+  }
 }
 
 /* Устройства с большими расширениями */
@@ -303,5 +318,8 @@
         width: 1160px;  
       }
     }
+  }
+  .comment-content {
+    max-width: 1180px;
   }
 }
