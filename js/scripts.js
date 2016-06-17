@@ -42,9 +42,6 @@ function AskingDate(options) {
       } else if ((event.keyCode > 36) && (event.keyCode < 41)) { // проверка на стрелки
         checkKey = (event.keyCode > 36) && (event.keyCode < 41);
         checkspecialKey = !((event.keyCode > 36) && (event.keyCode < 41));
-      } else if (event.keyCode == 229) { // проверка на мобильный ввод
-        checkKey = event.keyCode == 229;
-        checkspecialKey = event.keyCode != 229;
       } else { // иначе вернуть ложь
         checkKey = false;
         checkspecialKey = false;
