@@ -1,7 +1,4 @@
 /* Логика окна запроса даты рождения */
-
-document.write(navigator.userAgent);
-
 function AskingDate(options) {
   var elem = options.elem;
   var elemHeight = elem.offsetHeight;
@@ -10,7 +7,10 @@ function AskingDate(options) {
   var yearField = options.year;
   var startBtn = options.startBtn;
   var btnDefaultValue = startBtn.getAttribute('value');
-  var result = options.result; 
+  var result = options.result;
+  
+  
+  elem.innerHTML = navigator.userAgent;
   
   // вертикальная отцентровка объекта относительно окна
   var newTop = (document.body.clientHeight / 2) - (elem.offsetHeight / 2);
