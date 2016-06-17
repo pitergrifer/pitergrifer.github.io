@@ -1,4 +1,7 @@
 /* Логика окна запроса даты рождения */
+
+document.write(navigator.userAgent);
+
 function AskingDate(options) {
   var elem = options.elem;
   var elemHeight = elem.offsetHeight;
