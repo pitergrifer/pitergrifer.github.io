@@ -8,10 +8,7 @@ function AskingDate(options) {
   var startBtn = options.startBtn;
   var btnDefaultValue = startBtn.getAttribute('value');
   var result = options.result;
-  
-  
-  elem.innerHTML = navigator.userAgent;
-  
+    
   // вертикальная отцентровка объекта относительно окна
   var newTop = (document.body.clientHeight / 2) - (elem.offsetHeight / 2);
   elem.style.top = newTop + "px";
@@ -25,6 +22,14 @@ function AskingDate(options) {
     
     startBtn.value = btnDefaultValue; // сброс значения кнопки (см. событие 'onclick' ниже)
     
+    if (navigator.userAgent.match(/Android/i) &&
+        navigator.userAgent.match(/webOS/i) &&
+        navigator.userAgent.match(/iPhone/i) &&
+        navigator.userAgent.match(/iPod/i) &&
+        navigator.userAgent.match(/iPad/i) &&
+        navigator.userAgent.match(/Blackberry/i)) {
+      //TODO
+    } else {
     var checkKey; // переменная-выражение проверки нажатой клавиши
     var checkspecialKey; // переменная-выражение обратная предыдущей для проверки специальной клавиши
     var keyPressed = false; // переменная, проверяющая зажатие Shift
@@ -90,6 +95,7 @@ function AskingDate(options) {
       } else {
         startBtn.classList = 'btn-disabled';
       };
+    };
     };
   };
   
