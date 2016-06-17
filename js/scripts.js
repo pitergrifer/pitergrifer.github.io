@@ -28,14 +28,9 @@ function AskingDate(options) {
         navigator.userAgent.match(/iPhone/ig) ||
         navigator.userAgent.match(/iPod/ig) ||
         navigator.userAgent.match(/iPad/ig) ||
-        navigator.userAgent.match(/Blackberry/ig)) { // если моьильные устройства
-      setInterval(function() {
-        if ((dayField.value.length == 2) && (monthField.value.length == 2) && (yearField.value.length == 4)) {
-          startBtn.classList = 'btn-active';
-        } else {
-          startBtn.classList = 'btn-disabled';
-        };
-      }, 0);
+        navigator.userAgent.match(/Blackberry/ig)) { // если мобильные устройства
+      alert('It`s mobile device');
+      //TODO
     } else { // если настольные устройства
       var checkKey; // переменная-выражение проверки нажатой клавиши
       var checkspecialKey; // переменная-выражение обратная предыдущей для проверки специальной клавиши
