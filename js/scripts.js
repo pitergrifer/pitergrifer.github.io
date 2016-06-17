@@ -22,82 +22,87 @@ function AskingDate(options) {
     
     startBtn.value = btnDefaultValue; // сброс значения кнопки (см. событие 'onclick' ниже)
     
+    // проверка userAgent
     if (navigator.userAgent.match(/Android/ig) ||
         navigator.userAgent.match(/webOS/ig) ||
         navigator.userAgent.match(/iPhone/ig) ||
         navigator.userAgent.match(/iPod/ig) ||
         navigator.userAgent.match(/iPad/ig) ||
-        navigator.userAgent.match(/Blackberry/ig)) {
-      //TODO
-      alert(navigator.userAgent);
-    } else {
-    //alert(navigator.userAgent);  
-    var checkKey; // переменная-выражение проверки нажатой клавиши
-    var checkspecialKey; // переменная-выражение обратная предыдущей для проверки специальной клавиши
-    var keyPressed = false; // переменная, проверяющая зажатие Shift
-    
-    target.onkeydown = function(event) {
-      if ((event.keyCode > 47) && (event.keyCode < 58)) { // проверка на номера 
-        checkKey = (event.keyCode > 47) && (event.keyCode < 58);
-        checkspecialKey = checkKey; 
-      } else if ((event.keyCode > 95) && (event.keyCode < 106)) { // проверка на номара (Num-pad)
-        checkKey = (event.keyCode > 95) && (event.keyCode < 106);
-        checkspecialKey = checkKey; 
-      } else if (event.keyCode == 8) { // проверка на Backspace
-        checkKey = event.keyCode == 8;
-        checkspecialKey = event.keyCode != 8;
-      } else if (event.keyCode == 46) { // проверка на Del
-        checkKey = event.keyCode == 46;
-        checkspecialKey = event.keyCode != 46;
-      } else if ((event.keyCode > 36) && (event.keyCode < 41)) { // проверка на стрелки
-        checkKey = (event.keyCode > 36) && (event.keyCode < 41);
-        checkspecialKey = !((event.keyCode > 36) && (event.keyCode < 41));
-      } else { // иначе вернуть ложь
-        checkKey = false;
-        checkspecialKey = false;
+        navigator.userAgent.match(/Blackberry/ig)) { // если моьильные устройства
+      target.oninput = function() {
+        if ((dayField.value.length == 2) && (monthField.value.length == 2) && (yearField.value.length == 4)) {
+          startBtn.classList = 'btn-active';
+        } else {
+          startBtn.classList = 'btn-disabled';
+        };
       };
-      
-      if (event.keyCode == 16) { // проверить нажатие Shift для отлова вывода спец. символов
-        keyPressed = true;
-      };
-      
-      // основной блок с условиями проверки ввода и соответствующей логики
-      if (checkKey && !keyPressed) {
-        if ((target.getAttribute('id') == 'day') || (target.getAttribute('id') == 'month')) {
-          if (target.value.length > 1) {
-            if (checkspecialKey) {
-              return false;  
+    } else { // если настольные устройства
+      var checkKey; // переменная-выражение проверки нажатой клавиши
+      var checkspecialKey; // переменная-выражение обратная предыдущей для проверки специальной клавиши
+      var keyPressed = false; // переменная, проверяющая зажатие Shift
+
+      target.onkeydown = function(event) {
+        if ((event.keyCode > 47) && (event.keyCode < 58)) { // проверка на номера 
+          checkKey = (event.keyCode > 47) && (event.keyCode < 58);
+          checkspecialKey = checkKey; 
+        } else if ((event.keyCode > 95) && (event.keyCode < 106)) { // проверка на номара (Num-pad)
+          checkKey = (event.keyCode > 95) && (event.keyCode < 106);
+          checkspecialKey = checkKey; 
+        } else if (event.keyCode == 8) { // проверка на Backspace
+          checkKey = event.keyCode == 8;
+          checkspecialKey = event.keyCode != 8;
+        } else if (event.keyCode == 46) { // проверка на Del
+          checkKey = event.keyCode == 46;
+          checkspecialKey = event.keyCode != 46;
+        } else if ((event.keyCode > 36) && (event.keyCode < 41)) { // проверка на стрелки
+          checkKey = (event.keyCode > 36) && (event.keyCode < 41);
+          checkspecialKey = !((event.keyCode > 36) && (event.keyCode < 41));
+        } else { // иначе вернуть ложь
+          checkKey = false;
+          checkspecialKey = false;
+        };
+
+        if (event.keyCode == 16) { // проверить нажатие Shift для отлова вывода спец. символов
+          keyPressed = true;
+        };
+
+        // основной блок с условиями проверки ввода и соответствующей логики
+        if (checkKey && !keyPressed) {
+          if ((target.getAttribute('id') == 'day') || (target.getAttribute('id') == 'month')) {
+            if (target.value.length > 1) {
+              if (checkspecialKey) {
+                return false;  
+              };
+            };  
+          } else if (target.getAttribute('id') == 'year') {
+            if (target.value.length > 3) {
+              if (checkspecialKey) {
+                return false;  
+              };
             };
           };  
-        } else if (target.getAttribute('id') == 'year') {
-          if (target.value.length > 3) {
-            if (checkspecialKey) {
-              return false;  
-            };
-          };
-        };  
-      } else if (!checkKey || !checkspecialKey || keyPressed) {
-        return false;
+        } else if (!checkKey || !checkspecialKey || keyPressed) {
+          return false;
+        };
       };
-    };
-    
-    // установка автофокуса и установка активного/деактивного класса кнопке начала теста   
-    target.onkeyup = function() {
-      keyPressed = false;
-      
-      if (target.value.length == 2) { // установка автофокуса
-        target.nextElementSibling.focus();  
-      } else if (target.value.length == 0) {
-        target.previousElementSibling.focus();
+
+      // установка автофокуса и установка активного/деактивного класса кнопке начала теста   
+      target.onkeyup = function() {
+        keyPressed = false;
+
+        if (target.value.length == 2) { // установка автофокуса
+          target.nextElementSibling.focus();  
+        } else if (target.value.length == 0) {
+          target.previousElementSibling.focus();
+        };
+
+        // установка класса на стартовую кнопку
+        if ((dayField.value.length == 2) && (monthField.value.length == 2) && (yearField.value.length == 4)) {
+          startBtn.classList = 'btn-active';
+        } else {
+          startBtn.classList = 'btn-disabled';
+        };
       };
-      
-      // установка класса на стартовую кнопку
-      if ((dayField.value.length == 2) && (monthField.value.length == 2) && (yearField.value.length == 4)) {
-        startBtn.classList = 'btn-active';
-      } else {
-        startBtn.classList = 'btn-disabled';
-      };
-    };
     };
   };
   
