@@ -1,1076 +1,177 @@
-@import "compass/reset";
-@import "compass/css3";
-@import "meta/colors";
-@import "meta/animate";
+@import "compass/reset"; //Сброс предустановленных стилей.
+@import "compass/css3"; //Правила css с вендорными префиксами и другое.
+@import "meta/variables"; //SASS-составляющая с набором цветов.
+@import "meta/animate"; //SASS-составляющая с набором анимаций.
+@import "compass/utilities/sprites"; //Утилита Compass, создающая спрайты.
 
-@import "compass/utilities/sprites";
-@import "categories/*.png";
-@import "social/*.png";
-@import "interface/*.png";
-@import "header/*.png";
-@import "date-comments/*.png";
+/* Начало всех стилей */
 
-strong {
-  font-weight: bold;
+html, body {
+  height: 100%;
+  font-family: $main-font;
+  font-size: $main-font-size;
+  color: $main-font-color;
+  background-color: $bg-body;
 }
 
-.clearfix {
-  display: block;
-  width: 100%;
-  clear: both;
-}
-
-.container {
-  @include box-sizing(border-box);
-  margin: auto;
-  padding-left: 70px;
-  &:first-of-type {
-    padding: 0;
-  }
-}
-
-.navbar {
-  position: relative;
-  display: block;
-  width: auto;
-  height: 80px;
-  line-height: 80px;
-  text-transform: uppercase;
-  font-family: "Montserrat";
-  font-weight: normal;
-  color: $nav-color;
-  background-color: $nav-bg;
-  .logo {
-    float: left;
-    width: auto;
-    min-height: 80px;
-    padding-left: 70px;
-    text-decoration: none;
-    font-size: 20px;
-    color: $nav-color;
-    @include header-sprite(logo);
-    &:hover {
-      color: lighten($nav-color, 100%);
-    }
-  }
-  .menu {
-    float: right;
-    width: auto;
-    height: 100%;
-    .menu-button {
-      position: relative;
-      display: inline-block;
-      @include box-sizing(border-box);
-      min-width: 80px;
-      min-height: 80px;
-      margin-left: -5.5px;
-      text-align: center;
-      vertical-align: top;
-      border-left: 1px solid #2e2e2e;
-      border-right: 1px solid #2e2e2e;
-      cursor: pointer;
-      &:hover {
-        @extend .logo:hover;
-        border-left-color: $nav-borders-active;
-        border-right-color: $nav-borders-active;
-        background-color: $nav-bg-active;
-        @include box-shadow(inset 0 0 10px 1px $nav-borders-active);
-        z-index: 2;
-      }
-    }
-    .share {
-      padding-right: 30px;
-      padding-left: 30px;
-      font-size: 14px;
-      font-weight: bold;
-      ul {
-        position: absolute;
-        display: block;
-        width: auto;
-        margin-left: -31px;
-        border: 1px solid $nav-bg;
-        border-top: 0;
-        @include box-shadow(5px 5px 0 0 rgba(#000,.1));
-        transform-origin: top;
-        @include transform(perspective(1000px) rotateX(-90deg));
-        overflow: hidden;
-        @include transition(0.5s all);
-        z-index: 5;
-        li {
-          position: relative;
-          display: block;
-          @include box-sizing(border-box);
-          width: 190px;
-          height: 45px;
-          padding-left: 65px;
-          line-height: 45px;
-          text-align: left;
-          text-decoration: none;
-          font-family: "Open Sans";
-          font-weight: bold;
-          color: $nav-bg-active;
-          border-bottom: 1px solid $borders;
-          background-color: $bg;
-          a {
-            @extend li;
-            position: absolute;
-            margin-left: -65px;
-            &::before {
-              content: "";
-              position: absolute;
-              display: block;
-              @include box-sizing(border-box);
-              width: 50px;
-              height: 45px;
-              margin-left: -65px;
-              border-right: 1px solid $borders;
-              border-bottom: 1px solid $borders;
-              background-color: $bg;
-            }
-            &:hover {
-              background-color: darken($bg, 5%);
-              &::before {
-              @extend a:hover;
-              }
-            }
-          }
-        }
-        li:nth-child(1) {
-          a::before {
-            @include social-sprite(facebook);
-          }
-        }
-        li:nth-child(2) {
-          a::before {
-            @include social-sprite(twitter);
-          }
-        }
-        li:nth-child(3) {
-          a::before {
-            @include social-sprite(googleplus);
-          }
-        }
-        li:nth-child(4) {
-          a::before {
-            @include social-sprite(pinterest);
-          }
-        }
-      }
-    }
-    .search {
-      @include header-sprite(search);
-    }
-    .profile {
-      @include header-sprite(profile);
-    }
-  }
-}
-
-.menu-button-active {
-  @extend .logo:hover;
-  border-left: 1px solid $nav-borders-active !important;
-  border-right: 1px solid $nav-borders-active !important;
-  background-color: $nav-bg-active;
-  @include box-shadow(inset 0 0 10px 1px $nav-borders-active);
-  z-index: 2;
-}
-
-.drop-share {
-  animation-name: drop-share;
-  animation-duration: 2s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in-out;
-}
-
-.nav-search {
+/* Прелоадер */
+#preload {
   position: absolute;
-  left: -5px;
-  display: block;
-  @include box-sizing(border-box);
-  width: 0%;
-  height: 80px;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: "Montserrat";
-  font-size: 20px;
-  color: $nav-color;
-  background-color: $nav-bg-active;
-  border: 1px solid $nav-borders-active !important;
-  @include transition(1s, all);
-  z-index: 2;
-}
-
-.nav-search-active {
-  left: 0;
-  width: 100%;
-}
-
-.nav-search-close {
-  position: absolute;
-  top: -80px;
-  left: 100%;
-  display: block;
-  min-width: 80px;
-  min-height: 80px;
-  margin-left: -80px;
-  text-align: center;
-  font-size: 40px;
-  color: darken($nav-color, 50%);
-  @include transition(0.5s 0s all);
-  cursor: pointer;
-  z-index: 3;
-}
-
-.nav-search-close-visible {
-  top: 0;
-  @include transition(0.5s 1s top, 0.5s color);
-  &:hover {
-    color: $nav-color;
-  }
-}
-
-.login-window {
-  position: fixed;
-  top: -100%;
   display: block;
   width: 100%;
   height: 100%;
-  background-color: rgba($nav-bg,.5);
-  z-index: 10;
-  form {
+  font-family: inherit;
+  font-size: 2em;
+  color: inherit;
+  background-color: inherit;
+  z-index: 100;
+  span {
     position: relative;
-    top: -50%;
     display: block;
-    @include box-sizing(border-box);
-    width: 500px;
+    width: 200px;
     height: auto;
-    margin: auto;
-    margin-top: -105px;
-    padding: 30px;
-    background-color: $nav-bg;
-    @include transition(1s all);
-    .nav-profile-close {
-      @extend .nav-search-close;
-      line-height: 80px;
-      margin-top: 40px;
-      margin-left: -40px;
-      &:hover {
-        color: $nav-color;
-      }
-    }
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}
+/* Конец прелоадера */
+
+/* Стили окна запроса даты */
+.ask-date {
+  position: relative;
+  display: block;
+  width: 500px;
+  height: auto;
+  padding: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+   @include text-shadow(2px 2px 0 $border-ask-block-color);
+  border: 1px solid $border-ask-block-color;
+  background-color: $bg-ask-block-color;
+  @include box-shadow(10px 10px 10px 0 $border-ask-block-color);
+  @include transition(0.4s transform);
+  span {
+    position: relative;
+    display: block;
+    margin-bottom: 25px;
+    font-size: 1.9em;
+  }
+  div {
+    position: relative;
+    display: block;
+    margin-bottom: 25px;
     input {
       position: relative;
-      display: block;
-      @include box-sizing(border-box);
-      width: 100%;
-      height: 40px;
-      margin-bottom: 15px;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
       text-align: center;
-      text-transform: uppercase;
-      font-family: "Montserrat";
-      font-size: 20px;
-      color: $nav-color;
-      border: 1px solid $nav-borders;
-      background-color: rgba($bg, .1);
-      @include transition(0.2s all);
+      font-family: inherit;
+      font-size: 1.9em;
+      color: inherit;
+      border: 1px solid $border-ask-block-color;
+      background-color: $bg-input;
+      &:first-child {
+        @include border-radius(5px 0 0 5px);
+      }
+      &:last-child {
+        width: 100px;
+        @include border-radius(0 5px 5px 0);
+      }
       &:focus {
-        background-color: rgba($bg, .2);
-        border: 1px solid rgba($bg, .5);
-      }
-    }
-    button {
-      @extend input;
-      width: auto;
-      margin: auto;
-      cursor: pointer;
-      &:hover {
-        @extend input:focus;
+        border-color: $border-ask-block-color-active;
       }
     }
   }
-}
-
-.login-window-active {
-  top: 0;
-  form {
-    top: 50%;
-  }
-}
-
-.jump-profile {
-  animation-name: jump-profile;
-  animation-duration: 0.6s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in-out;
-}
-
-.categories {
-  position: relative;
-  @include box-sizing(border-box);
-  float: left;
-  width: 70px;
-  height: auto;
-  margin-left: -70px;
-  border-left: 1px solid $borders;
-  border-right: 1px solid $borders;
-  background-color: $bg;
-  transform-origin: top left;
-  @include transition(0.2s transform);
-  z-index: 5;
-  a {
-    text-decoration: none;
-    text-transform: uppercase;
-    font-family: "Montserrat";
-    font-size: 14px;
-    font-weight: bold;
-    color: $bg;
-  }
-  li {
+  #start {
     position: relative;
     display: block;
-    float: left;
-    @include box-sizing(border-box);
-    width: 100%;
-    height: 70px;
-    min-height: 70px;
-    padding-left: 69px;
-    line-height: 70px;
-    border-bottom: 1px solid $borders;
-    @include transition(0.2s all);
-    overflow: hidden;
-    z-index: 5;
-  }
-  $categories-icons: paint, music, camera, cinema, busines, plane, bag, more, setting;
-  $categories-colors: #14b9d6, #e76049, #2eb398, #90899c, #5692b1, #f9b704, #dd1787, #e76049, #585858 !global;
-  @for $i from 1 through 9 {
-    a:nth-child(#{$i}) {
-      li {
-        @include categories-sprite(nth($categories-icons, $i));
-        &:hover {
-          width: auto;
-          padding-right: 25px;
-          border-bottom-color: nth($categories-colors, $i);
-          background-color: nth($categories-colors, $i);
-          @include box-shadow(5px 5px 0 0 rgba(#000,.1));
-          &:active {
-            padding-right: 100%;
-          }
-        }
-      }
-    }
+    width: auto;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: $main-font;
+    font-size: 1.9em;
+    @include border-radius(5px);
+    @include transition(0.4s all);
+    cursor: pointer;
   }
 }
 
-.categories-show {
-  @include transform(rotate(0deg) !important);
+.btn-active {
+  color: inherit;
+  border: 1px solid $border-ask-block-color;
+  background-color: $bg-input;
+  &:hover {
+    border-color: $border-ask-block-color-active;
+  }
+  &:active {
+    @include box-shadow(inset 2px 2px 2px $border-ask-block-color);
+  }
 }
 
-.burger {
-  display: none;
-  @include box-sizing(border-box);
-  float: left;
-  width: 50px;
-  height: 80px;
+.btn-disabled {
+  color: $disabled-font-color;
+  border: 1px solid $border-ask-block-color;
+  background-color: $bg-disabled;
+  @include text-shadow(1px 1px 1px #fff);
+}
+
+.helper {
+  position: absolute;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  padding: 10px;
   text-align: center;
-  font-size: 20px;
-  border-right: 1px solid $nav-borders;
-  background-color: $nav-bg;
+  font-family: inherit;
+  font-size: 1.1em;
+  color: inherit;
+  @include text-shadow(1px 1px 1px #fff);
+  background-color: $bg-helper;
+  @include border-radius(5px);
+  @include box-shadow(10px 10px 5px 0 $border-ask-block-color);
+  .arrow {
+    position: absolute;
+    display: inline-block;
+    border: 10px solid transparent;
+    border-top: 10px solid $bg-helper;
+  }
+}
+
+.hide {
+  @include transform(scale(0.0));
+}
+/* Конец стилей окна запроса даты */
+
+/* Сетка-результат */
+#result {
+  position: absolute;
+  display: block;
+  text-align: center;
+  visibility: hidden;
+}
+
+.feature {
+  position: absolute;
+  display: inline-block;
+  text-align: center;
+  @include text-shadow(2px 2px 0 $border-ask-block-color);
+  border: 1px solid $border-ask-block-color;
+  background-color: $bg-ask-block-color;
+  @include box-shadow(10px 10px 10px 0 $border-ask-block-color);
+  @include transition(0.4s transform);
   cursor: pointer;
   &:hover {
-    @extend .logo:hover;
-    border-right-color: $nav-borders-active;
-    background-color: $nav-bg-active;
-    @include box-shadow(inset 0 0 10px 1px $nav-borders-active);
+    @include transform(scale(1.1));
     z-index: 2;
   }
 }
+/* Конец стилей сетки-результата */
 
-.masonry-column {
-  float: left;
-  width: 491px;
-  margin: 10px;
-  .post {
-    position: relative;
-    display: block;
-    @include box-sizing(border-box);
-    width: 100%;
-    float: left;
-    margin-bottom: 10px;
-    border: 1px solid $borders;
-    background-color: $bg;
-    overflow: hidden;
-    a {
-      color: inherit;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-    .picture {
-      position: relative;
-      display: block;
-      width: 100%;
-      height: auto;
-      .mask {
-        position: absolute;
-        display: block;
-        width: 100%;
-        height: 100%;
-        margin-left: -100%;
-        background-color: rgba($borders, .8);
-        @include transition(0.2s all);
-        a {
-          position: relative;
-          top: 50%;
-          @include box-sizing(border-box);
-          display: block;
-          width: 250px;
-          height: 60px;
-          margin: auto;
-          margin-top: -30px;
-          line-height: 50px;
-          text-align: center;
-          text-transform: uppercase;
-          font-family: "Montserrat", sans-serif;
-          font-weight: bold;
-          font-size: 24px;
-          color: $bg;
-          border: 5px solid $bg;
-          .fake {
-            position: absolute;
-            display: block;
-            width: 100%;
-            height: 100%;
-            border: 0;
-            @include transition(0.2s all);
-            &:hover {
-              background-color: rgba($bg, .4);
-            }
-          }
-          div {
-            position: relative;
-            @include box-sizing(border-box);
-            display: inline-block;
-            float: left;
-            width: 60px;
-            height: 100%;
-            border-right: 5px solid $bg;
-          }
-          span {
-            @extend div;
-            width: 180px;
-            border: 0;
-          }
-        }
-      }
-      img {
-        width: 100%;
-        height: auto;
-        margin-bottom: -2.5px;
-      }
-    }
-    :hover .mask {
-      margin-left: 0%;
-    }
-    .preview {
-      position: relative;
-      display: block;
-      @include box-sizing(border-box);
-      width: 100%;
-      height: auto;
-      padding: 30px;
-      &::before {
-        content: "";
-        position: absolute;
-        display: block;
-        width: 15px;
-        height: 15px;
-        margin-top: -38px;
-        margin-left: 25px;
-        background-color: $bg;
-        @include transform(rotate(45deg));
-      }
-      span {
-        display: inline-block;
-        height: 15px;
-        margin-right: 25px;
-        margin-bottom: 20px;
-        padding-left: 25px;
-        vertical-align: bottom;
-        font-family: "Open Sans";
-        font-weight: bold;
-        font-size: 12px;
-        color: $dat-com;
-        &:nth-child(1) {
-          @include date-comments-sprite(date);
-          background-position: 0 -16px;
-        }
-        &:nth-child(2) {
-          @include date-comments-sprite(comments);
-          background-position: 0 -1px;
-        }
-      }
-      h1 {
-        margin-bottom: 20px;
-        font-family: "Monteserrat", sans-serif;
-        font-weight: 700;
-        font-size: 26px;
-        color: $title-color;
-      }
-      p {
-        line-height: 21px;
-        font-family: "Open Sans", sans-serif;
-        font-weight: normal;
-        font-size: 14px;
-        color: $text-color;
-      }
-    }
-  }
-}
+/* Конец всех стилей */
 
-.advertise {
-  @extend .post;
-  padding: 5px;
-  img {
-    width: 100%;
-  }
-}
-
-.footer {
-  @extend .navbar;
-  overflow: hidden;
-  .container {
-    padding-left: 38px;
-    padding-right: 38px;
-    .links {
-      float: left;
-      a {
-        text-decoration: none;
-        color: darken($nav-color, 50%);
-        &:not(:last-of-type) {
-          margin-right: 5px;
-        }
-        &:hover {
-          color: $nav-color;
-        }
-      }
-    }
-    span {
-      float: right;
-    }
-  }
-}
-
-.post-full {
-  position: relative;
-  display: block;
-  @include box-sizing(border-box);
-  width: 100%;
-  height: 100%;
-  .header-image {
-    position: relative;
-    display: block;
-    width: 100%;
-    margin-bottom: 35px;
-    img {
-      width: 100%;
-    }
-  }
-  .info-share {
-    position: relative;
-    display: block;
-    float: left;
-    @include box-sizing(border-box);
-    height: auto;
-    margin-right: 35px;
-    text-align: right;
-    font-family: "Open Sans";
-    font-size: 13px;
-    color: $title-color;
-    div {
-      @include box-sizing(border-box);
-      padding-top: 10px;
-      line-height: 25px;
-      &:not(:last-child) {
-        height: 70px;
-        border-bottom: 1px solid $borders;
-      } 
-      span {
-        display: block;
-      }
-      ul {
-        position: relative;
-        display: block;
-        @for $i from 1 through 4 {
-          li {
-            position: relative;
-            display: inline-block;
-            width: 30px;
-            height: 45px;
-            border-bottom: 1px solid transparent;
-            @include transition(0.2s all);
-            cursor: pointer;
-            $background-social: facebook, twitter, googleplus, pinterest;
-            $background-positioner: 0, -135px, -45px, -90px;
-            &:nth-of-type(#{$i}) {
-              @include social-sprite(nth($background-social, $i));
-              background-position: 50% nth($background-positioner, $i);
-            }
-            &:hover {
-              @include transform(translateY(-5px));
-            }
-          }
-        }
-      }
-    }
-  }
-  .main-content {
-    position: relative;
-    display: block;
-    @include box-sizing(border-box);
-    float: left;
-    h1 {
-      margin-bottom: 25px;
-      font-family: "Montserrat";
-      font-weight: bold;
-      font-size: 50px;
-      color: $title-color;
-    }
-    .description {
-      display: block;
-      margin-bottom: 30px;
-      line-height: 25px;
-      font-family: "Open Sans", sans-serif;
-      font-weight: 600;
-      font-size: 20px;
-      color: $text-color;
-    }
-    .masonry-column-text {
-      float: left;
-      p {
-        @extend .description;
-        line-height: 19px;
-        font-weight: normal;
-        font-size: 14px;
-      }
-      .inpost-img {
-        position: relative;
-        display: block;
-        width: 100%;
-        height: auto;
-        margin-bottom: 30px;
-        overflow: hidden;
-        img {
-          width: 100%;
-          cursor: pointer;
-        }
-        p {
-          position: absolute;
-          display: block;
-          @include box-sizing(border-box);
-          width: 100%;
-          height: auto;
-          margin-bottom: 0;
-          padding-top: 15px;
-          padding-bottom: 15px;
-          text-align: center;
-          font-size: 12px;
-          font-weight: bold;
-          color: $bg;
-          background-color: rgba(#000,.5);
-          @include transition(0.2s all);
-          @include transform(translateX(-100%));
-        }
-        &:hover p {
-          @include transform(translateX(0%));
-        }
-      }
-    }
-  }
-}
-
-.big-img-window {
-  position: fixed;
-  top: 0;
-  display: none;
-  @include box-sizing(border-box);
-  width: 100%;
-  height: 100%;
-  background-color: rgba($nav-bg,.5);
-  z-index: 9;
-  .img-wrapper {
-    position: relative;
-    top: -100%;
-    left: 50%;
-    @include box-sizing(border-box);
-    display: inline-block;
-    width: auto;
-    max-width: 100%;
-    height: auto;
-    max-height: 90%;
-    padding: 30px;
-    background-color: $nav-bg;
-    @include transition(1.2s top);
-    &-drop {
-      top: 50%;
-    }
-    .big-img-close {
-      position: absolute;
-      left: 100%;
-      display: block;
-      width: 30px;
-      height: 30px;
-      margin-top: -30px;
-      margin-left: -30px;
-      text-align: center;
-      font-size: 30px;
-      color: darken($nav-color, 50%);
-      @include transition(0.2s all);
-      cursor: pointer;
-      z-index: 10;
-      &:hover {
-        color: $nav-color;
-      }
-    }
-    img {
-      position: relative;
-      display: block;
-      max-width: 100%;
-    }
-    a {
-      position: relative;
-      display: block;
-      @include box-sizing(border-box);
-      width: auto;
-      height: 40px;
-      line-height: 40px;
-      text-align: center;
-      text-decoration: none;
-      text-transform: uppercase;
-      font-family: "Montserrat";
-      font-size: 20px;
-      color: $nav-color;
-      border: 1px solid $nav-borders;
-      background-color: rgba($bg, .1);
-      @include transition(0.2s all);
-      &:hover {
-        background-color: rgba($bg, .2);
-      }
-    }
-  }
-}
-
-.big-img-window-active {
-  display: block;
-}
-
-.img-wrapper-drop {
-  top: 50%;
-}
-
-.jump-big-img {
-  animation-name: jump-big-img;
-  animation-duration: 0.6s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in-out;
-}
-
-.loader {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: none;
-  width: 100px;
-  height: 100px;
-  margin-top: -50px;
-  margin-left: -50px;
-  text-align: center;
-  font-size: 100px;
-  color: $nav-bg;
-}
-
-.loader-on {
-  display: block;
-}
-
-.comments {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: auto;
-  .header {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 55px;
-    .counter {
-      position: relative;
-      display: inline-block;
-      float: left;
-      width: auto;
-      height: 100%;
-      line-height: 55px;
-      font-family: "Open Sans";
-      font-weight: bold;
-      color: $title-color;
-    }
-    .like {
-      @extend .counter;
-      float: right;
-      i {
-        margin-right: 10px;
-        color: #ffbf03;
-        @include transition(0.2s all);
-        cursor: pointer;
-        &:hover {
-          color: #e76049;
-        }
-      }
-      .like-count {
-        position: relative;
-        display: inline-block;
-        width: 25px;
-        height: 25px;
-        line-height: 25px;
-        text-align: center;
-        color: $text-color;
-        background-color: $borders; 
-        @include border-radius(5px);
-        div {
-          position: absolute;
-          display: block;
-          width: 0;
-          height: 0;
-          margin-top: 8px;
-          margin-left: -3px;
-          border: 5px solid $borders;
-          @include transform(rotate(45deg));
-        }
-      }
-    }
-  }
-  form {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 55px;
-    margin-bottom: 10px;
-    div:first-of-type {
-      position: absolute;
-      display: inline-block;
-      float: right;
-      width: 55px;
-      height: 55px;
-      margin-right: 15px;
-      line-height: 55px;
-      text-align: center;
-      font-size: 30px;
-      color: $bg;
-      background-color: #e76049;
-      @include border-radius(5px);
-    }
-    textarea {
-      position: relative;
-      @include box-sizing(border-box);
-      display: inline-block;
-      float: right;
-      height: 55px;
-      max-height: 55px;
-      margin: 0;
-      padding-left: 20px;
-      line-height: 50px;
-      font-family: "open Sans";
-      font-size: 14px;
-      color: $text-color;
-      border: 2px solid $borders;
-      @include border-radius(5px);
-      @include transition(0.2s all);
-      &:focus {
-        border: 2px solid $nav-bg;
-      }
-    }
-  }
-  .tabs {
-    position: relative;
-    @include box-sizing(border-box);
-    display: block;
-    width: 100%;
-    height: 55px;
-    margin-bottom: 25px;
-    border-bottom: 1px solid $borders;
-    overflow: hidden;
-    ul:first-of-type {
-      position: relative;
-      display: inline-block;
-      float: left;
-      height: 100%;
-      li {
-        position: relative;
-        top: 2px;
-        @include box-sizing(border-box);
-        display: inline-block;
-        width: 100px;
-        height: 100%;
-        padding-top: 18.5px;
-        text-align: center;
-        font-family: "Open Sans";
-        font-size: 12px;
-        font-weight: bold;
-        color: $text-color;
-        @include transition(0.2s all);
-        cursor: pointer;
-        &:hover {
-          border-bottom: 3px solid lighten($nav-bg, 10%);
-        }
-        span {
-          position: relative;
-          display: block;
-          width: 100%;
-          height: 17px;
-          line-height: 17px;
-          border-right: 1px solid $borders;
-          i {
-            margin-left: 5px;
-            color: lighten($text-color, 30%);
-          }
-        }
-      }
-    }
-    i {
-      margin-left: 5px;
-      color: lighten($text-color, 30%);
-    }
-    ul:last-of-type {
-      @extend ul:first-of-type;
-      float: right;
-      li {
-        width: 50px;
-      }
-    }
-  }
-}
-
-.comment {
-  position: relative;
-  @include box-sizing(border-box);
-  display: block;
-  width: 100%;
-  height: auto;
-  .avatar {
-    position: relative;
-    display: inline-block;
-    float: left;
-    width: 35px;
-    height: 100%;
-    margin-right: 15px;
-    @include border-radius(5px);
-    overflow: hidden;
-    img {
-      width: 100%;
-      height: 100%;
-      margin-bottom: -3px;
-    }
-  }
-  .comment-content {
-    position: relative;
-    @include box-sizing(border-box);
-    display: inline-block;
-    float: left;
-    width: auto;
-    height: auto;
-    margin-bottom: 25px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid $borders;
-    a {
-      text-decoration: none;
-      font-family: "Open Sans";
-      font-size: 12px;
-      font-weight: bold;
-      color: lighten($nav-bg, 10%);
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-    i:first-of-type {
-      position: relative;
-      top: -1.5px;
-      margin-left: 5px;
-      margin-right: 5px;
-      font-size: 5px;
-      color: lighten($nav-bg, 10%);
-    }
-    span {
-      font-family: "Open Sans";
-      font-size: 11px;
-      font-weight: bold;
-      color: $text-color;
-    }
-    p {
-      margin-top: 10px; 
-      font-family: "Open Sans";
-      font-size: 13px;
-      font-weight: normal;
-      color: $text-color;
-    }
-    ul {
-      position: relative;
-      display: inline-block;
-      width: auto;
-      height: auto;
-      margin-top: 10px;
-      font-size: 0px;
-      li {
-        position: relative;
-        display: inline-block;
-        height: 15px;
-        padding-left: 5px;
-        padding-right: 5px;
-        font-family: "Open Sans";
-        font-size: 11.5px;
-        font-weight: bold;
-        color: #b3b3b3;
-        @include transition(0.2s all);
-        cursor: pointer;
-        .fa-chevron-up, .fa-chevron-down {
-          top: 0;
-          font-size: 12px;
-          color: #b3b3b3;
-          @include transition(0.2s all);
-          &:hover {
-            color: darken(#b3b3b3, 50%);
-          }
-        }
-        .fa-circle {
-          top: -2px;
-          font-size: 4px;
-          color: #b3b3b3;
-          cursor: default;
-        }
-        &:nth-of-type(2) {
-          border-right: 1px dotted #b3b3b3;
-        }
-        &:nth-of-type(4), &:nth-of-type(6) {
-          cursor: default;
-        }
-        &:hover {
-          color: darken(#b3b3b3, 50%);
-        }
-      }
-    }
-  }
-}
-
-.comment.re-comment {
-  padding-left: 50px;
-  .avatar {
-    width: 25px;
-    height: 25px;
-  }
-  .comment-content {
-    border-bottom: 2px dotted $borders;
-  }
-}
-
-
-//Адаптивность всегда должна быть внизу
+/* Правила адаптивного дизайна (размещение в конце кода обязательно) */
 @import "meta/adaptive";

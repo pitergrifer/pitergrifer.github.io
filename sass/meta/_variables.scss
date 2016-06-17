@@ -1,0 +1,14 @@
+/* Цвета */
+$bg-body: #eaeaea;
+$bg-ask-block-color: lighten($bg-body, 4%);
+$border-ask-block-color: darken($bg-body, 4%);
+$border-ask-block-color-active: darken($bg-body, 20%);
+$bg-input: lighten($bg-body, 5%);
+$bg-disabled: darken($bg-body, 2%);
+$bg-helper: rgba(red,.9);
+
+/* Шрифты и размеры */
+$main-font: 'Anonymous Pro';
+$main-font-size: 14px;
+$main-font-color: darken($bg-body, 70%);
+$disabled-font-color: darken($bg-body, 30%);
