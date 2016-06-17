@@ -22,14 +22,16 @@ function AskingDate(options) {
     
     startBtn.value = btnDefaultValue; // сброс значения кнопки (см. событие 'onclick' ниже)
     
-    if (navigator.userAgent.match(/Android/i) &&
-        navigator.userAgent.match(/webOS/i) &&
-        navigator.userAgent.match(/iPhone/i) &&
-        navigator.userAgent.match(/iPod/i) &&
-        navigator.userAgent.match(/iPad/i) &&
-        navigator.userAgent.match(/Blackberry/i)) {
+    if (navigator.userAgent.match(/Android/ig) ||
+        navigator.userAgent.match(/webOS/ig) ||
+        navigator.userAgent.match(/iPhone/ig) ||
+        navigator.userAgent.match(/iPod/ig) ||
+        navigator.userAgent.match(/iPad/ig) ||
+        navigator.userAgent.match(/Blackberry/ig)) {
       //TODO
+      alert(navigator.userAgent);
     } else {
+    //alert(navigator.userAgent);  
     var checkKey; // переменная-выражение проверки нажатой клавиши
     var checkspecialKey; // переменная-выражение обратная предыдущей для проверки специальной клавиши
     var keyPressed = false; // переменная, проверяющая зажатие Shift
