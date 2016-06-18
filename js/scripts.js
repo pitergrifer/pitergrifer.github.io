@@ -115,22 +115,28 @@ function AskingDate(options) {
     helper.className = 'helper';
     var helperText = target.getAttribute('data-helper');
     helper.innerHTML = helperText;
-    document.body.appendChild(helper);
     
-    // позиционирование элемента-подсказки
-    var targetCoords = target.getBoundingClientRect();
-    helper.style.top = targetCoords.top - helper.offsetHeight - 10 + document.documentElement.scrollTop + "px";
-    helper.style.left = targetCoords.left - (helper.offsetWidth / 2) + (target.offsetWidth / 2) + "px";
+    //специальный таймер задержки для корректного вывода подсказки
+    var timerForCoords = setTimeout(function() {
+      // добавление элемента-подсказки
+      document.body.appendChild(helper);
+      
+      // позиционирование элемента-подсказки
+      var targetCoords = target.getBoundingClientRect();
+      helper.style.top = targetCoords.top - helper.offsetHeight - 10 + document.documentElement.scrollTop + "px";
+      helper.style.left = targetCoords.left - (helper.offsetWidth / 2) + (target.offsetWidth / 2) + "px";
     
-    //создание декоративной срелки
-    var helperArrow = document.createElement('div');
-    helperArrow.className = 'arrow';
-    helper.appendChild(helperArrow);
-    helperArrow.style.top = helper.offsetHeight + "px";
-    helperArrow.style.left = (helper.offsetWidth / 2) - (helperArrow.offsetWidth / 2) + "px";   
+      //создание декоративной срелки
+      var helperArrow = document.createElement('div');
+      helperArrow.className = 'arrow';
+      helper.appendChild(helperArrow);
+      helperArrow.style.top = helper.offsetHeight + "px";
+      helperArrow.style.left = (helper.offsetWidth / 2) - (helperArrow.offsetWidth / 2) + "px";   
+    }, 500);
     
     // удаление подсказки после потери фокуса на цели
     target.onblur = function() {
+      clearTimeout(timerForCoords);
       document.body.removeChild(helper);
     };
   };
