@@ -29,8 +29,13 @@ function AskingDate(options) {
         navigator.userAgent.match(/iPod/ig) ||
         navigator.userAgent.match(/iPad/ig) ||
         navigator.userAgent.match(/Blackberry/ig)) { // если мобильные устройства
-      alert('It`s mobile device');
-      //TODO
+      target.onchange = function() {
+        alert("Сработало событие onchange");
+      };
+      
+      target.oninput = function() {
+        alert("Сработало событие onchange")ж
+      };
     } else { // если настольные устройства
       var checkKey; // переменная-выражение проверки нажатой клавиши
       var checkspecialKey; // переменная-выражение обратная предыдущей для проверки специальной клавиши
@@ -193,10 +198,10 @@ function AskingDate(options) {
   };
   
   // специальный метод добавление слушателя на событие 'focus' с делегированием  
-  if (elem.addEventListener) {
+  if (elem.addEventListener) { // все браузеры 
     elem.addEventListener('focus', checkField, true);
     elem.addEventListener('focus', callHelper, true);
-  } else {
+  } else { // браузеры IE
     elem.onfocusin = checkField;
     elem.onfocusin = callHelper;
   };
