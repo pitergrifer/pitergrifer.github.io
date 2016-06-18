@@ -155,9 +155,9 @@ function AskingDate(options) {
     var columns;
     var sizeCoefficient = document.body.clientHeight / document.body.clientWidth;
     alert(sizeCoefficient);
-    if (sizeCoefficient > 1.6) {
+    if (sizeCoefficient > 1.5) {
       columns = 1;
-    } else if (sizeCoefficient < 1.6) {
+    } else if (sizeCoefficient < 1.5) {
       columns = 3;
     };
     var rows = 9 / columns;
