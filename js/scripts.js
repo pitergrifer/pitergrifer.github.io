@@ -30,7 +30,11 @@ function AskingDate(options) {
         navigator.userAgent.match(/iPad/ig) ||
         navigator.userAgent.match(/Blackberry/ig)) { // если мобильные устройства
       target.onchange = function() {
-        startBtn.classList = 'btn-active';
+        if ((dayField.value.length == 2) && (monthField.value.length == 2) && (yearField.value.length == 4)) {
+          startBtn.className = "btn-active";
+        } else {
+          startBtn.className = "btn-disabled";
+        };
       };
     } else { // если настольные устройства
       var checkKey; // переменная-выражение проверки нажатой клавиши
@@ -94,9 +98,9 @@ function AskingDate(options) {
 
         // установка класса на стартовую кнопку
         if ((dayField.value.length == 2) && (monthField.value.length == 2) && (yearField.value.length == 4)) {
-          startBtn.classList = 'btn-active';
+          startBtn.className = "btn-active";
         } else {
-          startBtn.classList = 'btn-disabled';
+          startBtn.className = "btn-disabled";
         };
       };
     };
