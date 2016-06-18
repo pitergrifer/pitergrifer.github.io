@@ -1,26 +1,4 @@
-/* Функции */
-// функция проверки типа устройства
-function isMobile() {
-  if (navigator.userAgent.match(/Android/ig) ||
-      navigator.userAgent.match(/webOS/ig) ||
-      navigator.userAgent.match(/iPhone/ig) ||
-      navigator.userAgent.match(/iPod/ig) ||
-      navigator.userAgent.match(/iPad/ig) ||
-      navigator.userAgent.match(/Blackberry/ig)) { // true - если мобильные устройства
-    return true;  
-  } else { // false - если настольные
-    return false;
-  };
-};
-
-// функция замера высоты всей страницы с прокруткой
-function scrollHeight() {
-  return +Math.max(
-    document.body.scrollHeight, document.documentElement.scrollHeight,
-    document.body.offsetHeight, document.documentElement.offsetHeight,
-    document.body.clientHeight, document.documentElement.clientHeight
-  );
-};
+var PAGE_HEIGHT = scrollHeight(); // высота станицы с прокруткой сразу после загрузки (константа) 
 
 /* Логика окна запроса даты рождения */
 function AskingDate(options) {
@@ -172,7 +150,7 @@ function AskingDate(options) {
     
     // расчет количества столбцов
     var columns;
-    var sizeCoefficient = scrollHeight() / document.body.clientWidth;
+    var sizeCoefficient = PAGE_HEIGHT / document.body.clientWidth;
     
     if (sizeCoefficient >= 1.4) {
       columns = 1;
