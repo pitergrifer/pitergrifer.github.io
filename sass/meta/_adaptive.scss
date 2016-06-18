@@ -1,0 +1,9 @@
+@media screen and (max-width: 565px) {
+  .ask-date {
+    width: 95%;
+    @include box-sizing(border-box);
+    span {
+      font-size: 1em;
+    }
+  }
+}

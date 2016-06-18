@@ -47,7 +47,7 @@ html, body {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-   @include text-shadow(2px 2px 0 $border-ask-block-color);
+  @include text-shadow(2px 2px 0 $border-ask-block-color);
   border: 1px solid $border-ask-block-color;
   background-color: $bg-ask-block-color;
   @include box-shadow(10px 10px 10px 0 $border-ask-block-color);

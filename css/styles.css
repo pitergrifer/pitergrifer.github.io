@@ -256,3 +256,14 @@ html, body {
 /* ╨Ъ╨╛╨╜╨╡╤Ж ╤Б╤В╨╕╨╗╨╡╨╣ ╤Б╨╡╤В╨║╨╕-╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨░ */
 /* ╨Ъ╨╛╨╜╨╡╤Ж ╨▓╤Б╨╡╤Е ╤Б╤В╨╕╨╗╨╡╨╣ */
 /* ╨Я╤А╨░╨▓╨╕╨╗╨░ ╨░╨┤╨░╨┐╤В╨╕╨▓╨╜╨╛╨│╨╛ ╨┤╨╕╨╖╨░╨╣╨╜╨░ (╤А╨░╨╖╨╝╨╡╤Й╨╡╨╜╨╕╨╡ ╨▓ ╨║╨╛╨╜╤Ж╨╡ ╨║╨╛╨┤╨░ ╨╛╨▒╤П╨╖╨░╤В╨╡╨╗╤М╨╜╨╛) */
+@media screen and (max-width: 565px) {
+  .ask-date {
+    width: 95%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  .ask-date span {
+    font-size: 1em;
+  }
+}
