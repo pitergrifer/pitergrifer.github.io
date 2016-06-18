@@ -154,6 +154,7 @@ function AskingDate(options) {
     // расчет количества столбцов
     var columns;
     var sizeCoefficient = document.body.clientHeight / document.body.clientWidth;
+    alert(sizeCoefficient);
     if (sizeCoefficient > 1.6) {
       columns = 1;
     } else if (sizeCoefficient < 1.6) {
