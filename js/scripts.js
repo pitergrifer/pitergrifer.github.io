@@ -30,11 +30,11 @@ function AskingDate(options) {
         navigator.userAgent.match(/iPad/ig) ||
         navigator.userAgent.match(/Blackberry/ig)) { // если мобильные устройства
       target.onchange = function() {
-        alert("Сработало событие onchange");
-      };
-      
-      target.oninput = function() {
-        alert("Сработало событие onchange");
+        if ((dayField.value.length == 2) && (monthField.value.length == 2) && (yearField.value.length == 4)) {
+          startBtn.classList = 'btn-active';
+        } else {
+          startBtn.classList = 'btn-disabled';
+        };
       };
     } else { // если настольные устройства
       var checkKey; // переменная-выражение проверки нажатой клавиши
