@@ -1,3 +1,27 @@
+/* Функции */
+// функция проверки типа устройства
+function isMobile() {
+  if (navigator.userAgent.match(/Android/ig) ||
+      navigator.userAgent.match(/webOS/ig) ||
+      navigator.userAgent.match(/iPhone/ig) ||
+      navigator.userAgent.match(/iPod/ig) ||
+      navigator.userAgent.match(/iPad/ig) ||
+      navigator.userAgent.match(/Blackberry/ig)) { // true - если мобильные устройства
+    return true;  
+  } else { // false - если настольные
+    return false;
+  };
+};
+
+// функция замера высоты всей страницы с прокруткой
+function scrollHeight() {
+  return +Math.max(
+    document.body.scrollHeight, document.documentElement.scrollHeight,
+    document.body.offsetHeight, document.documentElement.offsetHeight,
+    document.body.clientHeight, document.documentElement.clientHeight
+  );
+};
+
 /* Логика окна запроса даты рождения */
 function AskingDate(options) {
   var elem = options.elem;
@@ -23,12 +47,7 @@ function AskingDate(options) {
     startBtn.value = btnDefaultValue; // сброс значения кнопки (см. событие 'onclick' ниже)
     
     // проверка userAgent
-    if (navigator.userAgent.match(/Android/ig) ||
-        navigator.userAgent.match(/webOS/ig) ||
-        navigator.userAgent.match(/iPhone/ig) ||
-        navigator.userAgent.match(/iPod/ig) ||
-        navigator.userAgent.match(/iPad/ig) ||
-        navigator.userAgent.match(/Blackberry/ig)) { // если мобильные устройства
+    if (isMobile()) { // если мобильные устройства
       target.onchange = function() {
         if ((dayField.value.length == 2) && (monthField.value.length == 2) && (yearField.value.length == 4)) {
           startBtn.className = "btn-active";
@@ -153,20 +172,14 @@ function AskingDate(options) {
     
     // расчет количества столбцов
     var columns;
-    var sizeCoefficient = document.body.clientHeight / document.body.clientWidth;
-    alert(sizeCoefficient);
+    var sizeCoefficient = scrollHeight() / document.body.clientWidth;
+    
     if (sizeCoefficient >= 1.4) {
       columns = 1;
     } else if (sizeCoefficient < 1.4) {
       columns = 3;
     };
     var rows = 9 / columns;
-    
-    var scrollHeight = Math.max(
-      document.body.scrollHeight, document.documentElement.scrollHeight,
-      document.body.offsetHeight, document.documentElement.offsetHeight,
-      document.body.clientHeight, document.documentElement.clientHeight
-    );
     
     for (var i = 0; i < rows; i++) { // цикл наполнения по Y 
       for (var j = 0; j < columns; j++) { // цикл наполнения по X
@@ -181,7 +194,7 @@ function AskingDate(options) {
         blockFeature.style.top = (blockFeature.offsetHeight * i) + (15 * i) + "px";
         var calculateCenteringX = (result.offsetWidth / 2) - (((blockFeature.offsetWidth * columns) + (15 * (columns - 1))) / 2);
         blockFeature.style.left = (blockFeature.offsetWidth * j) + (15 * j) + calculateCenteringX + "px";
-        var calculateCenteringY = (scrollHeight / 2) - (((blockFeature.offsetHeight * rows) + (15 * (rows - 1))) / 2);
+        var calculateCenteringY = (scrollHeight() / 2) - (((blockFeature.offsetHeight * rows) + (15 * (rows - 1))) / 2);
         if (calculateCenteringY < 0) {
           calculateCenteringY = 10;
         };
@@ -231,7 +244,6 @@ function AskingDate(options) {
           elem.style.display = "none";
           result.style.visibility = "visible";
         }, 400);
-        alert(genereteResult.perfomence());
       };
     };
   };
