@@ -7,7 +7,8 @@
 /* Начало всех стилей */
 
 html, body {
-  height: 100%;
+  height: auto;
+  min-height: 100%;
   font-family: $main-font;
   font-size: $main-font-size;
   color: $main-font-color;

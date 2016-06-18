@@ -59,7 +59,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 /* ╨и╤А╨╕╤Д╤В╤Л ╨╕ ╤А╨░╨╖╨╝╨╡╤А╤Л */
 /* ╨Э╨░╤З╨░╨╗╨╛ ╨▓╤Б╨╡╤Е ╤Б╤В╨╕╨╗╨╡╨╣ */
 html, body {
-  height: 100%;
+  height: auto;
+  min-height: 100%;
   font-family: "Anonymous Pro";
   font-size: 14px;
   color: #383838;
