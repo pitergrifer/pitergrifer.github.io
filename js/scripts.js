@@ -34,7 +34,7 @@ function AskingDate(options) {
       };
       
       target.oninput = function() {
-        alert("Сработало событие onchange")ж
+        alert("Сработало событие onchange");
       };
     } else { // если настольные устройства
       var checkKey; // переменная-выражение проверки нажатой клавиши
