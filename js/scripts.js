@@ -113,6 +113,8 @@ function AskingDate(options) {
     // создание элемента-подсказки
     var helper = document.createElement('span');
     helper.className = 'helper';
+    var helperText = target.getAttribute('data-helper');
+    helper.innerHTML = helperText;
     
     // создание и добавление стрелки
     var helperArrow = document.createElement('div');
@@ -123,8 +125,6 @@ function AskingDate(options) {
     var timerForCoords = setTimeout(function() {
       // добавление элемента-подсказки
       document.body.appendChild(helper);
-      var helperText = target.getAttribute('data-helper');
-      helper.innerHTML = helperText;
       helper.appendChild(helperArrow);
       
       // расчет координат элемента-подсказки и его стрелки  
