@@ -113,18 +113,19 @@ function AskingDate(options) {
     // создание элемента-подсказки
     var helper = document.createElement('span');
     helper.className = 'helper';
-    var helperText = target.getAttribute('data-helper');
-    helper.innerHTML = helperText;
     
     // создание и добавление стрелки
     var helperArrow = document.createElement('div');
     helperArrow.className = 'arrow arrow-to-bottom';
-    helper.appendChild(helperArrow);
+    
     
     // специальный таймер задержки для корректного вывода подсказки
     var timerForCoords = setTimeout(function() {
       // добавление элемента-подсказки
       document.body.appendChild(helper);
+      var helperText = target.getAttribute('data-helper');
+      helper.innerHTML = helperText;
+      helper.appendChild(helperArrow);
       
       // расчет координат элемента-подсказки и его стрелки  
       var targetCoords = target.getBoundingClientRect();
@@ -132,7 +133,7 @@ function AskingDate(options) {
       var newHelperLeft = targetCoords.left - (helper.offsetWidth / 2) + (target.offsetWidth / 2);
       var newArrowTop = helper.offsetHeight - 2;
       var newArrowLeft = (helper.offsetWidth / 2) - (helperArrow.offsetWidth / 2);
-      console.log(windowLeftScroll());
+      
       // условия позиционирования, учитывающие "вылеты" за грани экрана
       // "вылет" за верхнюю грань 
       if ((newHelperTop - windowTopScroll()) < 0) {
@@ -143,7 +144,7 @@ function AskingDate(options) {
       // "вылет" за левую грань
       if (newHelperLeft < 0) { 
         newHelperLeft = 0;
-        newArrowLeft = (targetCoords.left + (target.offsetWidth / 2)) - (helperArrow.offsetWidth / 2)  + windowLeftScroll();
+        newArrowLeft = (targetCoords.left + (target.offsetWidth / 2)) - (helperArrow.offsetWidth / 2) + windowLeftScroll();
       };
       // "вылет" за правую грань
       if ((document.documentElement.clientWidth - (newHelperLeft + helper.offsetWidth)) < 0) {
