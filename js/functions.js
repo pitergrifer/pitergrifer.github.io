@@ -12,6 +12,18 @@ function isMobile() {
   };
 };
 
+// функция проверки строки на наличие других символов, помимо цифр
+function isDigit(str) {
+  var regV = /([\D])/igm;
+  var findChar = str.search(regV);
+  
+  if (findChar >= 0) { // false - если в строке есть символ не число 
+  	return false;
+  } else if (findChar == -1) { // true - если строка состоит только из цыфр
+  	return true;
+  };
+};
+
 // функция замера высоты всей страницы с прокруткой
 function scrollHeight() {
   return +Math.max(

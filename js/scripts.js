@@ -42,7 +42,7 @@ function AskingDate(options) {
         if ((event.keyCode > 47) && (event.keyCode < 58)) { // проверка на номера 
           checkKey = (event.keyCode > 47) && (event.keyCode < 58);
           checkspecialKey = checkKey; 
-        } else if ((event.keyCode > 95) && (event.keyCode < 106)) { // проверка на номара (Num-pad)
+        } else if ((event.keyCode > 95) && (event.keyCode < 106)) { // проверка на номера (Num-pad)
           checkKey = (event.keyCode > 95) && (event.keyCode < 106);
           checkspecialKey = checkKey; 
         } else if (event.keyCode == 8) { // проверка на Backspace
@@ -247,6 +247,7 @@ function AskingDate(options) {
       if ((dayField.value > 31) || (monthField.value > 12) || (yearField.value > new Date().getFullYear())) {
         target.value = "Такой даты не существует!"
       } else {
+        alert(isDigit());
         target.value = "Загрузка...";
         genereteResult();
         setTimeout(function() {
