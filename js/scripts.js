@@ -159,7 +159,7 @@ function AskingDate(options) {
       // позиционирование срелки
       helperArrow.style.top = newArrowTop + "px";
       helperArrow.style.left = newArrowLeft + "px";   
-    }, 500);
+    }, 1000);
     
     // удаление подсказки после потери фокуса на цели
     target.onblur = function() {
