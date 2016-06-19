@@ -247,16 +247,20 @@ function AskingDate(options) {
       if ((dayField.value > 31) || (monthField.value > 12) || (yearField.value > new Date().getFullYear())) {
         target.value = "Такой даты не существует!"
       } else {
-        alert(isDigit());
-        target.value = "Загрузка...";
-        genereteResult();
-        setTimeout(function() {
-          elem.className += " hide";
-        }, generationTime);
-        setTimeout(function() {
-          elem.style.display = "none";
-          result.style.visibility = "visible";
-        }, 400);
+        var fieldsValues = dayField.value + monthField.value + yearField.value;
+        if (isDigit(fieldsValues)) {
+          target.value = "Загрузка...";
+          genereteResult();
+          setTimeout(function() {
+            elem.className += " hide";
+          }, generationTime);
+          setTimeout(function() {
+            elem.style.display = "none";
+            result.style.visibility = "visible";
+          }, 400);  
+        } else {
+          target.value = "Используйте только числа!";
+        };
       };
     };
   };
