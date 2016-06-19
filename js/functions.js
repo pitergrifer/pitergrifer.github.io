@@ -25,3 +25,8 @@ function scrollHeight() {
 function windowTopScroll() {
   return window.pageYOffset || document.documentElement.scrollTop;
 };
+
+// функция замера ширениы прокрученной области страницы
+function windowLeftScroll() {
+  return window.pageXOffset || document.documentElement.scrollLeft;
+};

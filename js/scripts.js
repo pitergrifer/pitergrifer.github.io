@@ -132,7 +132,7 @@ function AskingDate(options) {
       var newHelperLeft = targetCoords.left - (helper.offsetWidth / 2) + (target.offsetWidth / 2);
       var newArrowTop = helper.offsetHeight - 2;
       var newArrowLeft = (helper.offsetWidth / 2) - (helperArrow.offsetWidth / 2);
-      
+      console.log(windowLeftScroll());
       // условия позиционирования, учитывающие "вылеты" за грани экрана
       // "вылет" за верхнюю грань 
       if ((newHelperTop - windowTopScroll()) < 0) {
@@ -143,7 +143,7 @@ function AskingDate(options) {
       // "вылет" за левую грань
       if (newHelperLeft < 0) { 
         newHelperLeft = 0;
-        newArrowLeft = (targetCoords.left + (target.offsetWidth / 2)) - (helperArrow.offsetWidth / 2);
+        newArrowLeft = (targetCoords.left + (target.offsetWidth / 2)) - (helperArrow.offsetWidth / 2)  + windowLeftScroll();
       };
       // "вылет" за правую грань
       if ((document.documentElement.clientWidth - (newHelperLeft + helper.offsetWidth)) < 0) {
