@@ -176,9 +176,9 @@ function AskingDate(options) {
     
     // расчет оптимальной ширины сетки-результата
     var resultBlockWidth;
-    if (document.body.clientHeight < document.body.clientWidth) {
-      resultBlockWidth = document.body.clientHeight;  
-    } else if (document.body.clientHeight > document.body.clientWidth) {
+    if (scrollHeight() < document.body.clientWidth) {
+      resultBlockWidth = scrollHeight();  
+    } else if (scrollHeight() > document.body.clientWidth) {
       resultBlockWidth = document.body.clientWidth;
     };
     result.style.width = resultBlockWidth - 10 + "px";
