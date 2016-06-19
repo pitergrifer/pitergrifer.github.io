@@ -273,4 +273,8 @@ html, body {
   .ask-date span {
     font-size: 1em;
   }
+
+  .helper {
+    width: 85%;
+  }
 }
