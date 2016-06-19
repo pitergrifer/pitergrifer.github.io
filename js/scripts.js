@@ -10,6 +10,7 @@ function AskingDate(options) {
   var startBtn = options.startBtn;
   var btnDefaultValue = startBtn.getAttribute('value');
   var result = options.result;
+  var loadTimeSleep = options.loadTimeSleep;
     
   // вертикальная отцентровка объекта относительно окна
   var newTop = (document.documentElement.clientHeight / 2) - (elem.offsetHeight / 2);
@@ -215,11 +216,8 @@ function AskingDate(options) {
       };
     };
     
-    // время окончания генерации
-    var endGeneration = new Date();
-    
     // затраченное время на генерацию 
-    generationTime = endGeneration - startGeneration;
+    generationTime = new Date() - startGeneration;
     return generationTime;
   };
   
@@ -250,14 +248,14 @@ function AskingDate(options) {
         var fieldsValues = dayField.value + monthField.value + yearField.value;
         if (isDigit(fieldsValues)) {
           target.value = "Загрузка...";
-          genereteResult();
+          setTimeout(genereteResult(), loadTimeSleep);
           setTimeout(function() {
             elem.className += " hide";
-          }, generationTime);
+          }, loadTimeSleep + generationTime);
           setTimeout(function() {
             elem.style.display = "none";
             result.style.visibility = "visible";
-          }, 400);  
+          }, loadTimeSleep + generationTime + 400); // 400 - время на анимацию в мс  
         } else {
           target.value = "Используйте только числа!";
         };
@@ -277,5 +275,6 @@ var askingDateWindow = new AskingDate({
   month: document.getElementById('month'),
   year: document.getElementById('year'),
   startBtn: document.getElementById('start'),
-  result: document.getElementById('result')
+  result: document.getElementById('result'),
+  loadTimeSleep: 1000
 });
