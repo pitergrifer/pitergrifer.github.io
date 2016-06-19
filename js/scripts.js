@@ -120,7 +120,6 @@ function AskingDate(options) {
     var helperArrow = document.createElement('div');
     helperArrow.className = 'arrow arrow-to-bottom';
     
-    
     // специальный таймер задержки для корректного вывода подсказки
     var timerForCoords = setTimeout(function() {
       // добавление элемента-подсказки и стрелки
@@ -130,7 +129,7 @@ function AskingDate(options) {
       // расчет координат элемента-подсказки и его стрелки  
       var targetCoords = target.getBoundingClientRect();
       var newHelperTop = targetCoords.top - helper.offsetHeight - 10 + windowTopScroll();
-      var newHelperLeft = targetCoords.left - (helper.offsetWidth / 2) + (target.offsetWidth / 2);
+      var newHelperLeft = targetCoords.left - (helper.offsetWidth / 2) + (target.offsetWidth / 2) + windowLeftScroll();
       var newArrowTop = helper.offsetHeight - 2;
       var newArrowLeft = (helper.offsetWidth / 2) - (helperArrow.offsetWidth / 2);
       
@@ -143,8 +142,8 @@ function AskingDate(options) {
       };
       // "вылет" за левую грань
       if ((newHelperLeft - windowLeftScroll()) < 0) { 
-        newHelperLeft = 0;
-        newArrowLeft = (targetCoords.left + (target.offsetWidth / 2)) - (helperArrow.offsetWidth / 2) + windowLeftScroll();
+        newHelperLeft = 0 + windowLeftScroll();
+        newArrowLeft = (targetCoords.left + (target.offsetWidth / 2)) - (helperArrow.offsetWidth / 2);
       };
       // "вылет" за правую грань
       if ((document.documentElement.clientWidth - (newHelperLeft + helper.offsetWidth)) < 0) {
