@@ -142,7 +142,7 @@ function AskingDate(options) {
         newArrowTop = -18;
       };
       // "вылет" за левую грань
-      if (newHelperLeft < 0) { 
+      if ((newHelperLeft - windowLeftScroll()) < 0) { 
         newHelperLeft = 0;
         newArrowLeft = (targetCoords.left + (target.offsetWidth / 2)) - (helperArrow.offsetWidth / 2) + windowLeftScroll();
       };
