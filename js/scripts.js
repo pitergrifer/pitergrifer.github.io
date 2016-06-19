@@ -116,22 +116,49 @@ function AskingDate(options) {
     var helperText = target.getAttribute('data-helper');
     helper.innerHTML = helperText;
     
-    //специальный таймер задержки для корректного вывода подсказки
+    // создание и добавление стрелки
+    var helperArrow = document.createElement('div');
+    helperArrow.className = 'arrow arrow-to-bottom';
+    helper.appendChild(helperArrow);
+    
+    // специальный таймер задержки для корректного вывода подсказки
     var timerForCoords = setTimeout(function() {
       // добавление элемента-подсказки
       document.body.appendChild(helper);
       
-      // позиционирование элемента-подсказки
+      // расчет координат элемента-подсказки и его стрелки  
       var targetCoords = target.getBoundingClientRect();
-      helper.style.top = targetCoords.top - helper.offsetHeight - 10 + document.documentElement.scrollTop + "px";
-      helper.style.left = targetCoords.left - (helper.offsetWidth / 2) + (target.offsetWidth / 2) + "px";
+      var newHelperTop = targetCoords.top - helper.offsetHeight - 10 + document.documentElement.scrollTop;
+      var newHelperLeft = targetCoords.left - (helper.offsetWidth / 2) + (target.offsetWidth / 2);
+      var newArrowTop = helper.offsetHeight - 2;
+      var newArrowLeft = (helper.offsetWidth / 2) - (helperArrow.offsetWidth / 2);
+      
+      // условия позиционирования, учитывающие "вылеты" за грани экрана
+      // "вылет" за верхнюю грань 
+      if ((newHelperTop - document.documentElement.scrollTop) < 0) {
+        newHelperTop = targetCoords.bottom + 10 + document.documentElement.scrollTop;
+        helperArrow.className = 'arrow arrow-to-top';
+        newArrowTop = -18;
+      };
+      // "вылет" за левую грань
+      if (newHelperLeft < 0) { 
+        newHelperLeft = 0;
+        newArrowLeft = (targetCoords.left + (target.offsetWidth / 2)) - (helperArrow.offsetWidth / 2);
+      };
+      // "вылет" за правую грань
+      if ((document.documentElement.clientWidth - (newHelperLeft + helper.offsetWidth)) < 0) {
+        newHelperLeft += document.documentElement.clientWidth - (newHelperLeft + helper.offsetWidth);
+        console.log(document.documentElement.clientWidth - targetCoords.right);
+        newArrowLeft = (targetCoords.left + (target.offsetWidth / 2)) - (document.documentElement.clientWidth - helper.offsetWidth + (helperArrow.offsetWidth / 2));
+      };
+      
+      // позиционирование элемента-подсказки
+      helper.style.top = newHelperTop + "px";
+      helper.style.left = newHelperLeft + "px";
     
-      //создание декоративной срелки
-      var helperArrow = document.createElement('div');
-      helperArrow.className = 'arrow';
-      helper.appendChild(helperArrow);
-      helperArrow.style.top = helper.offsetHeight + "px";
-      helperArrow.style.left = (helper.offsetWidth / 2) - (helperArrow.offsetWidth / 2) + "px";   
+      // позиционирование срелки
+      helperArrow.style.top = newArrowTop + "px";
+      helperArrow.style.left = newArrowLeft + "px";   
     }, 500);
     
     // удаление подсказки после потери фокуса на цели

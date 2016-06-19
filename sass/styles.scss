@@ -137,9 +137,15 @@ html, body {
   .arrow {
     position: absolute;
     display: inline-block;
+  }
+  .arrow-to-bottom {
     border: 10px solid transparent;
     border-top: 10px solid $bg-helper;
   }
+  .arrow-to-top {
+    border: 10px solid transparent;
+    border-bottom: 10px solid $bg-helper;
+  } 
 }
 
 .hide {
