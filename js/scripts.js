@@ -10,7 +10,7 @@ function AskingDate(options) {
   var startBtn = options.startBtn;
   var btnDefaultValue = startBtn.getAttribute('value');
   var result = options.result;
-  var loadTimeSleep = options.loadTimeSleep;
+  var loadTimeSleep = options.loadTimeSleep; 
     
   // вертикальная отцентровка объекта относительно окна
   var newTop = (document.documentElement.clientHeight / 2) - (elem.offsetHeight / 2);
@@ -248,14 +248,17 @@ function AskingDate(options) {
         var fieldsValues = dayField.value + monthField.value + yearField.value;
         if (isDigit(fieldsValues)) {
           target.value = "Загрузка...";
-          setTimeout(genereteResult(), loadTimeSleep);
           setTimeout(function() {
-            elem.className += " hide";
-          }, loadTimeSleep + generationTime);
-          setTimeout(function() {
-            elem.style.display = "none";
-            result.style.visibility = "visible";
-          }, loadTimeSleep + generationTime + 400); // 400 - время на анимацию в мс  
+            genereteResult();
+            console.log(generationTime);
+            setTimeout(function() {
+              elem.className += " hide";
+            }, generationTime);
+            setTimeout(function() {
+              elem.style.display = "none";
+              result.style.visibility = "visible";
+            }, generationTime + 400); // 400 - время на анимацию в мс
+          }, loadTimeSleep); // задержка необходима для мобильных устройсвт (виртуальная клавиатура влияет на генерацию сетки)
         } else {
           target.value = "Используйте только числа!";
         };
