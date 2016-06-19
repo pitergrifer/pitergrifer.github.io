@@ -116,14 +116,14 @@ function AskingDate(options) {
     var helperText = target.getAttribute('data-helper');
     helper.innerHTML = helperText;
     
-    // создание и добавление стрелки
+    // создание стрелки
     var helperArrow = document.createElement('div');
     helperArrow.className = 'arrow arrow-to-bottom';
     
     
     // специальный таймер задержки для корректного вывода подсказки
     var timerForCoords = setTimeout(function() {
-      // добавление элемента-подсказки
+      // добавление элемента-подсказки и стрелки
       document.body.appendChild(helper);
       helper.appendChild(helperArrow);
       
