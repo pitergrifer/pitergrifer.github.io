@@ -128,15 +128,15 @@ function AskingDate(options) {
       
       // расчет координат элемента-подсказки и его стрелки  
       var targetCoords = target.getBoundingClientRect();
-      var newHelperTop = targetCoords.top - helper.offsetHeight - 10 + document.documentElement.scrollTop;
+      var newHelperTop = targetCoords.top - helper.offsetHeight - 10 + windowTopScroll();
       var newHelperLeft = targetCoords.left - (helper.offsetWidth / 2) + (target.offsetWidth / 2);
       var newArrowTop = helper.offsetHeight - 2;
       var newArrowLeft = (helper.offsetWidth / 2) - (helperArrow.offsetWidth / 2);
       
       // условия позиционирования, учитывающие "вылеты" за грани экрана
       // "вылет" за верхнюю грань 
-      if ((newHelperTop - document.documentElement.scrollTop) < 0) {
-        newHelperTop = targetCoords.bottom + 10 + document.documentElement.scrollTop;
+      if ((newHelperTop - windowTopScroll()) < 0) {
+        newHelperTop = targetCoords.bottom + 10 + windowTopScroll();
         helperArrow.className = 'arrow arrow-to-top';
         newArrowTop = -18;
       };
@@ -158,7 +158,7 @@ function AskingDate(options) {
       // позиционирование срелки
       helperArrow.style.top = newArrowTop + "px";
       helperArrow.style.left = newArrowLeft + "px";   
-    }, 0);
+    }, 500);
     
     // удаление подсказки после потери фокуса на цели
     target.onblur = function() {

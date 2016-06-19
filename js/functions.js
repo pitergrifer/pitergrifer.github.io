@@ -20,3 +20,8 @@ function scrollHeight() {
     document.body.clientHeight, document.documentElement.clientHeight
   );
 };
+
+// функция замера высоты прокрученной области страницы
+function windowTopScroll() {
+  return window.pageYOffset || document.documentElement.scrollTop;
+};
