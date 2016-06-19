@@ -148,7 +148,6 @@ function AskingDate(options) {
       // "вылет" за правую грань
       if ((document.documentElement.clientWidth - (newHelperLeft + helper.offsetWidth)) < 0) {
         newHelperLeft += document.documentElement.clientWidth - (newHelperLeft + helper.offsetWidth);
-        console.log(document.documentElement.clientWidth - targetCoords.right);
         newArrowLeft = (targetCoords.left + (target.offsetWidth / 2)) - (document.documentElement.clientWidth - helper.offsetWidth + (helperArrow.offsetWidth / 2));
       };
       
@@ -159,7 +158,7 @@ function AskingDate(options) {
       // позиционирование срелки
       helperArrow.style.top = newArrowTop + "px";
       helperArrow.style.left = newArrowLeft + "px";   
-    }, 1000);
+    }, 0);
     
     // удаление подсказки после потери фокуса на цели
     target.onblur = function() {
