@@ -244,7 +244,7 @@ function AskingDate(options) {
     if (target.className == 'btn-disabled') {
       target.value = "Вы ввели не все данные!"; 
     } else if (target.className == 'btn-active') {
-      if ((dayField.value > 31) || (monthField.value > 12) || (yearField.value > new Date().getFullYear)) {
+      if ((dayField.value > 31) || (monthField.value > 12) || (yearField.value > new Date().getFullYear())) {
         target.value = "Такой даты не существует!"
       } else {
         target.value = "Загрузка...";

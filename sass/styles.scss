@@ -66,6 +66,7 @@ html, body {
     input {
       position: relative;
       display: inline-block;
+      @include box-sizing(border-box);
       width: 50px;
       height: 50px;
       text-align: center;
@@ -89,6 +90,7 @@ html, body {
   #start {
     position: relative;
     display: block;
+    @include box-sizing(border-box);
     width: auto;
     height: 50px;
     margin-left: auto;

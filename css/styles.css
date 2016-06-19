@@ -125,6 +125,9 @@ html, body {
 .ask-date div input {
   position: relative;
   display: inline-block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   width: 50px;
   height: 50px;
   text-align: center;
@@ -151,6 +154,9 @@ html, body {
 .ask-date #start {
   position: relative;
   display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   width: auto;
   height: 50px;
   margin-left: auto;
@@ -271,7 +277,19 @@ html, body {
     box-sizing: border-box;
   }
   .ask-date span {
-    font-size: 1em;
+    font-size: 1.1em;
+  }
+  .ask-date div input, .ask-date div input:first-child, .ask-date div input:last-child {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+  }
+  .ask-date #start {
+    font-size: 1.1em;
+    width: 100%;
   }
 
   .helper {

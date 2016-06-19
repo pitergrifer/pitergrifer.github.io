@@ -3,7 +3,19 @@
     width: 95%;
     @include box-sizing(border-box);
     span {
-      font-size: 1em;
+      font-size: 1.1em;
+    }
+    div {
+      input, input:first-child, input:last-child {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        @include border-radius(5px);
+      }
+    }
+    #start {
+      font-size: 1.1em;
+      width: 100%;
     }
   }
   .helper {
