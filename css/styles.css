@@ -288,10 +288,10 @@ html, body {
   -moz-box-shadow: 10px 10px 10px 0 #e0e0e0;
   -webkit-box-shadow: 10px 10px 10px 0 #e0e0e0;
   box-shadow: 10px 10px 10px 0 #e0e0e0;
-  -moz-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -webkit-transition: all 0.4s;
-  transition: all 0.4s;
+  -moz-transition: -moz-transform 0.4s border-color;
+  -o-transition: -o-transform 0.4s border-color;
+  -webkit-transition: -webkit-transform 0.4s border-color;
+  transition: transform 0.4s border-color;
   cursor: pointer;
 }
 .feature:hover {

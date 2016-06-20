@@ -172,7 +172,7 @@ html, body {
   border: 1px solid $border-ask-block-color;
   background-color: $bg-ask-block-color;
   @include box-shadow(10px 10px 10px 0 $border-ask-block-color);
-  @include transition(0.4s all);
+  @include transition(0.4s transform border-color);
   cursor: pointer;
   &:hover {
     @include transform(scale(1.1));

@@ -249,7 +249,7 @@ function AskingDate(options) {
       }, 300);
     } else if (target.className == "btn-disabled") { // проверка на деактивный класс
       target.value = "Вы ввели не все данные!";
-    } else if (target.className == "btn-active") { // проверка на активный класс
+    } else if (target.className == "btn-active") { // проверка на активный класс и валидность даты
       if ((dayField.value > 31) || (monthField.value > 12) || (yearField.value > new Date().getFullYear())) {
         target.value = "Такой даты не существует!";
       } else { // если все хорошо - генерировать сетку
