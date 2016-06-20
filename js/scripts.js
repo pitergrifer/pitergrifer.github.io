@@ -10,7 +10,7 @@ function AskingDate(options) {
   var startBtn = options.startBtn;
   var btnDefaultValue = startBtn.getAttribute('value');
   var result = options.result;
-  var loadTimeSleep = options.loadTimeSleep; 
+  var loadTimeSleep = options.loadTimeSleep;
     
   // вертикальная отцентровка объекта относительно окна
   var newTop = (document.documentElement.clientHeight / 2) - (elem.offsetHeight / 2);
@@ -265,7 +265,7 @@ function AskingDate(options) {
               elem.style.display = "none";
               result.style.visibility = "visible";
             }, generationTime + 400); // 400 - время на анимацию в мс
-          }, loadTimeSleep); // задержка необходима для мобильных устройсвт (виртуальная клавиатура влияет на генерацию сетки)
+          }, loadTimeSleep); // задержка необходима для мобильных устройств (виртуальная клавиатура влияет на генерацию сетки)
         } else {
           target.value = "Используйте только числа!";
         };
@@ -277,8 +277,12 @@ function AskingDate(options) {
   this.day = +dayField.value;
   this.month = +monthField.value;
   this.year = +yearField.value;
+  
+  // вывод переменной "result" в глобальную область
+  this.result = result;
 };
 
+// вызов объекта окна запроса даты рождения
 var askingDateWindow = new AskingDate({
   elem: document.querySelector('.ask-date'),
   day: document.getElementById('day'),
@@ -288,3 +292,26 @@ var askingDateWindow = new AskingDate({
   result: document.getElementById('result'),
   loadTimeSleep: 1000
 });
+
+/* Логика сетки-результата */
+function Result(options) {
+  var elem = options.elem;
+  var features = options.features;
+};
+
+// вызов объекта сетки-результата должен происходит через эту функцию...
+// она проверяет завершенность генерации сетки-результата
+function checkComplete() {
+  var childrensLength = askingDateWindow.result.children.length;
+  if (childrensLength == 0) {
+    setTimeout(function() {
+      checkComplete();
+    }, 1000);  
+  } else {
+    var result = new Result({
+      elem: askingDateWindow.result,
+      features: document.querySelectorAll('.feature')
+    });
+  };
+};
+checkComplete(); // вызов функци

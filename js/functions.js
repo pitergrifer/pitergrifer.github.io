@@ -12,7 +12,7 @@ function isMobile() {
   };
 };
 
-// функция проверки строки на наличие других символов, помимо цифр
+// функция проверки строки "str" на наличие других символов, помимо цифр
 function isDigit(str) {
   var regV = /([\D])/igm;
   var findChar = str.search(regV);
