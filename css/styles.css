@@ -288,10 +288,14 @@ html, body {
   -moz-box-shadow: 10px 10px 10px 0 #e0e0e0;
   -webkit-box-shadow: 10px 10px 10px 0 #e0e0e0;
   box-shadow: 10px 10px 10px 0 #e0e0e0;
-  -moz-transition: -moz-transform 0.4s border-color;
-  -o-transition: -o-transform 0.4s border-color;
-  -webkit-transition: -webkit-transform 0.4s border-color;
-  transition: transform 0.4s border-color;
+  -moz-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  -moz-transition-property: -moz-transform, border-color;
+  -o-transition-property: -o-transform, border-color;
+  -webkit-transition-property: -webkit-transform, border-color;
+  transition-property: transform, border-color;
   cursor: pointer;
 }
 .feature:hover {
