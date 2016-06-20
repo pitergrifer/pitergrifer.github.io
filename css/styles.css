@@ -65,28 +65,28 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
     transform: translateX(0px);
   }
   25% {
-    -moz-transform: translate(10px);
-    -ms-transform: translate(10px);
-    -webkit-transform: translate(10px);
-    transform: translate(10px);
+    -moz-transform: translateX(10px);
+    -ms-transform: translateX(10px);
+    -webkit-transform: translateX(10px);
+    transform: translateX(10px);
   }
   50% {
-    -moz-transform: translate(-20px);
-    -ms-transform: translate(-20px);
-    -webkit-transform: translate(-20px);
-    transform: translate(-20px);
+    -moz-transform: translateX(-20px);
+    -ms-transform: translateX(-20px);
+    -webkit-transform: translateX(-20px);
+    transform: translateX(-20px);
   }
   75% {
-    -moz-transform: translate(20px);
-    -ms-transform: translate(20px);
-    -webkit-transform: translate(20px);
-    transform: translate(20px);
+    -moz-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    -webkit-transform: translateX(20px);
+    transform: translateX(20px);
   }
   100% {
-    -moz-transform: translate(-10px);
-    -ms-transform: translate(-10px);
-    -webkit-transform: translate(-10px);
-    transform: translate(-10px);
+    -moz-transform: translateX(-10px);
+    -ms-transform: translateX(-10px);
+    -webkit-transform: translateX(-10px);
+    transform: translateX(-10px);
   }
 }
 /* ╨Э╨░╤З╨░╨╗╨╛ ╨▓╤Б╨╡╤Е ╤Б╤В╨╕╨╗╨╡╨╣ */
@@ -168,6 +168,10 @@ html, body {
   color: inherit;
   border: 1px solid #e0e0e0;
   background-color: #f7f7f7;
+  -moz-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
 }
 .ask-date div input:first-child {
   -moz-border-radius: 5px 0 0 5px;
@@ -284,10 +288,10 @@ html, body {
   -moz-box-shadow: 10px 10px 10px 0 #e0e0e0;
   -webkit-box-shadow: 10px 10px 10px 0 #e0e0e0;
   box-shadow: 10px 10px 10px 0 #e0e0e0;
-  -moz-transition: -moz-transform 0.4s;
-  -o-transition: -o-transform 0.4s;
-  -webkit-transition: -webkit-transform 0.4s;
-  transition: transform 0.4s;
+  -moz-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
   cursor: pointer;
 }
 .feature:hover {
@@ -335,5 +339,13 @@ html, body {
 
   .helper {
     width: 85%;
+  }
+
+  .feature:hover {
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    border-color: #b7b7b7;
   }
 }

@@ -21,4 +21,10 @@
   .helper {
     width: 85%;
   }
+  .feature {
+    &:hover {
+      @include transform(scale(1));
+      border-color: $border-ask-block-color-active;
+    }
+  }
 }
