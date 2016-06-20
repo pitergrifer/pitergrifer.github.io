@@ -57,6 +57,38 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 /* ╨ж╨▓╨╡╤В╨░ */
 /* ╨и╤А╨╕╤Д╤В╤Л ╨╕ ╤А╨░╨╖╨╝╨╡╤А╤Л */
+@keyframes warn {
+  0% {
+    -moz-transform: translateX(0px);
+    -ms-transform: translateX(0px);
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+  }
+  25% {
+    -moz-transform: translate(10px);
+    -ms-transform: translate(10px);
+    -webkit-transform: translate(10px);
+    transform: translate(10px);
+  }
+  50% {
+    -moz-transform: translate(-20px);
+    -ms-transform: translate(-20px);
+    -webkit-transform: translate(-20px);
+    transform: translate(-20px);
+  }
+  75% {
+    -moz-transform: translate(20px);
+    -ms-transform: translate(20px);
+    -webkit-transform: translate(20px);
+    transform: translate(20px);
+  }
+  100% {
+    -moz-transform: translate(-10px);
+    -ms-transform: translate(-10px);
+    -webkit-transform: translate(-10px);
+    transform: translate(-10px);
+  }
+}
 /* ╨Э╨░╤З╨░╨╗╨╛ ╨▓╤Б╨╡╤Е ╤Б╤В╨╕╨╗╨╡╨╣ */
 html, body {
   height: auto;
@@ -267,6 +299,15 @@ html, body {
 }
 
 /* ╨Ъ╨╛╨╜╨╡╤Ж ╤Б╤В╨╕╨╗╨╡╨╣ ╤Б╨╡╤В╨║╨╕-╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨░ */
+/* ╨б╤В╨╕╨╗╤М-╨░╨╜╨╕╨╝╨░╤Ж╨╕╤П ╨┐╤А╨╡╨┤╤Г╨┐╤А╨╡╨╢╨┤╨╡╨╜╨╕╤П ╨╛╨▒ ╨╛╤И╨╕╨▒╨║╨╡ */
+.warn {
+  color: rgba(255, 0, 0, 0.9);
+  -moz-animation: warn 0.3s linear;
+  -webkit-animation: warn 0.3s linear;
+  animation: warn 0.3s linear;
+}
+
+/* *** */
 /* ╨Ъ╨╛╨╜╨╡╤Ж ╨▓╤Б╨╡╤Е ╤Б╤В╨╕╨╗╨╡╨╣ */
 /* ╨Я╤А╨░╨▓╨╕╨╗╨░ ╨░╨┤╨░╨┐╤В╨╕╨▓╨╜╨╛╨│╨╛ ╨┤╨╕╨╖╨░╨╣╨╜╨░ (╤А╨░╨╖╨╝╨╡╤Й╨╡╨╜╨╕╨╡ ╨▓ ╨║╨╛╨╜╤Ж╨╡ ╨║╨╛╨┤╨░ ╨╛╨▒╤П╨╖╨░╤В╨╡╨╗╤М╨╜╨╛) */
 @media screen and (max-width: 565px) {

@@ -239,18 +239,25 @@ function AskingDate(options) {
     
     // изменение текста кнопки старта, в зависимости от класса валидности данных,
     // а также, в случае правильного ввода, переход на следующую стадию
-    if (target.className == 'btn-disabled') {
-      target.value = "Вы ввели не все данные!"; 
-    } else if (target.className == 'btn-active') {
+    if (target.className.search(/warn/ig) >= 0) { // проверка на наличие класса "warn"
+      return false;
+    } else if (target.value != "Начать тест") { // проверка value кнопки старта
+      var prevClass = target.className;
+      target.className += " warn";
+      setTimeout(function() {
+        target.className = prevClass;
+      }, 300);
+    } else if (target.className == "btn-disabled") { // проверка на деактивный класс
+      target.value = "Вы ввели не все данные!";
+    } else if (target.className == "btn-active") { // проверка на активный класс
       if ((dayField.value > 31) || (monthField.value > 12) || (yearField.value > new Date().getFullYear())) {
-        target.value = "Такой даты не существует!"
-      } else {
+        target.value = "Такой даты не существует!";
+      } else { // если все хорошо - генерировать сетку
         var fieldsValues = dayField.value + monthField.value + yearField.value;
         if (isDigit(fieldsValues)) {
           target.value = "Загрузка...";
           setTimeout(function() {
             genereteResult();
-            console.log(generationTime);
             setTimeout(function() {
               elem.className += " hide";
             }, generationTime);
