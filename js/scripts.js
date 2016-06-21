@@ -362,7 +362,7 @@ function Result(options) {
       fourthNumber += parseInt(thirdNumberAsString[0]);
     };
     
-    // получение строки-результата, из которой будет собираться наборы их одинаковых цифр 
+    // получение строки-результата, из которой будут собираться наборы из одинаковых цифр 
     return firstNumber.toString() + secondNumber.toString() + thirdNumber.toString() + fourthNumber.toString() + dayAndMonthAsStiring + yearAsString;
   };
   
