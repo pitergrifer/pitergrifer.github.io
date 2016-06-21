@@ -229,6 +229,7 @@ function AskingDate(options) {
         };
         result.style.top = calculateCenteringY + "px";
         result.style.left = document.body.clientWidth / 2 - result.offsetWidth / 2 + "px";
+        result.style.height = (blockFeature.offsetHeight * rows) + (15 * (rows - 1)) + "px";
       };
     };
     
@@ -367,6 +368,18 @@ function Result(options) {
   
   // создание переменной, содержащей расчитанную строку
   var calculationsResult = calculations();
+  
+  // сбор цифр в наборы
+  var number = {};
+  var pickUp = [];
+  for (var i = 1; i < 10; i++) {
+    pickUp = calculationsResult.match(new RegExp(i, 'ig'));
+    console.log(pickUp);
+    if (pickUp == null) {
+      pickUp = [];
+    };
+    number[i] = pickUp.length;
+  };
 };
 
 // вызов объекта сетки-результата должен происходит через эту функцию...
