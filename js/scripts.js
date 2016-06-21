@@ -11,7 +11,7 @@ function AskingDate(options) {
   var btnDefaultValue = startBtn.getAttribute('value');
   var result = options.result;
   var loadTimeSleep = options.loadTimeSleep;
-    
+  
   // вертикальная отцентровка объекта относительно окна
   var newTop = (document.documentElement.clientHeight / 2) - (elem.offsetHeight / 2);
   elem.style.top = newTop + "px";
@@ -87,11 +87,25 @@ function AskingDate(options) {
       // установка автофокуса и установка активного/деактивного класса кнопке начала теста   
       target.onkeyup = function() {
         keyPressed = false;
-
-        if (target.value.length == 2) { // установка автофокуса
-          target.nextElementSibling.focus();  
+        
+        function detectFieldLength() { // функция засечки длины активного поля ввода
+          if ((target.id == 'day') || (target.id == 'month')) {
+            return 2;
+          } else if (target.id == 'year') {
+            return 4;
+          };
+        };
+        
+        if (target.value.length == detectFieldLength()) { // установка автофокуса
+          if (detectFieldLength() == 2) {
+            target.nextElementSibling.focus();  
+          } else if (detectFieldLength() == 4) {
+            startBtn.focus();
+          };  
         } else if (target.value.length == 0) {
-          target.previousElementSibling.focus();
+          if (target.previousElementSibling != null) {
+            target.previousElementSibling.focus();
+          };
         };
 
         // установка класса на стартовую кнопку
@@ -164,7 +178,9 @@ function AskingDate(options) {
     // удаление подсказки после потери фокуса на цели
     target.onblur = function() {
       clearTimeout(timerForCoords);
-      document.body.removeChild(helper);
+      if (helper.getAttribute('style') != null) {
+        document.body.removeChild(helper);
+      };
     };
   };
   
@@ -274,11 +290,26 @@ function AskingDate(options) {
   };
   
   // вывод значений полей в глобальную область видимости
-  this.day = +dayField.value;
-  this.month = +monthField.value;
-  this.year = +yearField.value;
+  this.day = function() {
+    return +dayField.value; 
+  };
+  this.month = function() {
+    return +monthField.value;
+  };
+  this.year = function() {
+    return +yearField.value;  
+  };
   
-  // вывод переменной "result" в глобальную область
+  // вывод стадии готовности "result" в глобальную область
+  this.complete = function() {
+    if (result.children.length == 0) {
+      return false;
+    } else {
+      return true;
+    };
+  };
+  
+  // вывод элемента "result" в глобальную область видимости
   this.result = result;
 };
 
@@ -297,13 +328,51 @@ var askingDateWindow = new AskingDate({
 function Result(options) {
   var elem = options.elem;
   var features = options.features;
+  
+  // функця расчетов 
+  function calculations() {
+    // получение первого рабочего числа
+    var dayAndMonthAsStiring = askingDateWindow.day().toString() + askingDateWindow.month().toString(); 
+    var firstPart = 0;
+    for (var i = 0; i < dayAndMonthAsStiring.length; i++) {
+      firstPart += parseInt(dayAndMonthAsStiring[i]); 
+    };
+    var yearAsString = askingDateWindow.year().toString();
+    var secondPart = 0;
+    for (var j = 0; j < yearAsString.length; j++) {
+      secondPart += parseInt(yearAsString[j]);
+    };
+    var firstNumber = firstPart + secondPart;
+    
+    // получение второго рабочего числа
+    var firstNumberAsString = firstNumber.toString();
+    var secondNumber = 0;
+    for (var k = 0; k < firstNumberAsString.length; k++) {
+      secondNumber += parseInt(firstNumberAsString[k]);
+    };
+    
+    // получение третьего рабочего числа
+    var thirdNumber = firstNumber - (parseInt(askingDateWindow.day().toString()[0]) * 2);
+    
+    // получение четвертого рабочего числа
+    var thirdNumberAsString = thirdNumber.toString();
+    var fourthNumber = 0;
+    for (var l = 0; l < thirdNumberAsString.length; l++) {
+      fourthNumber += parseInt(thirdNumberAsString[0]);
+    };
+    
+    // получение строки-результата, из которой будет собираться наборы их одинаковых цифр 
+    return firstNumber.toString() + secondNumber.toString() + thirdNumber.toString() + fourthNumber.toString() + dayAndMonthAsStiring + yearAsString;
+  };
+  
+  // создание переменной, содержащей расчитанную строку
+  var calculationsResult = calculations();
 };
 
 // вызов объекта сетки-результата должен происходит через эту функцию...
 // она проверяет завершенность генерации сетки-результата
 function checkComplete() {
-  var childrensLength = askingDateWindow.result.children.length;
-  if (childrensLength == 0) {
+  if (!askingDateWindow.complete()) {
     setTimeout(function() {
       checkComplete();
     }, 1000);  
