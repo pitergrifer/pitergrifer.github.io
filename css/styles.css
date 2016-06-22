@@ -89,6 +89,20 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
     transform: translateX(-10px);
   }
 }
+@keyframes rotate-card {
+  0% {
+    -moz-transform: scale(1.1) perspective(1000px) rotateY(0deg);
+    -ms-transform: scale(1.1) perspective(1000px) rotateY(0deg);
+    -webkit-transform: scale(1.1) perspective(1000px) rotateY(0deg);
+    transform: scale(1.1) perspective(1000px) rotateY(0deg);
+  }
+  100% {
+    -moz-transform: scale(1.1) perspective(1000px) rotateY(360deg);
+    -ms-transform: scale(1.1) perspective(1000px) rotateY(360deg);
+    -webkit-transform: scale(1.1) perspective(1000px) rotateY(360deg);
+    transform: scale(1.1) perspective(1000px) rotateY(360deg);
+  }
+}
 /* ╨Э╨░╤З╨░╨╗╨╛ ╨▓╤Б╨╡╤Е ╤Б╤В╨╕╨╗╨╡╨╣ */
 html, body {
   height: auto;
@@ -305,14 +319,25 @@ html, body {
   transform: scale(1.1);
   z-index: 2;
 }
+.feature span {
+  position: relative;
+  display: inline-block;
+  font-size: 1.9em;
+}
 
 /* ╨Ъ╨╛╨╜╨╡╤Ж ╤Б╤В╨╕╨╗╨╡╨╣ ╤Б╨╡╤В╨║╨╕-╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨░ */
-/* ╨б╤В╨╕╨╗╤М-╨░╨╜╨╕╨╝╨░╤Ж╨╕╤П ╨┐╤А╨╡╨┤╤Г╨┐╤А╨╡╨╢╨┤╨╡╨╜╨╕╤П ╨╛╨▒ ╨╛╤И╨╕╨▒╨║╨╡ */
+/* ╨б╤В╨╕╨╗╨╕-╨░╨╜╨╕╨╝╨░╤Ж╨╕╨╕ */
 .warn {
   color: rgba(255, 0, 0, 0.9);
   -moz-animation: warn 0.3s linear;
   -webkit-animation: warn 0.3s linear;
   animation: warn 0.3s linear;
+}
+
+.rotate-card {
+  -moz-animation: rotate-card 1s ease-in forwards;
+  -webkit-animation: rotate-card 1s ease-in forwards;
+  animation: rotate-card 1s ease-in forwards;
 }
 
 /* *** */
