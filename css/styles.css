@@ -89,7 +89,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
     transform: translateX(-10px);
   }
 }
-@keyframes rotate-card {
+@keyframes rotate-card-normal {
   0% {
     -moz-transform: scale(1.1) perspective(1000px) rotateY(0deg);
     -ms-transform: scale(1.1) perspective(1000px) rotateY(0deg);
@@ -97,10 +97,24 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
     transform: scale(1.1) perspective(1000px) rotateY(0deg);
   }
   100% {
-    -moz-transform: scale(1.1) perspective(1000px) rotateY(360deg);
-    -ms-transform: scale(1.1) perspective(1000px) rotateY(360deg);
-    -webkit-transform: scale(1.1) perspective(1000px) rotateY(360deg);
-    transform: scale(1.1) perspective(1000px) rotateY(360deg);
+    -moz-transform: scale(1.1) perspective(1000px) rotateY(90deg);
+    -ms-transform: scale(1.1) perspective(1000px) rotateY(90deg);
+    -webkit-transform: scale(1.1) perspective(1000px) rotateY(90deg);
+    transform: scale(1.1) perspective(1000px) rotateY(90deg);
+  }
+}
+@keyframes rotate-card-reverse {
+  0% {
+    -moz-transform: scale(1.1) perspective(1000px) rotateY(-90deg);
+    -ms-transform: scale(1.1) perspective(1000px) rotateY(-90deg);
+    -webkit-transform: scale(1.1) perspective(1000px) rotateY(-90deg);
+    transform: scale(1.1) perspective(1000px) rotateY(-90deg);
+  }
+  100% {
+    -moz-transform: scale(1.1) perspective(1000px) rotateY(0deg);
+    -ms-transform: scale(1.1) perspective(1000px) rotateY(0deg);
+    -webkit-transform: scale(1.1) perspective(1000px) rotateY(0deg);
+    transform: scale(1.1) perspective(1000px) rotateY(0deg);
   }
 }
 /* ╨Э╨░╤З╨░╨╗╨╛ ╨▓╤Б╨╡╤Е ╤Б╤В╨╕╨╗╨╡╨╣ */
@@ -295,6 +309,10 @@ html, body {
 .feature {
   position: absolute;
   display: inline-block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 25px;
   text-align: center;
   text-shadow: 2px 2px 0 #e0e0e0;
   border: 1px solid #e0e0e0;
@@ -322,7 +340,6 @@ html, body {
 .feature span {
   position: relative;
   display: inline-block;
-  font-size: 1.9em;
 }
 
 /* ╨Ъ╨╛╨╜╨╡╤Ж ╤Б╤В╨╕╨╗╨╡╨╣ ╤Б╨╡╤В╨║╨╕-╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨░ */
@@ -334,10 +351,18 @@ html, body {
   animation: warn 0.3s linear;
 }
 
-.rotate-card {
-  -moz-animation: rotate-card 1s ease-in forwards;
-  -webkit-animation: rotate-card 1s ease-in forwards;
-  animation: rotate-card 1s ease-in forwards;
+.rotate-card-normal {
+  -moz-animation: rotate-card-normal 0.5s ease-in forwards;
+  -webkit-animation: rotate-card-normal 0.5s ease-in forwards;
+  animation: rotate-card-normal 0.5s ease-in forwards;
+  z-index: 2;
+}
+
+.rotate-card-reverse {
+  -moz-animation: rotate-card-reverse 0.5s ease-out forwards;
+  -webkit-animation: rotate-card-reverse 0.5s ease-out forwards;
+  animation: rotate-card-reverse 0.5s ease-out forwards;
+  z-index: 2;
 }
 
 /* *** */
@@ -376,5 +401,34 @@ html, body {
     -webkit-transform: scale(1);
     transform: scale(1);
     border-color: #b7b7b7;
+  }
+
+  @keyframes rotate-card-normal {
+    0% {
+      -moz-transform: perspective(1000px) rotateY(0deg);
+      -ms-transform: perspective(1000px) rotateY(0deg);
+      -webkit-transform: perspective(1000px) rotateY(0deg);
+      transform: perspective(1000px) rotateY(0deg);
+    }
+    100% {
+      -moz-transform: perspective(1000px) rotateY(90deg);
+      -ms-transform: perspective(1000px) rotateY(90deg);
+      -webkit-transform: perspective(1000px) rotateY(90deg);
+      transform: perspective(1000px) rotateY(90deg);
+    }
+  }
+  @keyframes rotate-card-reverse {
+    0% {
+      -moz-transform: perspective(1000px) rotateY(-90deg);
+      -ms-transform: perspective(1000px) rotateY(-90deg);
+      -webkit-transform: perspective(1000px) rotateY(-90deg);
+      transform: perspective(1000px) rotateY(-90deg);
+    }
+    100% {
+      -moz-transform: perspective(1000px) rotateY(0deg);
+      -ms-transform: perspective(1000px) rotateY(0deg);
+      -webkit-transform: perspective(1000px) rotateY(0deg);
+      transform: perspective(1000px) rotateY(0deg);
+    }
   }
 }

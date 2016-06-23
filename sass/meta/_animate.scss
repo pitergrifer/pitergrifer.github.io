@@ -16,11 +16,20 @@
   }
 }
 
-@keyframes rotate-card {
+@keyframes rotate-card-normal {
   0% {
     @include transform(scale(1.1) perspective(1000px) rotateY(0deg));
   }
   100% {
-    @include transform(scale(1.1) perspective(1000px) rotateY(360deg));
+    @include transform(scale(1.1) perspective(1000px) rotateY(90deg));
+  }
+}
+
+@keyframes rotate-card-reverse {
+  0% {
+    @include transform(scale(1.1) perspective(1000px) rotateY(-90deg));
+  }
+  100% {
+    @include transform(scale(1.1) perspective(1000px) rotateY(0deg));
   }
 }

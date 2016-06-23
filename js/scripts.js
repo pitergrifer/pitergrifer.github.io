@@ -488,18 +488,40 @@ function Result(options) {
       var titleBlock = document.createElement('span');
       titleBlock.appendChild(titleText);
       features[i].appendChild(titleBlock);
-      titleBlock.style.top = (features[i].offsetHeight / 2) - (titleBlock.offsetHeight / 2) + "px";
+      titleBlock.style.fontSize = titleBlock.parentElement.offsetWidth / 2 * 0.1 * 0.1 + "em";
+      titleBlock.style.top = (features[i].offsetHeight / 2) - (titleBlock.offsetHeight / 2) - 25 + "px";
       features[i].setAttribute('data-content', personalityPack[i + 1]);
     };
   }; fillFeatures();
   
+  // событие на клик по элементу result с делегированием
   elem.onclick = function(event) {
     event = event || window.event;
     var target = event.target;
     
-    if (target.getAttribute('class') != 'feature') return;
+    // функция поворота карты, принимающая аргумент target
+    function rotateCard(target) {
+      target.className += " rotate-card-normal";
+      setTimeout(function() {
+        target.firstChild.style.fontSize = target.offsetWidth / 2 * 0.1 * 0.1 + "em";
+        var cachedDataContent = target.firstChild.innerHTML; 
+        target.firstChild.innerHTML = target.getAttribute('data-content');
+        target.firstChild.style.top = (target.offsetHeight / 2) - (target.firstChild.offsetHeight / 2) - 25 + "px";
+        target.setAttribute('data-content', cachedDataContent);
+        target.className += " rotate-card-reverse";
+      }, 500);
+      setTimeout(function() {
+        target.className = "feature";
+      }, 1000);
+    };
     
-    //TODO
+    if ((target.getAttribute('class') == 'feature') && (target.tagName == "DIV")) {
+      rotateCard(target);
+    } else if (target.tagName == "SPAN") {
+      rotateCard(target.parentElement);
+    } else {
+      return;
+    };
   };
 };
 

@@ -167,6 +167,8 @@ html, body {
 .feature {
   position: absolute;
   display: inline-block;
+  @include box-sizing(border-box);
+  padding: 25px;
   text-align: center;
   @include text-shadow(2px 2px 0 $border-ask-block-color);
   border: 1px solid $border-ask-block-color;
@@ -182,7 +184,6 @@ html, body {
   span {
     position: relative;
     display: inline-block;
-    font-size: 1.9em;
   }
 }
 /* Конец стилей сетки-результата */
@@ -193,8 +194,14 @@ html, body {
   @include animation(warn 0.3s linear);
 }
 
-.rotate-card {
-  @include animation(rotate-card 1s ease-in forwards);
+.rotate-card-normal {
+  @include animation(rotate-card-normal 0.5s ease-in forwards);
+  z-index: 2;
+}
+
+.rotate-card-reverse {
+  @include animation(rotate-card-reverse 0.5s ease-out forwards);
+  z-index: 2;
 }
 /* *** */
 
