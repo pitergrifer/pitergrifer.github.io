@@ -491,8 +491,12 @@ function Result(options) {
       titleBlock.style.fontSize = titleBlock.parentElement.offsetWidth / 2 * 0.1 * 0.1 + "em";
       titleBlock.style.top = (features[i].offsetHeight / 2) - (titleBlock.offsetHeight / 2) - 25 + "px";
       features[i].setAttribute('data-content', personalityPack[i + 1]);
+      features[i].setAttribute('data-visited', 'false'); 
     };
   }; fillFeatures();
+  
+  // переменная, отсчитывающая количество кликов по карточкам
+  var clickCounter = 0;
   
   // событие на клик по элементу result с делегированием
   elem.onclick = function(event) {
@@ -501,7 +505,12 @@ function Result(options) {
     
     // функция поворота карты, принимающая аргумент target
     function rotateCard(target) {
+      if (target.getAttribute('data-visited') == 'false') { // проверка значения атрибута "посещенность"
+        clickCounter++; // если пользователь открыл карту первый раз, то увеличить переменную на один
+        target.setAttribute('data-visited', 'true');
+      };
       target.className += " rotate-card-normal";
+      // таймеры нужны для эффекта "переворота" карты
       setTimeout(function() {
         target.firstChild.style.fontSize = target.offsetWidth / 2 * 0.1 * 0.1 + "em";
         var cachedDataContent = target.firstChild.innerHTML; 
@@ -515,6 +524,7 @@ function Result(options) {
       }, 1000);
     };
     
+    // вызов функции поворота карты с разными аргументами, зависящими от условий 
     if ((target.getAttribute('class') == 'feature') && (target.tagName == "DIV")) {
       rotateCard(target);
     } else if (target.tagName == "SPAN") {

@@ -222,7 +222,8 @@ html, body {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: auto;
-  height: 50px;
+  min-height: 50px;
+  height: auto;
   margin-left: auto;
   margin-right: auto;
   font-family: "Anonymous Pro";
