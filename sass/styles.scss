@@ -198,12 +198,12 @@ html, body {
 
 .rotate-card-normal {
   @include animation(rotate-card-normal 0.5s ease-in forwards);
-  z-index: 2;
+  z-index: 3;
 }
 
 .rotate-card-reverse {
   @include animation(rotate-card-reverse 0.5s ease-out forwards);
-  z-index: 2;
+  z-index: 3;
 }
 /* *** */
 
@@ -214,6 +214,7 @@ html, body {
   display: block;
   width: auto;
   height: auto;
+  min-height: 50px;
   padding: 5px;
   text-align: center;
   font-family: inherit;
@@ -225,7 +226,9 @@ html, body {
   border-right: 1px solid $border-ask-block-color;
   background-color: rgba($bg-ask-block-color, .8);
   @include transition(all 1s);
+  @include animation(blink-restart-btn 1.5s ease-in infinite);
   cursor: pointer;
+  z-index: 4;
 }
 /* Конец стилей кнопки сброса результата */
 
