@@ -24,7 +24,6 @@
     @include transform(scale(1.1) perspective(1000px) rotateY(90deg));
   }
 }
-
 @keyframes rotate-card-reverse {
   0% {
     @include transform(scale(1.1) perspective(1000px) rotateY(-90deg));

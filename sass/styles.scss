@@ -163,6 +163,7 @@ html, body {
   display: block;
   text-align: center;
   visibility: hidden;
+  @include transition(0.4s transform);
 }
 
 .feature {
@@ -206,6 +207,27 @@ html, body {
 }
 /* *** */
 
+/* Кнопка сброса результата */
+#restart {
+  position: fixed;
+  top: 0;
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 1.9em;
+  color: inherit;
+  @include text-shadow(2px 2px 0 $border-ask-block-color);
+  border: 0;
+  border-bottom: 1px solid $border-ask-block-color;
+  border-right: 1px solid $border-ask-block-color;
+  background-color: rgba($bg-ask-block-color, .8);
+  @include transition(all 1s);
+  cursor: pointer;
+}
+/* Конец стилей кнопки сброса результата */
 
 /* Конец всех стилей */
 

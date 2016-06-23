@@ -275,6 +275,7 @@ function AskingDate(options) {
           target.value = "Загрузка...";
           setTimeout(function() {
             genereteResult();
+            console.log(generationTime);
             setTimeout(function() {
               elem.className += " hide";
             }, generationTime);
@@ -289,6 +290,11 @@ function AskingDate(options) {
       };
     };
   };
+  
+  // вывод объектов полей в глобальную область 
+  this.dayField = dayField;
+  this.monthField = monthField;
+  this.yearField = yearField;
   
   // вывод значений полей в глобальную область видимости
   this.day = function() {
@@ -312,6 +318,8 @@ function AskingDate(options) {
   
   // вывод элемента "result" в глобальную область видимости
   this.result = result;
+  
+  this.startBtn = startBtn;
 };
 
 // вызов объекта окна запроса даты рождения
@@ -532,10 +540,15 @@ function Result(options) {
     } else {
       return;
     };
+    
+    // если счетчик кликов ровняется 9 - показать кнопку повторного начала теста 
+    if (clickCounter == 9) {
+      document.getElementById('restart').style.top = "0";
+    };
   };
 };
 
-// вызов объекта сетки-результата должен происходит через эту функцию...
+// вызов объекта сетки-результата должен происходит через эту рекурсивную функцию...
 // она проверяет завершенность генерации сетки-результата
 function checkComplete() {
   if (!askingDateWindow.complete()) {
@@ -549,3 +562,42 @@ function checkComplete() {
     });
   };
 }; checkComplete(); // вызов функци
+
+/* Логика кнопки повторного начала теста */
+function RestartTest(options) {
+  var elem = options.elem;
+  var ask = options.ask;
+  var startBtn = options.start
+  
+  elem.style.top = elem.offsetHeight * -1 + "px";
+  
+  elem.onclick = function() {
+    this.style.top = this.offsetHeight * -1 + "px";
+    
+    askingDateWindow.dayField.value = "";
+    askingDateWindow.monthField.value = "";
+    askingDateWindow.yearField.value = "";
+    
+    askingDateWindow.startBtn.value = "Начать тест";
+    askingDateWindow.startBtn.className = "btn-disabled";
+    
+    askingDateWindow.result.className = "hide";
+    
+    setTimeout(function() {
+      askingDateWindow.result.removeAttribute('class');
+      
+      askingDateWindow.result.removeAttribute('style');
+      askingDateWindow.result.innerHTML = "";
+      
+      ask.style.display = "block";
+      ask.className = "ask-date";
+      
+      checkComplete();
+    }, 400);
+  };
+};
+
+var restartTest = new RestartTest({
+  elem: document.getElementById('restart'),
+  ask: document.querySelector('.ask-date')
+});

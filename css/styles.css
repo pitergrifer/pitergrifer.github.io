@@ -305,6 +305,10 @@ html, body {
   display: block;
   text-align: center;
   visibility: hidden;
+  -moz-transition: -moz-transform 0.4s;
+  -o-transition: -o-transform 0.4s;
+  -webkit-transition: -webkit-transform 0.4s;
+  transition: transform 0.4s;
 }
 
 .feature {
@@ -367,6 +371,31 @@ html, body {
 }
 
 /* *** */
+/* ╨Ъ╨╜╨╛╨┐╨║╨░ ╤Б╨▒╤А╨╛╤Б╨░ ╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨░ */
+#restart {
+  position: fixed;
+  top: 0;
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 1.9em;
+  color: inherit;
+  text-shadow: 2px 2px 0 #e0e0e0;
+  border: 0;
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  background-color: rgba(244, 244, 244, 0.8);
+  -moz-transition: all 1s;
+  -o-transition: all 1s;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+  cursor: pointer;
+}
+
+/* ╨Ъ╨╛╨╜╨╡╤Ж ╤Б╤В╨╕╨╗╨╡╨╣ ╨║╨╜╨╛╨┐╨║╨╕ ╤Б╨▒╤А╨╛╤Б╨░ ╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨░ */
 /* ╨Ъ╨╛╨╜╨╡╤Ж ╨▓╤Б╨╡╤Е ╤Б╤В╨╕╨╗╨╡╨╣ */
 /* ╨Я╤А╨░╨▓╨╕╨╗╨░ ╨░╨┤╨░╨┐╤В╨╕╨▓╨╜╨╛╨│╨╛ ╨┤╨╕╨╖╨░╨╣╨╜╨░ (╤А╨░╨╖╨╝╨╡╤Й╨╡╨╜╨╕╨╡ ╨▓ ╨║╨╛╨╜╤Ж╨╡ ╨║╨╛╨┤╨░ ╨╛╨▒╤П╨╖╨░╤В╨╡╨╗╤М╨╜╨╛) */
 @media screen and (max-width: 565px) {
@@ -431,5 +460,10 @@ html, body {
       -webkit-transform: perspective(1000px) rotateY(0deg);
       transform: perspective(1000px) rotateY(0deg);
     }
+  }
+  #restart {
+    width: 100%;
+    font-size: 1.1em;
+    border-right: 0;
   }
 }
