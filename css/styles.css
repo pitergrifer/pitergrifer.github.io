@@ -381,7 +381,7 @@ html, body {
   z-index: 3;
 }
 
-/* *** */
+/* ╨Ъ╨╛╨╜╨╡╤Ж ╤Б╤В╨╕╨╗╨╡╨╣-╨░╨╜╨╕╨╝╨░╤Ж╨╕╨╣ */
 /* ╨Ъ╨╜╨╛╨┐╨║╨░ ╤Б╨▒╤А╨╛╤Б╨░ ╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨░ */
 #restart {
   position: fixed;
@@ -412,6 +412,38 @@ html, body {
 }
 
 /* ╨Ъ╨╛╨╜╨╡╤Ж ╤Б╤В╨╕╨╗╨╡╨╣ ╨║╨╜╨╛╨┐╨║╨╕ ╤Б╨▒╤А╨╛╤Б╨░ ╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨░ */
+/* ╨б╤В╨╕╨╗╨╕ ╨▒╨╗╨╛╨║╨░ ╤Б ╨╕╨╜╤Д╨╛╤А╨╝╨░╨╕╨╡╨╣ ╨╛ ╤В╨╡╤Б╤В╨╡ */
+#info {
+  position: absolute;
+  display: block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 500px;
+  height: auto;
+  text-shadow: 2px 2px 0 #e0e0e0;
+  border: 10px solid #f4f4f4;
+  background-color: #f4f4f4;
+  -moz-transition: -moz-transform 0.4s;
+  -o-transition: -o-transform 0.4s;
+  -webkit-transition: -webkit-transform 0.4s;
+  transition: transform 0.4s;
+  overflow: hidden;
+}
+#info span {
+  text-align: left;
+  font-size: 1.1em;
+}
+#info div {
+  position: fixed;
+  display: block;
+  width: 10px;
+  border-radius: 5px;
+  background-color: rgba(56, 56, 56, 0.5);
+  cursor: pointer;
+}
+
+/* ╨Ъ╨╛╨╜╨╡╤Ж ╤Б╤В╨╕╨╗╨╡╨╣ ╨▒╨╗╨╛╨║╨░ ╤Б ╨╕╨╜╤Д╨╛╤А╨╝╨░╨╕╨╡╨╣ ╨╛ ╤В╨╡╤Б╤В╨╡ */
 /* ╨Ъ╨╛╨╜╨╡╤Ж ╨▓╤Б╨╡╤Е ╤Б╤В╨╕╨╗╨╡╨╣ */
 /* ╨Я╤А╨░╨▓╨╕╨╗╨░ ╨░╨┤╨░╨┐╤В╨╕╨▓╨╜╨╛╨│╨╛ ╨┤╨╕╨╖╨░╨╣╨╜╨░ (╤А╨░╨╖╨╝╨╡╤Й╨╡╨╜╨╕╨╡ ╨▓ ╨║╨╛╨╜╤Ж╨╡ ╨║╨╛╨┤╨░ ╨╛╨▒╤П╨╖╨░╤В╨╡╨╗╤М╨╜╨╛) */
 @media screen and (max-width: 565px) {

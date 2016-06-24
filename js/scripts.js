@@ -322,7 +322,7 @@ function AskingDate(options) {
   this.startBtn = startBtn;
 };
 
-// вызов объекта окна запроса даты рождения
+// Создание объекта окна запроса даты рождения
 var askingDateWindow = new AskingDate({
   elem: document.querySelector('.ask-date'),
   day: document.getElementById('day'),
@@ -548,7 +548,7 @@ function Result(options) {
   };
 };
 
-// вызов объекта сетки-результата должен происходит через эту рекурсивную функцию...
+// Создание объекта сетки-результата должно происходить через эту рекурсивную функцию...
 // она проверяет завершенность генерации сетки-результата
 function checkComplete() {
   if (!askingDateWindow.complete()) {
@@ -563,7 +563,7 @@ function checkComplete() {
   };
 }; checkComplete(); // вызов функци
 
-/* Логика кнопки повторного начала теста */
+/* Логика объекта кнопки повторного начала теста */
 function RestartTest(options) {
   var elem = options.elem;
   var ask = options.ask;
@@ -597,7 +597,78 @@ function RestartTest(options) {
   };
 };
 
+// Создание кнопки повторного начала теста
 var restartTest = new RestartTest({
   elem: document.getElementById('restart'),
   ask: document.querySelector('.ask-date')
+});
+
+/* Логика объекта информационного окна */
+function AboutTest(options) {
+  var elem = options.elem;
+  var infoText = options.infoText;
+  var scroller = options.scroller;
+  
+  // установка размеров инфрмационного окна, относительно окна запроса даты рождения
+  var askingDateWindowWidth = document.querySelector('.ask-date').offsetWidth;
+  elem.style.width = askingDateWindowWidth + "px";
+  var askingDateWindowHeight = document.querySelector('.ask-date').offsetHeight;
+  elem.style.height = askingDateWindowHeight + "px";
+  
+  // горизонтальное и вертикальное позиционирование информационного окна
+  var askingDateWindowCoords = document.querySelector('.ask-date').getBoundingClientRect();
+  elem.style.left = askingDateWindowCoords.left + "px";
+  elem.style.top = askingDateWindowCoords.top + "px";
+  
+  // позиционирование полосы прокрутки
+  var infoCoords = elem.getBoundingClientRect();
+  if (elem.clientHeight < infoText.offsetHeight) {
+      var scrollerHeight = elem.clientHeight - (infoText.offsetHeight - elem.clientHeight);
+    if (scrollerHeight < 10) {
+      scrollerHeight = 10;
+    };
+      scroller.style.height = scrollerHeight + "px";
+  };
+  scroller.style.top = infoCoords.top + 10 + "px";
+  scroller.style.left = infoCoords.right - scroller.offsetWidth + "px";
+  
+  // отслеживание события "перетаскивания" ползунка
+  scroller.onmousedown = function(event) {
+    event = event || window.event;
+    
+    function dragScroller(event) {
+      var scrollerCoordsOld = scroller.getBoundingClientRect();
+      var newTop = event.clientY;
+      var topEdge = infoCoords.top + 10;
+      var bottomEdge = elem.clientHeight - scroller.offsetHeight + 10;
+      if (newTop < topEdge) {
+        newTop = topEdge;
+      } else if (newTop > (bottomEdge + infoCoords.top)) {
+        newTop = bottomEdge + infoCoords.top;
+      };
+      scroller.style.top = newTop + "px";
+      var scrollerCoordsNew = scroller.getBoundingClientRect();
+      elem.scrollBy(0, (scrollerCoordsNew.top - scrollerCoordsOld.top));
+    };
+    
+    dragScroller(event);
+    
+    document.onmousemove = function(event) {
+      dragScroller(event);
+    };
+    
+    document.onmouseup = function() {
+      document.onmousemove = null;
+      document.onmouseup = null;
+    };
+    
+    return false;
+  };
+};
+
+// Создание информационного окна
+var aboutTest = new AboutTest({
+  elem: document.getElementById('info'),
+  infoText: document.querySelector('#info span'),
+  scroller: document.querySelector('#info div')
 });

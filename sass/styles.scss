@@ -205,7 +205,7 @@ html, body {
   @include animation(rotate-card-reverse 0.5s ease-out forwards);
   z-index: 3;
 }
-/* *** */
+/* Конец стилей-анимаций */
 
 /* Кнопка сброса результата */
 #restart {
@@ -231,6 +231,33 @@ html, body {
   z-index: 4;
 }
 /* Конец стилей кнопки сброса результата */
+
+/* Стили блока с информаией о тесте */
+#info {
+  position: absolute;
+  display: block;
+  @include box-sizing(border-box);
+  width: 500px;
+  height: auto;
+  @include text-shadow(2px 2px 0 $border-ask-block-color);
+  border: 10px solid $bg-ask-block-color;
+  background-color: $bg-ask-block-color;
+  @include transition(0.4s transform);
+  overflow: hidden;
+  span {
+    text-align: left;
+    font-size: 1.1em;
+  }
+  div {
+    position: fixed;
+    display: block;
+    width: 10px;
+    border-radius: 5px;
+    background-color: rgba($main-font-color,.5);
+    cursor: pointer;
+  }
+}
+/* Конец стилей блока с информаией о тесте */
 
 /* Конец всех стилей */
 
