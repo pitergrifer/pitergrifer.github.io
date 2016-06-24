@@ -636,27 +636,38 @@ function AboutTest(options) {
   scroller.onmousedown = function(event) {
     event = event || window.event;
     
+    // переменная для корректного расчета координат "захвата" курсором ползунка
+    var сorrectPick = event.clientY - scroller.getBoundingClientRect().top;
+    
+    // функция расчета новых координат ползунка и скролирование текста
     function dragScroller(event) {
-      var scrollerCoordsOld = scroller.getBoundingClientRect();
-      var newTop = event.clientY;
-      var topEdge = infoCoords.top + 10;
-      var bottomEdge = elem.clientHeight - scroller.offsetHeight + 10;
-      if (newTop < topEdge) {
+      
+      var scrollerCoordsOld = scroller.getBoundingClientRect(); // первоначальные координаты ползунка
+      var newTop = event.clientY - сorrectPick; // смещение ползунка по оси Y
+      var topEdge = infoCoords.top + 10; // вычисление максимально допустимой верхней границы прокрутки
+      var bottomEdge = elem.clientHeight - scroller.offsetHeight + 10; // вычисление максимально допустимой нижней границы прокрутки
+      
+      if (newTop < topEdge) { // проверка на "вылет" за верхнюю границу 
         newTop = topEdge;
-      } else if (newTop > (bottomEdge + infoCoords.top)) {
+      } else if (newTop > (bottomEdge + infoCoords.top)) { // проверка на "вылет" за нижнюю границу
         newTop = bottomEdge + infoCoords.top;
       };
-      scroller.style.top = newTop + "px";
+      
+      scroller.style.top = newTop + "px"; // установка новых координат ползунка
+      
+      // прокрутка видимой области в зависимости от разницы первоначальных и конечных координат ползунка 
       var scrollerCoordsNew = scroller.getBoundingClientRect();
       elem.scrollBy(0, (scrollerCoordsNew.top - scrollerCoordsOld.top));
     };
     
     dragScroller(event);
     
+    // отслеживание события перемещения ползунка на документе, чтобы избежать проблемы с потерей захвата последнего 
     document.onmousemove = function(event) {
       dragScroller(event);
     };
     
+    // отслеживание прекращения перемещения ползунка
     document.onmouseup = function() {
       document.onmousemove = null;
       document.onmouseup = null;

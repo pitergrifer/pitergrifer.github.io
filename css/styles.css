@@ -415,7 +415,7 @@ html, body {
 /* ╨б╤В╨╕╨╗╨╕ ╨▒╨╗╨╛╨║╨░ ╤Б ╨╕╨╜╤Д╨╛╤А╨╝╨░╨╕╨╡╨╣ ╨╛ ╤В╨╡╤Б╤В╨╡ */
 #info {
   position: absolute;
-  display: block;
+  display: none;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;

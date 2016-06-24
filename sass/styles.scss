@@ -235,7 +235,7 @@ html, body {
 /* Стили блока с информаией о тесте */
 #info {
   position: absolute;
-  display: block;
+  display: none;
   @include box-sizing(border-box);
   width: 500px;
   height: auto;
