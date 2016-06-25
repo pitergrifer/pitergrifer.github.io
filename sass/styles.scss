@@ -58,6 +58,21 @@ html, body {
     display: block;
     margin-bottom: 25px;
     font-size: 1.9em;
+    h1 {
+      margin-bottom: 25px;
+      border-bottom: 1px solid $border-ask-block-color;
+      .more-info {
+        position: relative;
+        display: inline-block;
+        @include transition(0.4s transform);
+        cursor: pointer;
+      }
+      &:hover {
+        .more-info {
+          @include transform(scale(1.5)); 
+        }
+      }
+    }
   }
   div {
     position: relative;
@@ -242,9 +257,9 @@ html, body {
   @include text-shadow(2px 2px 0 $border-ask-block-color);
   border: 10px solid $bg-ask-block-color;
   background-color: $bg-ask-block-color;
-  @include transition(0.4s transform);
   overflow: hidden;
   span {
+    display: block;
     text-align: left;
     font-size: 1.1em;
   }
@@ -254,6 +269,7 @@ html, body {
     width: 10px;
     border-radius: 5px;
     background-color: rgba($main-font-color,.5);
+    @include transition(0.4s background-color);
     cursor: pointer;
   }
 }

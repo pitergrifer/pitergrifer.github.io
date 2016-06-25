@@ -4,6 +4,9 @@
     @include box-sizing(border-box);
     span {
       font-size: 1.1em;
+      h1 {
+        font-size: 1.3em;
+      }
     }
     div {
       input, input:first-child, input:last-child {

@@ -608,6 +608,9 @@ function AboutTest(options) {
   var elem = options.elem;
   var infoText = options.infoText;
   var scroller = options.scroller;
+  var showInfoBtn = options.showInfoBtn;
+  
+  elem.style.display = "block";
   
   // установка размеров инфрмационного окна, относительно окна запроса даты рождения
   var askingDateWindowWidth = document.querySelector('.ask-date').offsetWidth;
@@ -615,71 +618,118 @@ function AboutTest(options) {
   var askingDateWindowHeight = document.querySelector('.ask-date').offsetHeight;
   elem.style.height = askingDateWindowHeight + "px";
   
-  // горизонтальное и вертикальное позиционирование информационного окна
-  var askingDateWindowCoords = document.querySelector('.ask-date').getBoundingClientRect();
-  elem.style.left = askingDateWindowCoords.left + "px";
-  elem.style.top = askingDateWindowCoords.top + "px";
-  
-  // позиционирование полосы прокрутки
-  var infoCoords = elem.getBoundingClientRect();
-  if (elem.clientHeight < infoText.offsetHeight) {
-      var scrollerHeight = elem.clientHeight - (infoText.offsetHeight - elem.clientHeight);
-    if (scrollerHeight < 10) {
-      scrollerHeight = 10;
+  if (!isMobile()) { // ветка функции скроллинга для настольных устройств
+    // горизонтальное и вертикальное позиционирование информационного окна
+    var askingDateWindowCoords = document.querySelector('.ask-date').getBoundingClientRect();
+    elem.style.left = askingDateWindowCoords.left + "px";
+    elem.style.top = askingDateWindowCoords.top + "px";
+    
+    // позиционирование полосы прокрутки
+    var infoCoords = elem.getBoundingClientRect();
+    if (elem.clientHeight < infoText.offsetHeight) {
+        var scrollerHeight = elem.clientHeight - (infoText.offsetHeight - elem.clientHeight);
+        console.log(scrollerHeight);
+      if (scrollerHeight < 10) {
+        scrollerHeight = 10;
+      };
+        scroller.style.height = scrollerHeight + "px";
     };
-      scroller.style.height = scrollerHeight + "px";
-  };
-  scroller.style.top = infoCoords.top + 10 + "px";
-  scroller.style.left = infoCoords.right - scroller.offsetWidth + "px";
-  
-  // отслеживание события "перетаскивания" ползунка
-  scroller.onmousedown = function(event) {
-    event = event || window.event;
+    scroller.style.top = infoCoords.top + 10 + "px";
+    scroller.style.left = infoCoords.right - scroller.offsetWidth + "px";
     
-    // переменная для корректного расчета координат "захвата" курсором ползунка
-    var сorrectPick = event.clientY - scroller.getBoundingClientRect().top;
-    
-    // функция расчета новых координат ползунка и скролирование текста
-    function dragScroller(event) {
+    // отслеживание события "перетаскивания" ползунка
+    scroller.onmousedown = function(event) {
+      event = event || window.event;
       
-      var scrollerCoordsOld = scroller.getBoundingClientRect(); // первоначальные координаты ползунка
-      var newTop = event.clientY - сorrectPick; // смещение ползунка по оси Y
+      // переменная для корректного расчета координат "захвата" курсором ползунка
+      var сorrectPick = event.clientY - scroller.getBoundingClientRect().top;
+      
+      // функция расчета новых координат ползунка и скролирование текста
+      function dragScroller(event) {
+        
+        var scrollerCoordsOld = scroller.getBoundingClientRect(); // первоначальные координаты ползунка
+        var newTop = event.clientY - сorrectPick; // смещение ползунка по оси Y
+        var topEdge = infoCoords.top + 10; // вычисление максимально допустимой верхней границы прокрутки
+        var bottomEdge = elem.clientHeight - scroller.offsetHeight + 10; // вычисление максимально допустимой нижней границы прокрутки
+        
+        if (newTop < topEdge) { // проверка на "вылет" за верхнюю границу 
+          newTop = topEdge;
+        } else if (newTop > (bottomEdge + infoCoords.top)) { // проверка на "вылет" за нижнюю границу
+          newTop = bottomEdge + infoCoords.top;
+        };
+        
+        scroller.style.top = newTop + "px"; // установка новых координат ползунка
+        
+        // прокрутка видимой области в зависимости от разницы первоначальных и конечных координат ползунка 
+        var scrollerCoordsNew = scroller.getBoundingClientRect();
+        var scrollSpeed = scrollerCoordsNew.top - scrollerCoordsOld.top;
+        elem.scrollBy(0, scrollSpeed);
+      };
+      
+      dragScroller(event);
+      
+      // отслеживание события перемещения ползунка на документе, чтобы избежать проблемы с потерей захвата последнего 
+      document.onmousemove = function(event) {
+        dragScroller(event);
+      };
+      
+      // отслеживание прекращения перемещения ползунка
+      document.onmouseup = function() {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+      
+      return false;
+    };
+    
+    // функция расчета скроллинга. Используется в событии "onkeydown" на document  
+    function letsScroll(event, arrowKeyCode, pageBtnKeyCode, positivity) {
+      var scrollStep; // шаг скроллинга в пикселях
+      // блок с условиями, задающими размер шага скроллинга
+      if (event.keyCode == arrowKeyCode || event.keyCode == arrowKeyCode) {
+        scrollStep = 10 * positivity; 
+      } else if (event.keyCode == pageBtnKeyCode || event.keyCode == pageBtnKeyCode) {
+        scrollStep = scroller.offsetHeight * positivity;
+      };
+      
+      // прокрутка блока
+      elem.scrollBy(0, scrollStep);
+      
+      // автоматическая прокрутка ползунка
+      var newTop = scroller.getBoundingClientRect().top + scrollStep; // смещение ползунка по оси Y
       var topEdge = infoCoords.top + 10; // вычисление максимально допустимой верхней границы прокрутки
       var bottomEdge = elem.clientHeight - scroller.offsetHeight + 10; // вычисление максимально допустимой нижней границы прокрутки
-      
       if (newTop < topEdge) { // проверка на "вылет" за верхнюю границу 
         newTop = topEdge;
       } else if (newTop > (bottomEdge + infoCoords.top)) { // проверка на "вылет" за нижнюю границу
         newTop = bottomEdge + infoCoords.top;
       };
       
-      scroller.style.top = newTop + "px"; // установка новых координат ползунка
+      // возвратить значение для последующего использования
+      return newTop;
+    };
+    
+    // отслеживания события скроллинга кнопками клавиатуры
+    document.onkeydown = function(event) {
+      event = event || window.event;
       
-      // прокрутка видимой области в зависимости от разницы первоначальных и конечных координат ползунка 
-      var scrollerCoordsNew = scroller.getBoundingClientRect();
-      elem.scrollBy(0, (scrollerCoordsNew.top - scrollerCoordsOld.top));
+      // блок с условиями 
+      if (event.keyCode == 38 || event.keyCode == 33) { // условие на нажатие стрелки "Вверх" или "Page Up" 
+        scroller.style.top = letsScroll(event, 38, 33, -1) + "px";
+      } else if (event.keyCode == 40 || event.keyCode == 34) { // условие на нажатие стрелки "Вниз"
+        scroller.style.top = letsScroll(event, 40, 34, 1) + "px";
+      };
     };
-    
-    dragScroller(event);
-    
-    // отслеживание события перемещения ползунка на документе, чтобы избежать проблемы с потерей захвата последнего 
-    document.onmousemove = function(event) {
-      dragScroller(event);
-    };
-    
-    // отслеживание прекращения перемещения ползунка
-    document.onmouseup = function() {
-      document.onmousemove = null;
-      document.onmouseup = null;
-    };
-    
-    return false;
+  } else { // ветка скроллинга для мобильных устройств
+    elem.style.overflowY = "scroll";
   };
 };
 
-// Создание информационного окна
-var aboutTest = new AboutTest({
-  elem: document.getElementById('info'),
-  infoText: document.querySelector('#info span'),
-  scroller: document.querySelector('#info div')
-});
+// Создание информационного окна (происходит через событие "onclick" на специальной кнопке)
+document.querySelector('.ask-date .more-info').onclick = function() {
+  var aboutTest = new AboutTest({
+    elem: document.getElementById('info'),
+    infoText: document.querySelector('#info span'),
+    scroller: document.querySelector('#info div')
+  });
+};

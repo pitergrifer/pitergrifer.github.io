@@ -188,6 +188,25 @@ html, body {
   margin-bottom: 25px;
   font-size: 1.9em;
 }
+.ask-date span h1 {
+  margin-bottom: 25px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.ask-date span h1 .more-info {
+  position: relative;
+  display: inline-block;
+  -moz-transition: -moz-transform 0.4s;
+  -o-transition: -o-transform 0.4s;
+  -webkit-transition: -webkit-transform 0.4s;
+  transition: transform 0.4s;
+  cursor: pointer;
+}
+.ask-date span h1:hover .more-info {
+  -moz-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
+}
 .ask-date div {
   position: relative;
   display: block;
@@ -424,13 +443,10 @@ html, body {
   text-shadow: 2px 2px 0 #e0e0e0;
   border: 10px solid #f4f4f4;
   background-color: #f4f4f4;
-  -moz-transition: -moz-transform 0.4s;
-  -o-transition: -o-transform 0.4s;
-  -webkit-transition: -webkit-transform 0.4s;
-  transition: transform 0.4s;
   overflow: hidden;
 }
 #info span {
+  display: block;
   text-align: left;
   font-size: 1.1em;
 }
@@ -440,6 +456,10 @@ html, body {
   width: 10px;
   border-radius: 5px;
   background-color: rgba(56, 56, 56, 0.5);
+  -moz-transition: background-color 0.4s;
+  -o-transition: background-color 0.4s;
+  -webkit-transition: background-color 0.4s;
+  transition: background-color 0.4s;
   cursor: pointer;
 }
 
@@ -455,6 +475,9 @@ html, body {
   }
   .ask-date span {
     font-size: 1.1em;
+  }
+  .ask-date span h1 {
+    font-size: 1.3em;
   }
   .ask-date div input, .ask-date div input:first-child, .ask-date div input:last-child {
     display: block;
