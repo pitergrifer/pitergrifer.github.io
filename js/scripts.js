@@ -627,8 +627,7 @@ function AboutTest(options) {
     // позиционирование полосы прокрутки
     var infoCoords = elem.getBoundingClientRect();
     if (elem.clientHeight < infoText.offsetHeight) {
-        var scrollerHeight = elem.clientHeight - (infoText.offsetHeight - elem.clientHeight);
-        console.log(scrollerHeight);
+      var scrollerHeight = (elem.clientHeight / 100) * (elem.clientHeight / (infoText.offsetHeight / 100));
       if (scrollerHeight < 10) {
         scrollerHeight = 10;
       };
@@ -636,6 +635,8 @@ function AboutTest(options) {
     };
     scroller.style.top = infoCoords.top + 10 + "px";
     scroller.style.left = infoCoords.right - scroller.offsetWidth + "px";
+    
+    //TODO: написать нормальную функцию прокрутки
     
     // отслеживание события "перетаскивания" ползунка
     scroller.onmousedown = function(event) {
@@ -660,10 +661,13 @@ function AboutTest(options) {
         
         scroller.style.top = newTop + "px"; // установка новых координат ползунка
         
-        // прокрутка видимой области в зависимости от разницы первоначальных и конечных координат ползунка 
-        var scrollerCoordsNew = scroller.getBoundingClientRect();
-        var scrollSpeed = scrollerCoordsNew.top - scrollerCoordsOld.top;
-        elem.scrollBy(0, scrollSpeed);
+        // прокрутка видимой области (устанавливается через отступы, так как .scrollBy(x,y) не принимает дробные значения)
+        var scrollerCoordsNew = scroller.getBoundingClientRect()
+        var ratioFactor = infoText.offsetHeight / elem.clientHeight; // коэфициент соотношения высот блока с текстом и видимой области
+        var scrollSpeed = (scrollerCoordsNew.top - scrollerCoordsOld.top) * ratioFactor;
+        var oldInfoTextPosition = infoText.getBoundingClientRect().top - elem.getBoundingClientRect().top - 10;
+        var newInfoTextPosition = oldInfoTextPosition - scrollSpeed;
+        infoText.style.top = newInfoTextPosition + "px";
       };
       
       dragScroller(event);

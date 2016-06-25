@@ -259,9 +259,10 @@ html, body {
   background-color: $bg-ask-block-color;
   overflow: hidden;
   span {
+    position: relative;
     display: block;
     text-align: left;
-    font-size: 1.1em;
+    font-size: 1.2em;
   }
   div {
     position: fixed;
