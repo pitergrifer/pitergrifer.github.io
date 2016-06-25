@@ -618,12 +618,12 @@ function AboutTest(options) {
   var askingDateWindowHeight = document.querySelector('.ask-date').offsetHeight;
   elem.style.height = askingDateWindowHeight + "px";
   
+  // горизонтальное и вертикальное позиционирование информационного окна
+  var askingDateWindowCoords = document.querySelector('.ask-date').getBoundingClientRect();
+  elem.style.left = askingDateWindowCoords.left + "px";
+  elem.style.top = askingDateWindowCoords.top + "px";
+  
   if (!isMobile()) { // ветка функции скроллинга для настольных устройств
-    // горизонтальное и вертикальное позиционирование информационного окна
-    var askingDateWindowCoords = document.querySelector('.ask-date').getBoundingClientRect();
-    elem.style.left = askingDateWindowCoords.left + "px";
-    elem.style.top = askingDateWindowCoords.top + "px";
-    
     // позиционирование полосы прокрутки
     var infoCoords = elem.getBoundingClientRect();
     if (elem.clientHeight < infoText.offsetHeight) {
