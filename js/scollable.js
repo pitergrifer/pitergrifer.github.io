@@ -8,6 +8,24 @@
  */
 
 Element.prototype.scrollable = function(settings) {
+  function eventListener(action, element, type, func) {
+    if (action == 'add') {
+      if (document.addEventListener) {
+      element.addEventListener(type, func);
+      } else {
+        element.attachEvent('on' + type, func);
+      };
+    } else if (action == "remove") {
+        if (document.removeEventListener) {
+        element.removeEventListener(type, func);
+      } else {
+        element.detachEvent('on' + type, func);
+      };
+    } else {
+      console.error("Wrong usege of function \"eventListener\"");
+    };
+  };
+  
   /* Pointer to object ("container" further) */
   var self = this;
   
@@ -47,6 +65,8 @@ Element.prototype.scrollable = function(settings) {
     
     // -- Set attribute "tabindex" at container (it do event "onfocus" available) -- //
     self.setAttribute('tabindex', '1');
+    // -- Most of elements must have 'data-type' identifier -- //
+    self.setAttribute('data-type', 'container');
     
     // -- Function of adding standart css propertys -- //
     function makeByStandart(element, parent, position, className) {
@@ -71,6 +91,7 @@ Element.prototype.scrollable = function(settings) {
     self.innerHTML = "";
     var wrapper = document.createElement('div');
     makeByStandart(wrapper, self, "relative");
+    wrapper.setAttribute('data-type', 'wrapper');
     wrapper.innerHTML = content;
     var selfPaddingTop = wrapper.getBoundingClientRect().top - self.getBoundingClientRect().top;
     
@@ -177,6 +198,7 @@ Element.prototype.scrollable = function(settings) {
       sliderScroll(event);
       
       document.onmousemove = function(event) {
+        event = event || window.event
         sliderScroll(event);
         if (settings.autoHide == true) scroller.style.opacity = scrollerOpacityActive;
       };
@@ -288,6 +310,9 @@ Element.prototype.scrollable = function(settings) {
     if (settings.scrollBySelection == true) {
       self.onmousedown = function(event) {
         event = event || window.event;
+        var target = event.target || event.srcElement;
+        
+        self.focus();
         
         function selectionScroll(event) {
           var scrollStep = 0;
@@ -303,9 +328,9 @@ Element.prototype.scrollable = function(settings) {
         
         selectionScroll(event);
         
-        document.addEventListener('mousemove', selectionScroll);
-        document.addEventListener('mouseup', function(event) {
-          document.removeEventListener('mousemove', selectionScroll);
+        eventListener('add', document, 'mousemove', selectionScroll);
+        eventListener('add', document, 'mouseup', function(event) {
+          eventListener('remove', document, 'mousemove', selectionScroll);
         });
       };
     };
@@ -317,7 +342,14 @@ Element.prototype.scrollable = function(settings) {
     };
     scroller.onmousedown = function(event) {
       event = event || window.event;
-      var target = event.target;
+      var target = event.target || event.srcElement;
+      
+      var clickPlace;
+      if (event.clientY > slider.getBoundingClientRect().bottom) {
+        clickPlace = "bottom";
+      } else if (event.clientY < slider.getBoundingClientRect().top) {
+        clickPlace = "top";
+      };
       
       function mouseGeneric(positivity, type) {
         var scrollStep = stepMultipler * positivity;
@@ -342,12 +374,7 @@ Element.prototype.scrollable = function(settings) {
               }, 50);
             };
           };
-          if ((event.clientY >= slider.getBoundingClientRect().top) && (event.clientY <= slider.getBoundingClientRect().bottom)) {
-            loops.repeat == false;
-          } else {
-            loops.repeat == true;
-            repeatAgain();
-          };
+          repeatAgain();
         }, 300);
         return loops = {
           looper: looper,
