@@ -8,11 +8,10 @@
  */
 
 Element.prototype.scrollable = function(settings) {
-  /* Polyfill for add/remove events liseners */
   function eventListener(action, element, type, func) {
     if (action == 'add') {
       if (document.addEventListener) {
-        element.addEventListener(type, func);
+      element.addEventListener(type, func);
       } else {
         element.attachEvent('on' + type, func);
       };
@@ -63,11 +62,6 @@ Element.prototype.scrollable = function(settings) {
       var scrollerOpacityActive = settings.scrollerOpacityActive;
       var scrollerOpacityPassive = settings.scrollerOpacityPassive;
     };
-    if (settings.teleporter == true) {
-      var teleporterClass = settings.teleporterClass;
-      var teleporterTextToUp = settings.teleporterTextToUp;
-      var teleporterTextGoBack = settings.teleporterTextGoBack;
-    };
     
     // -- Set attribute "tabindex" at container (it do event "onfocus" available) -- //
     self.setAttribute('tabindex', '1');
@@ -108,7 +102,6 @@ Element.prototype.scrollable = function(settings) {
     scroller.style.height = self.clientHeight + "px";
     scroller.style.top = "0";
     scroller.style.left = self.clientWidth - scroller.offsetWidth + "px";
-    scroller.style.zIndex = 5;
     if (sliderShift == true) {
       self.style.paddingRight = (self.clientWidth - wrapper.offsetWidth) / 2 + scroller.offsetWidth + "px";
     };
@@ -151,87 +144,15 @@ Element.prototype.scrollable = function(settings) {
     slider.style.height = sliderHeight + "px";
     slider.style.top = topEdge + "px";
     
-    // -- Create a teleporter -- //
-    if (settings.teleporter == true) {
-      var teleporter = document.createElement('div');
-      self.appendChild(teleporter);
-      teleporter.setAttribute('data-type', 'teleporter');
-      teleporter.className = "teleporter";
-      teleporter.style.position = "absolute";
-      teleporter.style.maxWidth = self.clientWidth - scroller.offsetWidth + "px";
-      var teleporterText = document.createElement('span');
-      teleporter.appendChild(teleporterText);
-      teleporterText.setAttribute('data-type', 'teleporter');
-      teleporterText.innerHTML = teleporterTextToUp;
-      teleporterText.style.position = "relative";
-      teleporter.style.display = "block";
-      teleporterText.style.top = (teleporter.offsetHeight / 2) - (teleporterText.offsetHeight / 2) + "px";
-      teleporter.style.display = "none";
-      teleporterText.style.display = "block";
-      teleporterText.style.textAlign = "center";
-      
-      var VZPosition = {
-        oldWrapperPosition: 0,
-        newWrapperPosition: 0,
-        oldSliderPosition: topEdge,
-        newSliderPosition: topEdge
-      };
-      
-      // -- Special function for showing teleporter and get current position of visible zone -- //
-      function checkVisibleZone(influence) {
-        var prevWrapperPosition  = VZPosition.newWrapperPosition;
-        var currentWrapperPosition = wrapper.getBoundingClientRect().top - self.getBoundingClientRect().top - selfPaddingTop;
-        if (influence == true) {
-          if (currentWrapperPosition * -1 >= self.clientHeight) {
-            teleporter.style.display = "block";
-            if (teleporterText.innerHTML == teleporterTextGoBack) {
-              teleporterText.innerHTML = teleporterTextToUp;
-            };
-          } else if (currentWrapperPosition * -1 < self.clientHeight) {
-            teleporter.style.display = "none";
-          };
-        };
-        var prevSliderPosition = VZPosition.newSliderPosition;
-        var currentSliderPosition;
-        if (arrows == true) {
-          currentSliderPosition = slider.getBoundingClientRect().top - (self.getBoundingClientRect().top + self.clientTop);
-        } else {
-          currentSliderPosition = slider.getBoundingClientRect().top - arrowUp.getBoundingClientRect().bottom;
-        };
-        return VZPosition = {
-          oldWrapperPosition: prevWrapperPosition,
-          newWrapperPosition: currentWrapperPosition,
-          oldSliderPosition: prevSliderPosition,
-          newSliderPosition: currentSliderPosition
-        };
-      };
-    };
-    // -- Adding effect of hideable scroll bar and teleporter -- //
+    // -- Adding effect of hideable scroll bar -- //
     if (settings.autoHide == true) {
-      function adaptiveHide(element, value) {
-        element.style.MsFilter = "\"progid:DXImageTransform.Microsoft.Alpha(Opacity=" + (value * 100) + ")\"";
-        element.style.filter = "alpha(opacity=" + (value * 100) + ")";
-        element.style.MozOpacity = value;
-        element.style.KhtmlOpacity = value;
-        element.style.opacity = value;
-      };
       var hideBy = undefined;
-      adaptiveHide(scroller, 0);
-      if (teleporter) adaptiveHide(teleporter, 0);
+      scroller.style.opacity = 0;
       self.onmouseover = function(event) {
-        event = event || window.event;
-        var target = event.target || event.srcElement;
-        adaptiveHide(scroller, scrollerOpacityPassive);
-        if (teleporter) {
-          adaptiveHide(teleporter, scrollerOpacityPassive);
-          if (teleporter.contains(target) == true) {
-            adaptiveHide(teleporter, scrollerOpacityActive);
-          };
-        };
+        scroller.style.opacity = scrollerOpacityPassive;
       };
       self.onmouseout = function(event) {
-        adaptiveHide(scroller, 0);
-        if (teleporter) adaptiveHide(teleporter, 0);
+        scroller.style.opacity = 0;
         if (hideBy != undefined) {
           clearTimeout(hideBy);
         };
@@ -240,11 +161,9 @@ Element.prototype.scrollable = function(settings) {
         if (hideBy != undefined) {
           clearTimeout(hideBy);
         };
-        adaptiveHide(scroller, scrollerOpacityActive);
-        if (teleporter) adaptiveHide(teleporter, scrollerOpacityActive);
+        scroller.style.opacity = scrollerOpacityActive;
         hideBy = setTimeout(function() {
-          adaptiveHide(scroller, scrollerOpacityPassive);
-          if (teleporter) adaptiveHide(teleporter, scrollerOpacityPassive);
+          scroller.style.opacity = scrollerOpacityPassive;
         }, 1000);
         return hideBy;
       };
@@ -274,34 +193,20 @@ Element.prototype.scrollable = function(settings) {
         var scrollSpeed = (sliderCoordsNew.top - sliderCoordsOld.top) * ratioFactor;
         var wrapperPositionOld = (wrapper.getBoundingClientRect().top - self.getBoundingClientRect().top) - selfPaddingTop;
         wrapper.style.top = wrapperPositionOld - scrollSpeed + "px";
-        
-        if (settings.autoHide == true) {
-          adaptiveHide(scroller, scrollerOpacityActive);
-          if (teleporter) adaptiveHide(teleporter, scrollerOpacityActive);
-        };
-        
-        if (teleporter) checkVisibleZone(true);
       };
       
       sliderScroll(event);
       
-      document.onselectstart = function() {
-        return;
-      };
-      
       document.onmousemove = function(event) {
-        event = event || window.event;
+        event = event || window.event
         sliderScroll(event);
+        if (settings.autoHide == true) scroller.style.opacity = scrollerOpacityActive;
       };
       
       document.onmouseup = function() {
         document.onmousemove = null;
         document.onmouseup = null;
-        document.onselectstart = null;
-        if (settings.autoHide == true) {
-          adaptiveHide(scroller, scrollerOpacityPassive);
-          if (teleporter) adaptiveHide(teleporter, scrollerOpacityPassive);
-        };
+        if (settings.autoHide == true) scroller.style.opacity = scrollerOpacityPassive;
       };
       
       return false;
@@ -361,7 +266,6 @@ Element.prototype.scrollable = function(settings) {
         if (settings.autoHide == true) autoHideOnEvents();
         wrapper.style.top = result.newWrapperTop + "px";
         slider.style.top = result.newSliderTop + "px";
-        if (teleporter) checkVisibleZone(true);
       };
       // set event listener
       onwheelFixer(self, wheelScroll);
@@ -384,7 +288,6 @@ Element.prototype.scrollable = function(settings) {
             if (settings.autoHide == true) autoHideOnEvents();
             wrapper.style.top = result.newWrapperTop + "px";
             slider.style.top = result.newSliderTop + "px";
-            if (teleporter) checkVisibleZone(true);
           };
           
           // condition for bottons "Arrow up" and "Page Down"
@@ -411,14 +314,6 @@ Element.prototype.scrollable = function(settings) {
         
         self.focus();
         
-        if (target.getAttribute('data-type') == 'teleporter' ||
-          target.getAttribute('data-type') == 'scroller' ||
-          target.getAttribute('data-type') == 'slider' ||
-          target.getAttribute('data-type') == 'arrowUp' ||
-          target.getAttribute('data-type') == 'arrowDown' ||
-          teleporter.contains(target) == true 
-        ) return;
-        
         function selectionScroll(event) {
           var scrollStep = 0;
           if (event.clientY < self.getBoundingClientRect().top) {
@@ -429,8 +324,9 @@ Element.prototype.scrollable = function(settings) {
           var result = scrollGeneric(event, scrollStep);
           wrapper.style.top = result.newWrapperTop + "px";
           slider.style.top = result.newSliderTop + "px";
-          if (teleporter) checkVisibleZone(true);
         };
+        
+        selectionScroll(event);
         
         eventListener('add', document, 'mousemove', selectionScroll);
         eventListener('add', document, 'mouseup', function(event) {
@@ -448,6 +344,13 @@ Element.prototype.scrollable = function(settings) {
       event = event || window.event;
       var target = event.target || event.srcElement;
       
+      var clickPlace;
+      if (event.clientY > slider.getBoundingClientRect().bottom) {
+        clickPlace = "bottom";
+      } else if (event.clientY < slider.getBoundingClientRect().top) {
+        clickPlace = "top";
+      };
+      
       function mouseGeneric(positivity, type) {
         var scrollStep = stepMultipler * positivity;
         if (type == "arrowUp" || type == "arrowDown") {
@@ -459,7 +362,6 @@ Element.prototype.scrollable = function(settings) {
         slider.style.top = result.newSliderTop + "px";
         wrapper.style.top = result.newWrapperTop + "px";
         if (settings.autoHide == true) autoHideOnEvents();
-        if (teleporter) checkVisibleZone(true);
       };
       
       function loopedMouseGeneric(positivity, type) {
@@ -498,30 +400,11 @@ Element.prototype.scrollable = function(settings) {
         return;
       };
     };
-    // -- Stop scrolling function if it run -- //
+    // Stop scrolling function if it run
     scroller.onmouseup = function() {
       if (loops.looper != undefined) {
         clearTimeout(loops.looper);
         loops.repeat = false;
-      };
-    };
-    
-    // -- Event of "teleportation" -- //
-    if (settings.teleporter == true) {
-      teleporter.onclick = function(event) {
-        event = event || window.event;
-        
-        if (VZPosition.newWrapperPosition == 0) {
-          wrapper.style.top = VZPosition.oldWrapperPosition + "px";
-          slider.style.top = VZPosition.oldSliderPosition + "px";
-          teleporterText.innerHTML = teleporterTextToUp;
-        } else {
-          wrapper.style.top = "0px";
-          slider.style.top = topEdge + "px";
-          teleporterText.innerHTML = teleporterTextGoBack;
-        };
-        
-        checkVisibleZone(false);
       };
     };
   };

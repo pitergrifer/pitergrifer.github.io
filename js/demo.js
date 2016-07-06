@@ -1,6 +1,6 @@
 var container = document.getElementById('container');
 container.style.top = document.documentElement.clientHeight / 2 - container.offsetHeight / 2 + "px";
-console.log(navigator.userAgent);
+
 container.scrollable({
   scrollerClass: "scroller-field", // css-класс скроллера
   arrows: true, // наличие стрелок (флаги значения: "true", "false") 
@@ -15,9 +15,5 @@ container.scrollable({
   useKeyboardScroll: true, // возможность прокрутки клавишами "Стрелки", "PageUp" и "PageDown" (флаги "true", "false")
   autoHide: true, // наличие эффекта исчезающей полосы прокрутки (флаги "true", "false")
   scrollerOpacityActive: 1, // прозрачность в активном состоянии
-  scrollerOpacityPassive: 0.4, // прозрачность в пассивном состоянии
-  teleporter: true, // наличие функции мгновенного перемещения к нулевой позиции, а также от нее к предыдущей позиции (флаги "true", "false")
-  teleporterClass: "teleporter", // css-класс телепортера
-  teleporterTextToUp: "<i>Up!</i>", // текст телепортера в состоянии "Вверх" (можно использовать HTML)
-  teleporterTextGoBack: "<i>Go back!</i>" // текст телепортера в состоянии "Вернуться назад" (можно использовать HTML)
+  scrollerOpacityPassive: 0.4 // прозрачность в пассивном состоянии
 });
