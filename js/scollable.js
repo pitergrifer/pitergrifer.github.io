@@ -8,14 +8,15 @@
  */
 
 Element.prototype.scrollable = function(settings) {
+  // -- Polyfill for add/remove events listeners -- //
   function eventListener(action, element, type, func) {
-    if (action == 'add') {
-      if (document.addEventListener) {
+    if (action == 'add') { // add event listener
+      if (document.addEventListener) { // if it good browser 
       element.addEventListener(type, func);
-      } else {
+      } else { // if it retardet IE8 or later
         element.attachEvent('on' + type, func);
       };
-    } else if (action == "remove") {
+    } else if (action == "remove") { // remove event listener
         if (document.removeEventListener) {
         element.removeEventListener(type, func);
       } else {
@@ -343,13 +344,6 @@ Element.prototype.scrollable = function(settings) {
     scroller.onmousedown = function(event) {
       event = event || window.event;
       var target = event.target || event.srcElement;
-      
-      var clickPlace;
-      if (event.clientY > slider.getBoundingClientRect().bottom) {
-        clickPlace = "bottom";
-      } else if (event.clientY < slider.getBoundingClientRect().top) {
-        clickPlace = "top";
-      };
       
       function mouseGeneric(positivity, type) {
         var scrollStep = stepMultipler * positivity;
