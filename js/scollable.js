@@ -170,6 +170,7 @@ Element.prototype.scrollable = function(settings) {
       teleporterText.style.display = "block";
       teleporterText.style.textAlign = "center";
       
+      // -- Object-detectro of visible zone --//
       var VZPosition = {
         oldWrapperPosition: 0,
         newWrapperPosition: 0,
