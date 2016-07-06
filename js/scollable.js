@@ -154,10 +154,10 @@ Element.prototype.scrollable = function(settings) {
     // -- Create a teleporter -- //
     if (settings.teleporter == true) {
       var teleporter = document.createElement('div');
-      self.appendChild(teleporter);
-      teleporter.setAttribute('data-type', 'teleporter');
       teleporter.className = "teleporter";
       teleporter.style.position = "absolute";
+      self.appendChild(teleporter);
+      teleporter.setAttribute('data-type', 'teleporter');
       teleporter.style.maxWidth = self.clientWidth - scroller.offsetWidth + "px";
       var teleporterText = document.createElement('span');
       teleporter.appendChild(teleporterText);
