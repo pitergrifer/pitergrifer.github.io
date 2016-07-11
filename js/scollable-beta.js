@@ -261,9 +261,11 @@ Element.prototype.scrollable = function(settings) {
       var hideBy = undefined;
       adaptiveHide(scroller, scrollerOpacityHidden);
       if (horizontalScrolling == true) adaptiveHide(scrollerX, scrollerOpacityHidden);
+      var mousePosition = 'unknown';
       self.onmouseenter = function(event) {
         adaptiveHide(scroller, scrollerOpacityPassive);
         if (horizontalScrolling == true) adaptiveHide(scrollerX, scrollerOpacityPassive);
+        mousePosition = 'inside';
       };
       self.onmouseleave = function(event) {
         adaptiveHide(scroller, scrollerOpacityHidden);
@@ -271,6 +273,7 @@ Element.prototype.scrollable = function(settings) {
         if (hideBy != undefined) {
           clearTimeout(hideBy);
         };
+        mousePosition = 'outside'
       };
       function autoHideOnEvents(axis) {
         if (hideBy != undefined) {
@@ -282,7 +285,11 @@ Element.prototype.scrollable = function(settings) {
           adaptiveHide(scroller, scrollerOpacityActive);
         };
         hideBy = setTimeout(function() {
-          adaptiveHide(scroller, scrollerOpacityPassive);
+          if (mousePosition == 'inside') {
+            adaptiveHide(scroller, scrollerOpacityPassive);
+          } else if (mousePosition == 'outside') {
+            adaptiveHide(scroller, scrollerOpacityHidden);
+          };
         }, 1000);
         return hideBy;
       };
