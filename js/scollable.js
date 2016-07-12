@@ -173,13 +173,11 @@ Element.prototype.scrollable = function(settings) {
       var hideBy = undefined;
       adaptiveHide(scroller, 0);
       self.onmouseenter = function(event) {
-        //console.log("in");
         adaptiveHide(scroller, scrollerOpacityPassive);
       };
       self.onmouseleave = function(event) {
         event = event || window.event;
         var target = event.target || event.srcElement;
-        //console.log("out");
         adaptiveHide(scroller, 0);
         if (hideBy != undefined) {
           clearTimeout(hideBy);
@@ -382,7 +380,7 @@ Element.prototype.scrollable = function(settings) {
       var target = event.target || event.srcElement;
       
       function mouseGeneric(positivity, type) {
-        var scrollStep = stepMultipler * positivity;
+        var scrollStep;
         if (type == "arrowUp" || type == "arrowDown") {
           scrollStep = stepMultipler * positivity;
         } else if (type == "scroller") {

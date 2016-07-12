@@ -117,6 +117,10 @@ Element.prototype.scrollable = function(settings) {
     };
     var selfPaddingTop = wrapper.getBoundingClientRect().top - self.getBoundingClientRect().top;
     var selfPaddingBottom = parseInt(getStyle(self).paddingBottom) + self.clientTop;
+    if (horizontalScrolling == true) {
+      var selfPaddingLeft = wrapper.getBoundingClientRect().left - self.getBoundingClientRect().left;
+      var selfPaddingRight = parseInt(getStyle(self).paddingLeft) + self.clientLeft;
+    };
     
     // -- Function for creation vertical and horizontal scroll bars -- //
     function makeScroller(axis) {
@@ -200,7 +204,12 @@ Element.prototype.scrollable = function(settings) {
         slider.setAttribute('data-type', 'slider')
         slider.style.width = scroller.clientWidth + "px";
         if (sliderHeight == "auto") {
-          var selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPaddingTop * 2) / 100);
+          var selfWrapperRatio;
+          if (horizontalScrolling == true) {
+            selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) / 100);
+          } else {
+            selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom) / 100);
+          };
           sliderHeight = sliderFieldHeight / 100 * selfWrapperRatio;
           if (sliderHeight < sliderHeightMin) {
             sliderHeight = sliderHeightMin;
@@ -298,23 +307,66 @@ Element.prototype.scrollable = function(settings) {
     // -- Ratio factor formula for future calculation -- //
     var ratioFactor;
     if (horizontalScrolling == true) {
-      ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) - self.offsetHeight) / (sliderFieldHeight - sliderHeight);  
+      ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) - self.offsetHeight) / (sliderFieldHeight - sliderHeight);
+      var ratioFactorX = ((wrapper.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth) - self.offsetWidth) / (sliderFieldXWidth - sliderWidth);
     } else  {
       ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom) - self.offsetHeight) / (sliderFieldHeight - sliderHeight);
     };
     
-    // -- Event "Drag'n Drop" for slider -- //
+    // -- Object for detection picked slider -- //
+    var sliderPick = {
+      slider: false,
+      sliderX: false,
+      wrapperY: 0,
+      wrapperX: 0
+    };
+    
+    // -- Generic function for vertical and horozontal sliders -- //
+    function genericSlidersEvent(event, axis, sliderMainFunction) {
+      function cancelSelection(event) {
+        event = event || window.event;
+        return false;
+      };
+      eventListener('add', document, 'selectstart', cancelSelection);
+      eventListener('add', document, 'mousemove', sliderMainFunction);
+      function clearEvent() {
+        eventListener('remove', document, 'mousemove', sliderMainFunction);
+        eventListener('remove', document, 'selectstart', cancelSelection);
+        eventListener('remove', document, 'mouseup', clearEvent);
+        if (settings.autoHide == true) {
+          if (mousePosition == 'inside') {
+            if (axis == "X") {
+              adaptiveHide(scrollerX, scrollerOpacityPassive);
+            } else if (axis == "Y") {
+              adaptiveHide(scroller, scrollerOpacityPassive);  
+            };
+          } else if (mousePosition == 'outside') {
+            if (axis == "X") {
+              adaptiveHide(scrollerX, scrollerOpacityHidden);
+            } else if (axis == "Y") {
+              adaptiveHide(scroller, scrollerOpacityHidden);
+            };
+          };
+        };
+        if (axis == "X") {
+          sliderPick.sliderX = false;
+        } else if (axis == "Y") {
+          sliderPick.sliderX = false;
+        };
+      };
+      eventListener('add', document, 'mouseup', clearEvent);
+    };
+    
+    // -- Event "Drag'n Drop" for vertical slider -- //
     slider.onmousedown = function(event) {
       event = event || window.event;
-      
       var сorrectPick = event.clientY - slider.getBoundingClientRect().top;
-      
       function sliderScroll(event) {
         var sliderCoordsOld = slider.getBoundingClientRect();
         var newTop = event.clientY - scroller.getBoundingClientRect().top - scroller.clientTop - сorrectPick;
         var bottomEdge = sliderFieldHeight - sliderHeight;
         if (arrows == true) {
-          bottomEdge += arrowUp.offsetHeight;  
+          bottomEdge += arrowDown.offsetHeight;  
         };
         if (newTop <= topEdge) {
           newTop = topEdge;
@@ -324,39 +376,62 @@ Element.prototype.scrollable = function(settings) {
         slider.style.top = newTop + "px";
         var sliderCoordsNew = slider.getBoundingClientRect();
         var scrollSpeed = (sliderCoordsNew.top - sliderCoordsOld.top) * ratioFactor;
-        var wrapperPositionOld = (wrapper.getBoundingClientRect().top - self.getBoundingClientRect().top) - selfPaddingTop;
-        wrapper.style.top = wrapperPositionOld - scrollSpeed + "px";
-        
+        sliderPick.wrapperY -= scrollSpeed;
+        wrapper.style.top = Math.round(sliderPick.wrapperY) + "px";
         if (settings.autoHide == true) adaptiveHide(scroller, scrollerOpacityActive);
-        
-        document.onselectstart = function(event) {
-          event = event || window.event;
-          return false;
+        return sliderPick = {
+          slider: true,
+          wrapperY: sliderPick.wrapperY,
+          sliderX: false,
+          wrapperX: sliderPick.wrapperX
         };
       };
-      
       sliderScroll(event);
-      
-      document.onmousemove = function(event) {
-        event = event || window.event
-        sliderScroll(event);
-      };
-      
-      document.onmouseup = function() {
-        document.onmousemove = null;
-        document.onmouseup = null;
-        document.onselectstart = null;
-        if (settings.autoHide == true) adaptiveHide(scroller, scrollerOpacityPassive);
-      };
-      
+      genericSlidersEvent(event, "Y", sliderScroll);
       return false;
+    };
+    
+    // -- Event "Drag'n Drop" for horizontal slider -- //
+    if (horizontalScrolling == true) {
+      sliderX.onmousedown = function(event) {
+        event = event || window.event;
+        var correctPick = event.clientX - sliderX.getBoundingClientRect().left;
+        function sliderXScroll(event) {
+          var sliderXCoordsOld = sliderX.getBoundingClientRect();
+          var newLeft = event.clientX - scrollerX.getBoundingClientRect().left - scrollerX.clientLeft - correctPick;
+          var rightEdge = sliderFieldXWidth - sliderWidth;
+          if (arrows == true) {
+            rightEdge += arrowRight.offsetWidth;
+          };
+          if (newLeft <= leftEdge) {
+            newLeft = leftEdge;
+          } else if (newLeft >= rightEdge) {
+            newLeft = rightEdge;
+          };
+          sliderX.style.left = newLeft + "px";
+          var sliderXCoordsNew = sliderX.getBoundingClientRect();
+          var scrollXSpeed = (sliderXCoordsNew.left - sliderXCoordsOld.left) * ratioFactorX;
+          var wrapperPositionXOld = (wrapper.getBoundingClientRect().left - self.getBoundingClientRect().left) - selfPaddingLeft;
+          sliderPick.wrapperX -= scrollXSpeed;
+          wrapper.style.left = Math.round(sliderPick.wrapperX) + "px";
+          if (settings.autoHide == true) adaptiveHide(scrollerX, scrollerOpacityActive);
+          return sliderPick = {
+            sliderX: true,
+            wrapperX: sliderPick.wrapperX,
+            slider: false,
+            wrapperY: sliderPick.wrapperY
+          };
+        };
+        sliderXScroll(event);
+        genericSlidersEvent(event, "X", sliderXScroll);
+        return false;
+      };
     };
     
     // -- General function of scrolling action for mouse wheel, keyboard and virtual arrows -- //
     function scrollGeneric(event, scrollStep) {
-      var oldWrapperTop = (wrapper.getBoundingClientRect().top - self.getBoundingClientRect().top) - selfPaddingTop;
-      var newWrapperTop = oldWrapperTop - scrollStep;
-      var newSliderTop = (newWrapperTop / ratioFactor) * -1;
+      sliderPick.wrapperY -= scrollStep;
+      var newSliderTop = (sliderPick.wrapperY / ratioFactor) * -1;
       if (arrows == true) {
         newSliderTop += arrowUp.offsetHeight;
       };
@@ -366,18 +441,18 @@ Element.prototype.scrollable = function(settings) {
       };
       if (newSliderTop < topEdge) {
         newSliderTop = topEdge;
-        newWrapperTop = 0;
+        sliderPick.wrapperY = 0;
       } else if (newSliderTop > bottomEdge) {
         newSliderTop = bottomEdge;
         if (horizontalScrolling == true) {
-          newWrapperTop = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop * 2 + scrollerX.offsetHeight) * -1;  
+          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop * 2 + scrollerX.offsetHeight) * -1;  
         } else {
-          newWrapperTop = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop * 2) * -1;
+          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop * 2) * -1;
         };
       };
       return {
         newSliderTop: newSliderTop,
-        newWrapperTop: newWrapperTop
+        newWrapperTop: sliderPick.wrapperY
       };
     };
     
@@ -456,9 +531,9 @@ Element.prototype.scrollable = function(settings) {
       self.onmousedown = function(event) {
         event = event || window.event;
         var target = event.target || event.srcElement;
-        
         self.focus();
-        
+        if (scroller.contains(target)) return;
+        if (sliderPick.sliderX != false) return;
         function selectionScroll(event) {
           var scrollStep = 0;
           if (event.clientY < self.getBoundingClientRect().top) {
@@ -470,9 +545,7 @@ Element.prototype.scrollable = function(settings) {
           wrapper.style.top = result.newWrapperTop + "px";
           slider.style.top = result.newSliderTop + "px";
         };
-        
         selectionScroll(event);
-        
         eventListener('add', document, 'mousemove', selectionScroll);
         eventListener('add', document, 'mouseup', function(event) {
           eventListener('remove', document, 'mousemove', selectionScroll);
