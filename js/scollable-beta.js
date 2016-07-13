@@ -262,12 +262,15 @@ Element.prototype.scrollable = function(settings) {
           var parentBackground = getStyle(self).backgroundColor;
           if (parentBackground != "transparent") {
             scroller.style.backgroundColor = parentBackground;
+            if (horizontalScrolling == true) scrollerX.style.backgroundColor = parentBackground;
           } else {
             scroller.style.backgroundColor = "white";
+            if (horizontalScrolling == true) scrollerX.style.backgroundColor = "white";
           };
         };
       };
       var hideBy = undefined;
+      var hideByX = undefined;
       adaptiveHide(scroller, scrollerOpacityHidden);
       if (horizontalScrolling == true) adaptiveHide(scrollerX, scrollerOpacityHidden);
       var mousePosition = 'unknown';
@@ -285,22 +288,31 @@ Element.prototype.scrollable = function(settings) {
         mousePosition = 'outside'
       };
       function autoHideOnEvents(axis) {
-        if (hideBy != undefined) {
-          clearTimeout(hideBy);
-        };
         if (axis == "X") {
-          adaptiveHide(scrollerX, scrollerOpacityActive);
-        } else if (axis == "Y") {
-          adaptiveHide(scroller, scrollerOpacityActive);
-        };
-        hideBy = setTimeout(function() {
-          if (mousePosition == 'inside') {
-            adaptiveHide(scroller, scrollerOpacityPassive);
-          } else if (mousePosition == 'outside') {
-            adaptiveHide(scroller, scrollerOpacityHidden);
+          if (hideByX != undefined) {
+            clearTimeout(hideByX);
           };
-        }, 1000);
-        return hideBy;
+          adaptiveHide(scrollerX, scrollerOpacityActive);
+          hideByX = setTimeout(function() {
+            if (mousePosition == 'inside') {
+              adaptiveHide(scrollerX, scrollerOpacityPassive);
+            } else if (mousePosition == 'outside') {
+              adaptiveHide(scrollerX, scrollerOpacityHidden);
+            };
+          }, 1000);
+        } else if (axis == "Y") {
+          if (hideBy != undefined) {
+            clearTimeout(hideBy);
+          };
+          adaptiveHide(scroller, scrollerOpacityActive);
+          hideBy = setTimeout(function() {
+            if (mousePosition == 'inside') {
+              adaptiveHide(scroller, scrollerOpacityPassive);
+            } else if (mousePosition == 'outside') {
+              adaptiveHide(scroller, scrollerOpacityHidden);
+            };
+          }, 1000);
+        };
       };
     };
     
@@ -351,7 +363,7 @@ Element.prototype.scrollable = function(settings) {
         if (axis == "X") {
           sliderPick.sliderX = false;
         } else if (axis == "Y") {
-          sliderPick.sliderX = false;
+          sliderPick.slider = false;
         };
       };
       eventListener('add', document, 'mouseup', clearEvent);
@@ -428,8 +440,8 @@ Element.prototype.scrollable = function(settings) {
       };
     };
     
-    // -- General function of scrolling action for mouse wheel, keyboard and virtual arrows -- //
-    function scrollGeneric(event, scrollStep) {
+    // -- General function of vertical scrolling action for mouse wheel, keyboard and virtual arrows -- //
+    function scrollGeneric(event, scrollStep, axis) {
       sliderPick.wrapperY -= scrollStep;
       var newSliderTop = (sliderPick.wrapperY / ratioFactor) * -1;
       if (arrows == true) {
@@ -437,7 +449,7 @@ Element.prototype.scrollable = function(settings) {
       };
       var bottomEdge = sliderFieldHeight - sliderHeight;
       if (arrows == true) {
-        bottomEdge += arrowUp.offsetHeight;
+        bottomEdge += arrowDown.offsetHeight;
       };
       if (newSliderTop < topEdge) {
         newSliderTop = topEdge;
@@ -445,14 +457,38 @@ Element.prototype.scrollable = function(settings) {
       } else if (newSliderTop > bottomEdge) {
         newSliderTop = bottomEdge;
         if (horizontalScrolling == true) {
-          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop * 2 + scrollerX.offsetHeight) * -1;  
+          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) * -1;  
         } else {
-          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop * 2) * -1;
+          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom) * -1;
         };
       };
       return {
         newSliderTop: newSliderTop,
         newWrapperTop: sliderPick.wrapperY
+      };
+    };
+    
+    // -- General function of horizontal scrolling action for keyboard and virtual arrows -- //
+    function scrollGenericX(event, scrollStep) {
+      sliderPick.wrapperX -= scrollStep;
+      var newSliderLeft = (sliderPick.wrapperX / ratioFactorX) * -1;
+      if (arrows == true) {
+        newSliderLeft += arrowLeft.offsetWidth;
+      };
+      var rightEdge = sliderFieldXWidth - sliderWidth;
+      if (arrows == true) {
+        rightEdge += arrowRight.offsetWidth;
+      };
+      if (newSliderLeft < leftEdge) {
+        newSliderLeft = leftEdge;
+        sliderPick.wrapperX = 0;
+      } else if (newSliderLeft > rightEdge) {
+        newSliderLeft = rightEdge;
+        sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth) * -1;
+      };
+      return {
+        newSliderLeft: newSliderLeft,
+        newWrapperLeft: sliderPick.wrapperX
       };
     };
     
@@ -500,27 +536,54 @@ Element.prototype.scrollable = function(settings) {
         self.onkeydown = function(event) {
           event = event || window.event;
           
+          // -- Vertical scrolling -- //
           function keyboardScroll(event, arrowBtnCode, pageBtnCode, positivity) {
             var scrollStep = 0;
             if (event.keyCode == arrowBtnCode) {
               scrollStep = stepMultipler * positivity;
             } else if (event.keyCode == pageBtnCode) {
-              scrollStep = (self.clientHeight) * positivity;
+              if (horizontalScrolling == true) {
+                scrollStep = (self.clientHeight - scrollerX.offsetHeight) * positivity;
+              } else {
+                scrollStep = (self.clientHeight) * positivity;
+              };
             };
             var result = scrollGeneric(event, scrollStep);
             if (settings.autoHide == true) autoHideOnEvents("Y");
             wrapper.style.top = result.newWrapperTop + "px";
             slider.style.top = result.newSliderTop + "px";
           };
-          
-          // condition for bottons "Arrow up" and "Page Down"
+          // condition for bottons "Arrow up" and "Page Up"
           if (event.keyCode == 38 || event.keyCode == 33) {
             keyboardScroll(event, 38, 33, -1);
           };
-          
-          // condition for bottons "Arrow down" and "Page Up"
+          // condition for bottons "Arrow down" and "Page Down"
           if (event.keyCode == 40 || event.keyCode == 34) {
             keyboardScroll(event, 40, 34, 1);
+          };
+          
+          // -- Horizontal scrolling -- //
+          if (horizontalScrolling == true) {
+            function keyboardScrollX(event, arrowBtnCode, pageBtnCode, positivity) {
+              var scrollStep = 0;
+              if (event.keyCode == arrowBtnCode) {
+                scrollStep = stepMultipler * positivity;
+              } else if (event.keyCode == pageBtnCode) {
+                scrollStep = (self.clientWidth - scroller.offsetWidth) * positivity;
+              };
+              var result = scrollGenericX(event, scrollStep);
+              if (settings.autoHide == true) autoHideOnEvents("X");
+              wrapper.style.left = result.newWrapperLeft + "px";
+              sliderX.style.left = result.newSliderLeft + "px";
+            };
+            // condition for bottons "Arrow left" and "Home"
+            if (event.keyCode == 37 || event.keyCode == 36) {
+              keyboardScrollX(event, 37, 36, -1);
+            };
+            // condition for bottons "Arrow right" and "End"
+            if (event.keyCode == 39 || event.keyCode == 35) {
+              keyboardScrollX(event, 39, 35, 1);
+            };
           };
         };
       };
@@ -532,8 +595,10 @@ Element.prototype.scrollable = function(settings) {
         event = event || window.event;
         var target = event.target || event.srcElement;
         self.focus();
-        if (scroller.contains(target)) return;
-        if (sliderPick.sliderX != false) return;
+        if (scroller.contains(target) || scrollerX.contains(target)) return;
+        if (sliderPick.slider != false || sliderPick.sliderX != false) return;
+        
+        // -- Vertical scrolling -- //
         function selectionScroll(event) {
           var scrollStep = 0;
           if (event.clientY < self.getBoundingClientRect().top) {
@@ -550,6 +615,26 @@ Element.prototype.scrollable = function(settings) {
         eventListener('add', document, 'mouseup', function(event) {
           eventListener('remove', document, 'mousemove', selectionScroll);
         });
+        
+        // -- Horizontal scrolling -- //
+        if (horizontalScrolling == true) {
+          function selectionScrollX(event) {
+            var scrollStep = 0;
+            if (event.clientX < self.getBoundingClientRect().left) {
+              scrollStep = stepMultipler * -1;
+            } else if (event.clientX > self.getBoundingClientRect().right) {
+              scrollStep = stepMultipler;
+            };
+            var result = scrollGenericX(event, scrollStep);
+            wrapper.style.left = result.newWrapperLeft + "px";
+            sliderX.style.left = result.newSliderLeft + "px";
+          };
+          selectionScrollX(event);
+          eventListener('add', document, 'mousemove', selectionScrollX);
+          eventListener('add', document, 'mouseup', function(event) {
+            eventListener('remove', document, 'mousemove', selectionScrollX);
+          });
+        };
       };
     };
     
@@ -558,16 +643,21 @@ Element.prototype.scrollable = function(settings) {
       looper: undefined,
       repeat: true 
     };
-    scroller.onmousedown = function(event) {
+    function virtualScrolling(event) {
       event = event || window.event;
       var target = event.target || event.srcElement;
       
+      // -- Function for vertical scrolling -- //
       function mouseGeneric(positivity, type) {
         var scrollStep;
         if (type == "arrowUp" || type == "arrowDown") {
           scrollStep = stepMultipler * positivity;
         } else if (type == "scroller") {
-          scrollStep = self.clientHeight * positivity;
+          if (horizontalScrolling == true) {
+            scrollStep = (self.clientHeight - scrollerX.offsetHeight) * positivity;
+          } else {
+            scrollStep = self.clientHeight * positivity;
+          };
         };
         var result = scrollGeneric(event, scrollStep);
         slider.style.top = result.newSliderTop + "px";
@@ -575,12 +665,32 @@ Element.prototype.scrollable = function(settings) {
         if (settings.autoHide == true) autoHideOnEvents("Y");
       };
       
+      // -- Function for horizontal scrolling -- //
+      if (horizontalScrolling == true) {
+        function mouseGenericX(positivity, type) {
+          var scrollStep;
+          if (type == "arrowLeft" || type == "arrowRight") {
+            scrollStep = stepMultipler * positivity;
+          } else if (type == "scrollerX") {
+            scrollStep = (self.clientWidth - scroller.offsetWidth) * positivity;
+          };
+          var result = scrollGenericX(event, scrollStep);
+          sliderX.style.left = result.newSliderLeft + "px";
+          wrapper.style.left = result.newWrapperLeft + "px";
+          if (settings.autoHide == true) autoHideOnEvents("X");
+        };
+      };
+      
       function loopedMouseGeneric(positivity, type) {
         var looper = setTimeout(function() {
           function repeatAgain() {
             if (loops.repeat == true) {
               var repeater = setTimeout(function() {
-                mouseGeneric(positivity, type);
+                if (scroller.contains(target)) {
+                  mouseGeneric(positivity, type);
+                } else if (scrollerX.contains(target)) {
+                  mouseGenericX(positivity, type);
+                };
                 repeatAgain();
               }, 50);
             };
@@ -599,7 +709,7 @@ Element.prototype.scrollable = function(settings) {
       } else if (target.getAttribute('data-type') == "arrowDown") { // condition for click on virtual arrow down
         mouseGeneric(1, "arrowDown");
         loopedMouseGeneric(1, "arrowDown");
-      } else if (target.getAttribute('data-type') == "scroller") { // condition for click on empty field of scroll bar
+      } else if (target.getAttribute('data-type') == "scroller") { // condition for click on empty field of vertical scroll bar
         if (event.clientY < slider.getBoundingClientRect().top) {
           mouseGeneric(-1, "scroller");
           loopedMouseGeneric(-1, "scroller");
@@ -607,16 +717,36 @@ Element.prototype.scrollable = function(settings) {
           mouseGeneric(1, "scroller");
           loopedMouseGeneric(1, "scroller");
         };
+      } else if (target.getAttribute('data-type') == "arrowLeft") { // condition for click on vitrual arrow left
+        mouseGenericX(-1, "arrowLeft");
+        loopedMouseGeneric(-1, "arrowLeft");
+      } else if (target.getAttribute('data-type') == "arrowRight") { // condition for click on virtual arrow right
+        mouseGenericX(1, "arrowRight");
+        loopedMouseGeneric(1, "arrowRight");
+      } else if (target.getAttribute('data-type') == "scrollerX") { // condition for click on empty field of horizontal scroll bar
+        if (event.clientX < sliderX.getBoundingClientRect().left) {
+          mouseGenericX(-1, "scrollerX");
+          loopedMouseGeneric(-1, "scrollerX");
+        } else if (event.clientX > sliderX.getBoundingClientRect().right) {
+          mouseGenericX(1, "scrollerX");
+          loopedMouseGeneric(1, "scrollerX");
+        };
       } else {
         return;
       };
     };
     // Stop scrolling function if it run
-    scroller.onmouseup = function() {
+    function stopVirtualScrolling() {
       if (loops.looper != undefined) {
         clearTimeout(loops.looper);
         loops.repeat = false;
       };
+    };
+    eventListener('add', scroller, 'mousedown', virtualScrolling);
+    eventListener('add', scroller, 'mouseup', stopVirtualScrolling);
+    if (horizontalScrolling == true) {
+      eventListener('add', scrollerX, 'mousedown', virtualScrolling);
+      eventListener('add', scrollerX, 'mouseup', stopVirtualScrolling);
     };
   };
   

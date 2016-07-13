@@ -21,7 +21,12 @@
   position: absolute;
   display: block;
   width: 17px;
-  border: 1px solid red;
+  border-left: 1px solid black;
+}
+
+.scroller-field:last-child {
+  border-left: none;
+  border-top: 1px solid black;
 }
 
 .scroller-arrows {
