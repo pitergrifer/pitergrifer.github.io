@@ -56,6 +56,7 @@ Element.prototype.scrollable = function(settings) {
     var arrows = settings.arrows;
     if (arrows == true) {
       var arrowsClass = settings.arrowsClass;
+      var arrowChevron = settings.arrowChevron;
     };
     var sliderClass = settings.sliderClass;
     var sliderHeight = settings.sliderHeight;
@@ -70,7 +71,8 @@ Element.prototype.scrollable = function(settings) {
       var scrollerOpacityHidden = settings.scrollerOpacityHidden;
     };
     var horizontalScrolling = settings.horizontalScrolling;
-    if (horizontalScrolling == true) {
+    if (horizontalScrolling == "auto" || horizontalScrolling == true) {
+      var scrollerXClass = settings.scrollerXClass;
       var sliderWidth = sliderHeight;
     };
     
@@ -104,7 +106,7 @@ Element.prototype.scrollable = function(settings) {
     makeByStandart(wrapper, self, "relative");
     wrapper.setAttribute('data-type', 'wrapper');
     wrapper.innerHTML = content;
-    if (horizontalScrolling == true) {
+    if (horizontalScrolling == "auto" || horizontalScrolling == true) {
       var wrappedContent = wrapper.children;
       var wrappedContentLength = wrappedContent.length;
       var contentMaxWidth = wrappedContent[0].offsetWidth;
@@ -113,7 +115,18 @@ Element.prototype.scrollable = function(settings) {
           contentMaxWidth = wrappedContent[wrapperCounter].offsetWidth;
         };
       };
-      wrapper.style.width = contentMaxWidth + "px";
+      if (contentMaxWidth > wrapper.offsetWidth) {
+        horizontalScrolling = true;
+        wrapper.style.width = contentMaxWidth + "px";
+      } else {
+        horizontalScrolling = false;
+      };
+    };
+    var selfBorder = {
+      top: parseInt(getStyle(self).borderTopWidth),
+      bottom: parseInt(getStyle(self).borderBottomWidth),
+      left: parseInt(getStyle(self).borderLeftWidth),
+      right: parseInt(getStyle(self).borderRightWidth)
     };
     var selfPaddingTop = wrapper.getBoundingClientRect().top - self.getBoundingClientRect().top;
     var selfPaddingBottom = parseInt(getStyle(self).paddingBottom) + self.clientTop;
@@ -125,8 +138,8 @@ Element.prototype.scrollable = function(settings) {
     // -- Function for creation vertical and horizontal scroll bars -- //
     function makeScroller(axis) {
       var scroller = document.createElement('div');
-      makeByStandart(scroller, self, "absolute", scrollerClass);
       if (axis == "X") { // horizontal scroll bar
+        makeByStandart(scroller, self, "absolute", scrollerXClass);
         scroller.setAttribute('data-type', 'scrollerX');
         var scrollersArray = document.querySelectorAll("." + scrollerClass);
         scroller.style.width = self.clientWidth - scrollersArray[0].offsetWidth + "px";
@@ -134,18 +147,28 @@ Element.prototype.scrollable = function(settings) {
         scroller.style.top = self.clientHeight - scroller.offsetHeight + "px";
         scroller.style.left = "0px";
       } else if (axis == "Y") { // vertical scroll bar
+        makeByStandart(scroller, self, "absolute", scrollerClass);
         scroller.setAttribute('data-type', 'scroller');
         if (horizontalScrolling == true) {
           scroller.style.height = self.clientHeight - scroller.offsetWidth + "px";  
         } else {
           scroller.style.height = self.clientHeight + "px";
           if (sliderShift == true) {
-            console.log(parseInt(getStyle(self).paddingRight) + scroller.offsetWidth);
             self.style.paddingRight = parseInt(getStyle(self).paddingRight) + scroller.offsetWidth + "px";
           };
         };
         scroller.style.top = "0px";
         scroller.style.left = self.clientWidth - scroller.offsetWidth + "px";
+      };
+      if (navigator.userAgent.match(/MSIE 8.0/ig)) {
+        if (getStyle(scroller).backgroundColor == "transparent") {
+          var parentBackground = getStyle(self).backgroundColor;
+          if (parentBackground != "transparent") {
+            scroller.style.backgroundColor = parentBackground;
+          } else {
+            scroller.style.backgroundColor = "white";
+          };
+        };
       };
       scroller.style.zIndex = 5;
       return scroller;
@@ -160,15 +183,13 @@ Element.prototype.scrollable = function(settings) {
     if (arrows == true) {
       var arrowUp = document.createElement('div');
       var arrowDown = document.createElement('div');
-      arrowUp.setAttribute('data-type', 'arrowUp');
-      arrowDown.setAttribute('data-type', 'arrowDown');
       var arrowsPack = [arrowUp, arrowDown];
+      var chevronPack = [arrowChevron.top, arrowChevron.bottom];
       if (horizontalScrolling == true) {
         var arrowLeft = document.createElement('div');
         var arrowRight = document.createElement('div');
-        arrowLeft.setAttribute('data-type', 'arrowLeft');
-        arrowRight.setAttribute('data-type', 'arrowRight');
         arrowsPack.push(arrowLeft, arrowRight);
+        chevronPack.push(arrowChevron.left, arrowChevron.right);
       };
       for (var arrowCounter = 0; arrowCounter < arrowsPack.length; arrowCounter++) {
         if (arrowCounter > 1) {
@@ -178,6 +199,7 @@ Element.prototype.scrollable = function(settings) {
         };
         arrowsPack[arrowCounter].style.width = scroller.clientWidth + "px";
         arrowsPack[arrowCounter].style.height = scroller.clientWidth + "px";
+        arrowsPack[arrowCounter].innerHTML = chevronPack[arrowCounter];
       };
       arrowDown.style.top = scroller.clientHeight - arrowDown.offsetHeight + "px";
       var topEdge = arrowUp.offsetWidth;
@@ -245,6 +267,18 @@ Element.prototype.scrollable = function(settings) {
     // -- Create a horizontal slider -- //
     if (horizontalScrolling == true) var sliderX = createSlider("X");
     
+    // -- Creatr plug in hole between scrollers -- //
+    if (horizontalScrolling == true) {
+      var plug = document.createElement('div');
+      var selfCoords = self.getBoundingClientRect();
+      self.appendChild(plug);
+      plug.style.position = "absolute";
+      plug.style.top = scroller.getBoundingClientRect().bottom - selfCoords.top - self.clientTop + "px";
+      plug.style.left = scrollerX.getBoundingClientRect().right - selfCoords.left - self.clientLeft + "px";
+      plug.style.width = selfCoords.bottom - selfBorder.bottom - scroller.getBoundingClientRect().bottom + "px";
+      plug.style.height = selfCoords.right - selfBorder.right - scrollerX.getBoundingClientRect().right + "px";
+      plug.style.backgroundColor = getStyle(scroller).backgroundColor;
+    };
     
     // -- Adding effect of hideable scroll bar -- //
     if (settings.autoHide == true) {
@@ -257,31 +291,28 @@ Element.prototype.scrollable = function(settings) {
         element.style.KhtmlOpacity = value;
         element.style.opacity = value;
       };
-      if (navigator.userAgent.match(/MSIE 8.0/ig)) {
-        if (getStyle(scroller).backgroundColor == "transparent") {
-          var parentBackground = getStyle(self).backgroundColor;
-          if (parentBackground != "transparent") {
-            scroller.style.backgroundColor = parentBackground;
-            if (horizontalScrolling == true) scrollerX.style.backgroundColor = parentBackground;
-          } else {
-            scroller.style.backgroundColor = "white";
-            if (horizontalScrolling == true) scrollerX.style.backgroundColor = "white";
-          };
-        };
-      };
       var hideBy = undefined;
       var hideByX = undefined;
       adaptiveHide(scroller, scrollerOpacityHidden);
-      if (horizontalScrolling == true) adaptiveHide(scrollerX, scrollerOpacityHidden);
+      if (horizontalScrolling == true) {
+        adaptiveHide(scrollerX, scrollerOpacityHidden);
+        adaptiveHide(plug, scrollerOpacityHidden);
+      };
       var mousePosition = 'unknown';
       self.onmouseenter = function(event) {
         adaptiveHide(scroller, scrollerOpacityPassive);
-        if (horizontalScrolling == true) adaptiveHide(scrollerX, scrollerOpacityPassive);
+        if (horizontalScrolling == true) {
+          adaptiveHide(scrollerX, scrollerOpacityPassive);
+          adaptiveHide(plug, scrollerOpacityPassive);
+        };
         mousePosition = 'inside';
       };
       self.onmouseleave = function(event) {
         adaptiveHide(scroller, scrollerOpacityHidden);
-        if (horizontalScrolling == true) adaptiveHide(scrollerX, scrollerOpacityHidden);
+        if (horizontalScrolling == true) {
+          adaptiveHide(scrollerX, scrollerOpacityHidden);
+          adaptiveHide(plug, scrollerOpacityHidden);
+        };
         if (hideBy != undefined) {
           clearTimeout(hideBy);
         };
@@ -293,11 +324,14 @@ Element.prototype.scrollable = function(settings) {
             clearTimeout(hideByX);
           };
           adaptiveHide(scrollerX, scrollerOpacityActive);
+          adaptiveHide(plug, scrollerOpacityActive);
           hideByX = setTimeout(function() {
             if (mousePosition == 'inside') {
               adaptiveHide(scrollerX, scrollerOpacityPassive);
+              adaptiveHide(plug, scrollerOpacityPassive);
             } else if (mousePosition == 'outside') {
               adaptiveHide(scrollerX, scrollerOpacityHidden);
+              adaptiveHide(plug, scrollerOpacityHidden);
             };
           }, 1000);
         } else if (axis == "Y") {
@@ -305,11 +339,14 @@ Element.prototype.scrollable = function(settings) {
             clearTimeout(hideBy);
           };
           adaptiveHide(scroller, scrollerOpacityActive);
+          adaptiveHide(plug, scrollerOpacityActive);
           hideBy = setTimeout(function() {
             if (mousePosition == 'inside') {
               adaptiveHide(scroller, scrollerOpacityPassive);
+              adaptiveHide(plug, scrollerOpacityPassive);
             } else if (mousePosition == 'outside') {
               adaptiveHide(scroller, scrollerOpacityHidden);
+              adaptiveHide(plug, scrollerOpacityHidden);
             };
           }, 1000);
         };
@@ -319,8 +356,13 @@ Element.prototype.scrollable = function(settings) {
     // -- Ratio factor formula for future calculation -- //
     var ratioFactor;
     if (horizontalScrolling == true) {
-      ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) - self.offsetHeight) / (sliderFieldHeight - sliderHeight);
-      var ratioFactorX = ((wrapper.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth) - self.offsetWidth) / (sliderFieldXWidth - sliderWidth);
+      if (sliderShift == true) {
+        ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) - self.offsetHeight) / (sliderFieldHeight - sliderHeight);
+        var ratioFactorX = ((wrapper.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth) - self.offsetWidth) / (sliderFieldXWidth - sliderWidth);
+      } else {
+        ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom) - self.offsetHeight) / (sliderFieldHeight - sliderHeight);
+        var ratioFactorX = ((wrapper.offsetWidth + selfPaddingLeft + selfPaddingRight) - self.offsetWidth) / (sliderFieldXWidth - sliderWidth);
+      };
     } else  {
       ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom) - self.offsetHeight) / (sliderFieldHeight - sliderHeight);
     };
@@ -349,14 +391,18 @@ Element.prototype.scrollable = function(settings) {
           if (mousePosition == 'inside') {
             if (axis == "X") {
               adaptiveHide(scrollerX, scrollerOpacityPassive);
+              adaptiveHide(plug, scrollerOpacityPassive);
             } else if (axis == "Y") {
-              adaptiveHide(scroller, scrollerOpacityPassive);  
+              adaptiveHide(scroller, scrollerOpacityPassive);
+              adaptiveHide(plug, scrollerOpacityPassive);  
             };
           } else if (mousePosition == 'outside') {
             if (axis == "X") {
               adaptiveHide(scrollerX, scrollerOpacityHidden);
+              adaptiveHide(plug, scrollerOpacityHidden);
             } else if (axis == "Y") {
               adaptiveHide(scroller, scrollerOpacityHidden);
+              adaptiveHide(plug, scrollerOpacityHidden);
             };
           };
         };
@@ -390,7 +436,10 @@ Element.prototype.scrollable = function(settings) {
         var scrollSpeed = (sliderCoordsNew.top - sliderCoordsOld.top) * ratioFactor;
         sliderPick.wrapperY -= scrollSpeed;
         wrapper.style.top = Math.round(sliderPick.wrapperY) + "px";
-        if (settings.autoHide == true) adaptiveHide(scroller, scrollerOpacityActive);
+        if (settings.autoHide == true) {
+          adaptiveHide(scroller, scrollerOpacityActive);
+          adaptiveHide(plug, scrollerOpacityActive);
+        };
         return sliderPick = {
           slider: true,
           wrapperY: sliderPick.wrapperY,
@@ -426,7 +475,10 @@ Element.prototype.scrollable = function(settings) {
           var wrapperPositionXOld = (wrapper.getBoundingClientRect().left - self.getBoundingClientRect().left) - selfPaddingLeft;
           sliderPick.wrapperX -= scrollXSpeed;
           wrapper.style.left = Math.round(sliderPick.wrapperX) + "px";
-          if (settings.autoHide == true) adaptiveHide(scrollerX, scrollerOpacityActive);
+          if (settings.autoHide == true) {
+            adaptiveHide(scrollerX, scrollerOpacityActive);
+            adaptiveHide(plug, scrollerOpacityActive);
+          };
           return sliderPick = {
             sliderX: true,
             wrapperX: sliderPick.wrapperX,
@@ -457,7 +509,11 @@ Element.prototype.scrollable = function(settings) {
       } else if (newSliderTop > bottomEdge) {
         newSliderTop = bottomEdge;
         if (horizontalScrolling == true) {
-          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) * -1;  
+          if (sliderShift == true) {
+            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) * -1;
+          } else {
+            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom) * -1;
+          };
         } else {
           sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom) * -1;
         };
@@ -484,7 +540,11 @@ Element.prototype.scrollable = function(settings) {
         sliderPick.wrapperX = 0;
       } else if (newSliderLeft > rightEdge) {
         newSliderLeft = rightEdge;
-        sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth) * -1;
+        if (sliderShift == true) {
+          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth) * -1;
+        } else {
+          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPaddingLeft + selfPaddingRight) * -1;
+        };
       };
       return {
         newSliderLeft: newSliderLeft,
@@ -514,7 +574,7 @@ Element.prototype.scrollable = function(settings) {
       // function of scrolling by mouse wheel
       function wheelScroll(event) {
         event = event || window.event;
-        var delta = event.deltaY || event.detail || event.wheelDelta;
+        var delta = event.deltaY || event.detail || (event.wheelDelta * -1);
         var scrollStep;
         if (delta > 0) {
           scrollStep = stepMultipler;
@@ -550,8 +610,8 @@ Element.prototype.scrollable = function(settings) {
             };
             var result = scrollGeneric(event, scrollStep);
             if (settings.autoHide == true) autoHideOnEvents("Y");
-            wrapper.style.top = result.newWrapperTop + "px";
             slider.style.top = result.newSliderTop + "px";
+            wrapper.style.top = result.newWrapperTop + "px";
           };
           // condition for bottons "Arrow up" and "Page Up"
           if (event.keyCode == 38 || event.keyCode == 33) {
@@ -573,8 +633,8 @@ Element.prototype.scrollable = function(settings) {
               };
               var result = scrollGenericX(event, scrollStep);
               if (settings.autoHide == true) autoHideOnEvents("X");
-              wrapper.style.left = result.newWrapperLeft + "px";
               sliderX.style.left = result.newSliderLeft + "px";
+              wrapper.style.left = result.newWrapperLeft + "px";
             };
             // condition for bottons "Arrow left" and "Home"
             if (event.keyCode == 37 || event.keyCode == 36) {
@@ -595,8 +655,13 @@ Element.prototype.scrollable = function(settings) {
         event = event || window.event;
         var target = event.target || event.srcElement;
         self.focus();
-        if (scroller.contains(target) || scrollerX.contains(target)) return;
-        if (sliderPick.slider != false || sliderPick.sliderX != false) return;
+        if (horizontalScrolling == true) {
+          if (scroller.contains(target) || scrollerX.contains(target)) return;
+          if (sliderPick.slider != false || sliderPick.sliderX != false) return;
+        } else {
+          if (scroller.contains(target)) return;
+          if (sliderPick.slider != false) return;
+        };
         
         // -- Vertical scrolling -- //
         function selectionScroll(event) {
@@ -650,9 +715,9 @@ Element.prototype.scrollable = function(settings) {
       // -- Function for vertical scrolling -- //
       function mouseGeneric(positivity, type) {
         var scrollStep;
-        if (type == "arrowUp" || type == "arrowDown") {
+        if (type == "Arrow") {
           scrollStep = stepMultipler * positivity;
-        } else if (type == "scroller") {
+        } else if (type == "Scroller") {
           if (horizontalScrolling == true) {
             scrollStep = (self.clientHeight - scrollerX.offsetHeight) * positivity;
           } else {
@@ -669,9 +734,9 @@ Element.prototype.scrollable = function(settings) {
       if (horizontalScrolling == true) {
         function mouseGenericX(positivity, type) {
           var scrollStep;
-          if (type == "arrowLeft" || type == "arrowRight") {
+          if (type == "Arrow") {
             scrollStep = stepMultipler * positivity;
-          } else if (type == "scrollerX") {
+          } else if (type == "Scroller") {
             scrollStep = (self.clientWidth - scroller.offsetWidth) * positivity;
           };
           var result = scrollGenericX(event, scrollStep);
@@ -703,37 +768,50 @@ Element.prototype.scrollable = function(settings) {
         };
       };
       
-      if (target.getAttribute('data-type') == "arrowUp") { // condition for click on vitrual arrow up
-        mouseGeneric(-1, "arrowUp");
-        loopedMouseGeneric(-1, "arrowUp");
-      } else if (target.getAttribute('data-type') == "arrowDown") { // condition for click on virtual arrow down
-        mouseGeneric(1, "arrowDown");
-        loopedMouseGeneric(1, "arrowDown");
-      } else if (target.getAttribute('data-type') == "scroller") { // condition for click on empty field of vertical scroll bar
-        if (event.clientY < slider.getBoundingClientRect().top) {
-          mouseGeneric(-1, "scroller");
-          loopedMouseGeneric(-1, "scroller");
-        } else if (event.clientY > slider.getBoundingClientRect().bottom) {
-          mouseGeneric(1, "scroller");
-          loopedMouseGeneric(1, "scroller");
+      if (arrows == true) {
+        if (arrowUp.contains(target)) { // condition for click on vitrual arrow up
+          mouseGeneric(-1, "Arrow");
+          loopedMouseGeneric(-1, "Arrow");
         };
-      } else if (target.getAttribute('data-type') == "arrowLeft") { // condition for click on vitrual arrow left
-        mouseGenericX(-1, "arrowLeft");
-        loopedMouseGeneric(-1, "arrowLeft");
-      } else if (target.getAttribute('data-type') == "arrowRight") { // condition for click on virtual arrow right
-        mouseGenericX(1, "arrowRight");
-        loopedMouseGeneric(1, "arrowRight");
-      } else if (target.getAttribute('data-type') == "scrollerX") { // condition for click on empty field of horizontal scroll bar
-        if (event.clientX < sliderX.getBoundingClientRect().left) {
-          mouseGenericX(-1, "scrollerX");
-          loopedMouseGeneric(-1, "scrollerX");
-        } else if (event.clientX > sliderX.getBoundingClientRect().right) {
-          mouseGenericX(1, "scrollerX");
-          loopedMouseGeneric(1, "scrollerX");
+        if (arrowDown.contains(target)) { // condition for click on virtual arrow down
+          mouseGeneric(1, "Arrow");
+          loopedMouseGeneric(1, "Arrow");
         };
-      } else {
-        return;
+        if (horizontalScrolling == true) {
+          if (arrowLeft.contains(target)) { // condition for click on vitrual arrow left
+            mouseGenericX(-1, "Arrow");
+            loopedMouseGeneric(-1, "Arrow");
+          };
+          if (arrowRight.contains(target)) { // condition for click on virtual arrow right
+            mouseGenericX(1, "Arrow");
+            loopedMouseGeneric(1, "Arrow");
+          }
+        };
       };
+      
+      if (target.getAttribute('data-type') == "scroller") { // condition for click on empty field of vertical scroll bar
+        if (event.clientY < slider.getBoundingClientRect().top) {
+          mouseGeneric(-1, "Scroller");
+          loopedMouseGeneric(-1, "Scroller");
+        } else if (event.clientY > slider.getBoundingClientRect().bottom) {
+          mouseGeneric(1, "Scroller");
+          loopedMouseGeneric(1, "Scroller");
+        };
+      };
+      
+      if (horizontalScrolling == true) {
+        if (target.getAttribute('data-type') == "scrollerX") { // condition for click on empty field of horizontal scroll bar
+          if (event.clientX < sliderX.getBoundingClientRect().left) {
+            mouseGenericX(-1, "Scroller");
+            loopedMouseGeneric(-1, "Scroller");
+          } else if (event.clientX > sliderX.getBoundingClientRect().right) {
+            mouseGenericX(1, "Scroller");
+            loopedMouseGeneric(1, "Scroller");
+          };
+        };
+      };
+      
+      return;
     };
     // Stop scrolling function if it run
     function stopVirtualScrolling() {
