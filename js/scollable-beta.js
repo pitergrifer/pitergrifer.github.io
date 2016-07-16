@@ -357,14 +357,14 @@ Element.prototype.scrollable = function(settings) {
     var ratioFactor;
     if (horizontalScrolling == true) {
       if (sliderShift == true) {
-        ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) - self.offsetHeight) / (sliderFieldHeight - sliderHeight);
-        var ratioFactorX = ((wrapper.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth) - self.offsetWidth) / (sliderFieldXWidth - sliderWidth);
+        ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) - (self.offsetHeight + (selfBorder.top - selfBorder.bottom))) / (sliderFieldHeight - sliderHeight);
+        var ratioFactorX = ((wrapper.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth) - (self.offsetWidth + (selfBorder.left - selfBorder.right))) / (sliderFieldXWidth - sliderWidth);
       } else {
-        ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom) - self.offsetHeight) / (sliderFieldHeight - sliderHeight);
-        var ratioFactorX = ((wrapper.offsetWidth + selfPaddingLeft + selfPaddingRight) - self.offsetWidth) / (sliderFieldXWidth - sliderWidth);
+        ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom) - (self.offsetHeight + (selfBorder.top - selfBorder.bottom))) / (sliderFieldHeight - sliderHeight);
+        var ratioFactorX = ((wrapper.offsetWidth + selfPaddingLeft + selfPaddingRight) - (self.offsetWidth + (selfBorder.left - selfBorder.right))) / (sliderFieldXWidth - sliderWidth);
       };
     } else  {
-      ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom) - self.offsetHeight) / (sliderFieldHeight - sliderHeight);
+      ratioFactor = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom) - (self.offsetHeight + (selfBorder.top - selfBorder.bottom))) / (sliderFieldHeight - sliderHeight);
     };
     
     // -- Object for detection picked slider -- //
@@ -493,7 +493,7 @@ Element.prototype.scrollable = function(settings) {
     };
     
     // -- General function of vertical scrolling action for mouse wheel, keyboard and virtual arrows -- //
-    function scrollGeneric(event, scrollStep, axis) {
+    function scrollGeneric(event, scrollStep) {
       sliderPick.wrapperY -= scrollStep;
       var newSliderTop = (sliderPick.wrapperY / ratioFactor) * -1;
       if (arrows == true) {
@@ -510,12 +510,12 @@ Element.prototype.scrollable = function(settings) {
         newSliderTop = bottomEdge;
         if (horizontalScrolling == true) {
           if (sliderShift == true) {
-            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) * -1;
+            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight - (selfBorder.top - selfBorder.bottom)) * -1;
           } else {
-            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom) * -1;
+            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom - (selfBorder.top - selfBorder.bottom)) * -1;
           };
         } else {
-          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom) * -1;
+          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom - (selfBorder.top - selfBorder.bottom)) * -1;
         };
       };
       return {
@@ -541,9 +541,9 @@ Element.prototype.scrollable = function(settings) {
       } else if (newSliderLeft > rightEdge) {
         newSliderLeft = rightEdge;
         if (sliderShift == true) {
-          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth) * -1;
+          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth - (selfBorder.left - selfBorder.right)) * -1;
         } else {
-          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPaddingLeft + selfPaddingRight) * -1;
+          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPaddingLeft + selfPaddingRight - (selfBorder.left - selfBorder.right)) * -1;
         };
       };
       return {
