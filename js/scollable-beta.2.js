@@ -1,4 +1,3 @@
-/*jslint devel: true, plusplus: true, regexp: true, unparam: true, sloppy: true, sub: true, vars: true, maxerr: 999*/
 /*
  * scrollable.js
  *
@@ -85,7 +84,7 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Set attribute "tabindex" at container (it do event "onfocus" available) -- //
     self.setAttribute("tabindex", "1");
-    // -- Most of elements must have 'data-type' identifier -- //
+    // -- Some of elements must have 'data-type' identifier -- //
     self.setAttribute("data-type", "container");
     
     // -- Function of adding standart css propertys -- //
@@ -171,26 +170,19 @@ Element.prototype.scrollable = function (settings) {
       }
     }
     
-    // -- Get borders and paddings for future calculations -- //
+    // -- Get borders of container for future calculations -- //
     var selfBorder = {
       top: parseFloat(getStyle(self).borderTopWidth),
       bottom: parseFloat(getStyle(self).borderBottomWidth),
       left: parseFloat(getStyle(self).borderLeftWidth),
       right: parseFloat(getStyle(self).borderRightWidth)
     };
-    // Fallow paddings consider borders
-    var selfPaddingTop = wrapper.getBoundingClientRect().top - self.getBoundingClientRect().top,
-      selfPaddingBottom = parseFloat(getStyle(self).paddingBottom) + self.clientTop;
-    if (horizontalScrolling === true) {
-      var selfPaddingLeft = wrapper.getBoundingClientRect().left - self.getBoundingClientRect().left,
-        selfPaddingRight = parseFloat(getStyle(self).paddingLeft) + self.clientLeft;
-    }
     
     // -- Function for creation vertical and horizontal scrollbars -- //
     function makeScroller(axis) {
       var scroller = document.createElement("div");
       if (axis === "X") { // horizontal scroll bar
-        makeByStandart(scroller, self, "absolute", settings.scrollerXClass);
+        makeByStandart(scroller, self, "absolute", scrollerXClass);
         scroller.setAttribute("data-type", "scrollerX");
         var scrollersArray = document.querySelectorAll("." + scrollerClass);
         scroller.style.width = self.clientWidth - scrollersArray[0].offsetWidth + "px";
@@ -211,7 +203,7 @@ Element.prototype.scrollable = function (settings) {
         scroller.style.top = "0px";
         scroller.style.left = self.clientWidth - scroller.offsetWidth + "px";
       }
-      if (navigator.userAgent.match(/MSIE 8.0/ig)) {
+      if (navigator.userAgent.match(/MSIE/ig)) {
         if (getStyle(scroller).backgroundColor === "transparent") {
           var parentBackground = getStyle(self).backgroundColor;
           if (parentBackground !== "transparent") {
@@ -276,13 +268,15 @@ Element.prototype.scrollable = function (settings) {
       }
     }
     
-    // -- Function for calculate height or width for sliders  -- //
+    // -- Get paddings of container -- //
     var selfPadding = {
       top: parseFloat(getStyle(self).paddingTop),
       bottom: parseFloat(getStyle(self).paddingBottom),
       left: parseFloat(getStyle(self).paddingLeft),
       right: parseFloat(getStyle(self).paddingRight)
     };
+    
+    // -- Function for calculate height or width for sliders  -- //
     function updateSliderHW(axis) {
       if (axis === "Y") {
         if (sliderStarterHeight === "auto") {
@@ -296,13 +290,12 @@ Element.prototype.scrollable = function (settings) {
           } else {
             selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) / 100);
           }
-          sliderHeight = sliderFieldHeight / 100 * selfWrapperRatio;
-        } else {
-          sliderHeight = sliderHeight;
+          sliderHeight = Math.round(sliderFieldHeight / 100 * selfWrapperRatio);
+          if (sliderHeight < sliderHeightMin) {
+            sliderHeight = sliderHeightMin;
+          }
         }
-        if (sliderHeight < sliderHeightMin) {
-          sliderHeight = sliderHeightMin;
-        } else if (sliderHeight >= sliderFieldHeight) {
+        if (sliderHeight >= sliderFieldHeight) {
           sliderHeight = 0;
         }
         slider.style.height = sliderHeight + "px";
@@ -314,13 +307,12 @@ Element.prototype.scrollable = function (settings) {
           } else {
             selfWrapperRatioX = self.clientWidth / ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) / 100);
           }
-          sliderWidth = sliderFieldXWidth / 100 * selfWrapperRatioX;
-        } else {
-          sliderWidth = sliderWidth;
+          sliderWidth = Math.round(sliderFieldXWidth / 100 * selfWrapperRatioX);
+          if (sliderWidth < sliderHeightMin) {
+            sliderWidth = sliderHeightMin;
+          }
         }
-        if (sliderWidth < sliderHeightMin) {
-          sliderWidth = sliderHeightMin;
-        } else if (sliderWidth >= sliderFieldXWidth) {
+        if (sliderWidth >= sliderFieldXWidth) {
           sliderWidth = 0;
         }
         sliderX.style.width = sliderWidth + "px";
@@ -332,7 +324,7 @@ Element.prototype.scrollable = function (settings) {
       var slider = document.createElement("div");
       if (axis === "Y") { // slider for vertical scroller
         makeByStandart(slider, scroller, "absolute", sliderClass);
-        slider.setAttribute("data-type", "slider")
+        slider.setAttribute("data-type", "slider");
         slider.style.width = scroller.clientWidth + "px";
         slider.style.top = topEdge + "px";
       } else if (axis === "X") { // slider for horizontal scroller
@@ -343,14 +335,14 @@ Element.prototype.scrollable = function (settings) {
       }
       smoothly("set", slider);
       return slider;
-    };
+    }
     
     // -- Create a vertical slider -- //
     var slider = createSlider("Y");
     updateSliderHW("Y");
     
     // -- Create a horizontal slider -- //
-    if (horizontalScrolling === true){
+    if (horizontalScrolling === true) {
       var sliderX = createSlider("X");
       updateSliderHW("X");
     }
@@ -381,10 +373,10 @@ Element.prototype.scrollable = function (settings) {
         element.style.KhtmlOpacity = value;
         element.style.opacity = value;
       }
-      var hideBy = undefined,
-        hideByX = undefined;
+      var hideBy,
+        hideByX;
       adaptiveHide(scroller, scrollerOpacityHidden);
-      if (horizontalScrolling == true) {
+      if (horizontalScrolling === true) {
         adaptiveHide(scrollerX, scrollerOpacityHidden);
         adaptiveHide(plug, scrollerOpacityHidden);
       }
@@ -409,7 +401,7 @@ Element.prototype.scrollable = function (settings) {
         mousePosition = "outside";
       };
       function autoHideOnEvents(axis) {
-        if (axis == "X") {
+        if (axis === "X") {
           if (hideByX != undefined) {
             clearTimeout(hideByX);
           }
@@ -432,11 +424,11 @@ Element.prototype.scrollable = function (settings) {
           if (horizontalScrolling === true) {
             adaptiveHide(plug, scrollerOpacityActive);
           }
-          hideBy = setTimeout(function() {
+          hideBy = setTimeout(function () {
             if (mousePosition === "inside") {
               adaptiveHide(scroller, scrollerOpacityPassive);
               if (horizontalScrolling === true) {
-                adaptiveHide(plug, scrollerOpacityPassive); 
+                adaptiveHide(plug, scrollerOpacityPassive);
               }
             } else if (mousePosition === "outside") {
               adaptiveHide(scroller, scrollerOpacityHidden);
@@ -449,35 +441,38 @@ Element.prototype.scrollable = function (settings) {
       }
     }
     
-    // -- Ratio factor formula for future calculation -- //
+    // -- Ratio factor calculation results -- //
     var ratioFactor = {
       vertical: 0,
       horizontal: 0
     };
+    
+    // -- Ratio factor formula for future calculation -- //
     function calcRatioFactor() {
-      if (horizontalScrolling == true) {
-        if (sliderShift == true) {
-          ratioFactor.vertical = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight) - (self.offsetHeight + (selfBorder.top - selfBorder.bottom))) / (sliderFieldHeight - sliderHeight);
-          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth) - (self.offsetWidth + (selfBorder.left - selfBorder.right))) / (sliderFieldXWidth - sliderWidth);
+      if (horizontalScrolling === true) {
+        if (sliderShift === true) {
+          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderHeight);
+          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scroller.offsetWidth) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldXWidth - sliderWidth);
         } else {
-          ratioFactor.vertical = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom) - (self.offsetHeight + (selfBorder.top - selfBorder.bottom))) / (sliderFieldHeight - sliderHeight);
-          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPaddingLeft + selfPaddingRight) - (self.offsetWidth + (selfBorder.left - selfBorder.right))) / (sliderFieldXWidth - sliderWidth);
+          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderHeight);
+          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldXWidth - sliderWidth);
         }
-      } else  {
-        ratioFactor.vertical = ((wrapper.offsetHeight + selfPaddingTop + selfPaddingBottom) - (self.offsetHeight + (selfBorder.top - selfBorder.bottom))) / (sliderFieldHeight - sliderHeight);
-      }  
+      } else {
+        ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderHeight);
+      }
     }
+    
     calcRatioFactor();
     
     // -- Function for autoconfiguration scrollbars if content is dynamic (infinity scroll, for example) -- //
     if (settings.dynamicContent === true) {
       function checkContentSize() {
-        var timerContent = setTimeout(function() {
-          if (parseInt(getStyle(wrapper).height) != wrapperHeight) {
-            wrapperHeight = parseInt(getStyle(wrapper).height);
+        var timerContent = setTimeout(function () {
+          if (parseFloat(getStyle(wrapper).height) !== wrapperHeight) {
+            wrapperHeight = parseFloat(getStyle(wrapper).height);
             updateSliderHW("Y");
             calcRatioFactor();
-            var checkedSliderTop = (parseInt(getStyle(wrapper).top) / ratioFactor.vertical) * -1;
+            var checkedSliderTop = (parseFloat(getStyle(wrapper).top) / ratioFactor.vertical) * -1;
             if (arrows === true) {
               checkedSliderTop += arrowUp.offsetHeight;
             }
@@ -489,11 +484,11 @@ Element.prototype.scrollable = function (settings) {
           if (horizontalScrolling === "auto" || horizontalScrolling === true) {
             setWrapperWidth(wrapper);
             horizontalScrolling = true;
-            if (parseInt(getStyle(wrapper).width) != wrapperWidth) {
-              wrapperWidth = parseInt(getStyle(wrapper).width);
+            if (parseFloat(getStyle(wrapper).width) !== wrapperWidth) {
+              wrapperWidth = parseFloat(getStyle(wrapper).width);
               updateSliderHW("X");
               calcRatioFactor();
-              var checkedSliderXLeft = (parseInt(getStyle(wrapper).left) / ratioFactor.horizontal) * -1;
+              var checkedSliderXLeft = (parseFloat(getStyle(wrapper).left) / ratioFactor.horizontal) * -1;
               if (arrows === true) {
                 checkedSliderXLeft += arrowLeft.offsetWidth;
               }
@@ -586,7 +581,7 @@ Element.prototype.scrollable = function (settings) {
         wrapper.style.top = Math.round(sliderPick.wrapperY) + "px";
         if (autoHide === true) {
           adaptiveHide(scroller, scrollerOpacityActive);
-          if (horizontalScrolling == true) {
+          if (horizontalScrolling === true) {
             adaptiveHide(plug, scrollerOpacityActive);
           }
         }
@@ -623,8 +618,7 @@ Element.prototype.scrollable = function (settings) {
           }
           sliderX.style.left = newLeft + "px";
           var sliderXCoordsNew = sliderX.getBoundingClientRect(),
-            scrollXSpeed = (sliderXCoordsNew.left - sliderXCoordsOld.left) * ratioFactor.horizontal,
-            wrapperPositionXOld = (wrapper.getBoundingClientRect().left - self.getBoundingClientRect().left) - selfPaddingLeft;
+            scrollXSpeed = (sliderXCoordsNew.left - sliderXCoordsOld.left) * ratioFactor.horizontal;
           sliderPick.wrapperX -= scrollXSpeed;
           wrapper.style.left = Math.round(sliderPick.wrapperX) + "px";
           if (autoHide === true) {
@@ -662,12 +656,12 @@ Element.prototype.scrollable = function (settings) {
         newSliderTop = bottomEdge;
         if (horizontalScrolling === true) {
           if (sliderShift === true) {
-            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom + scrollerX.offsetHeight - (selfBorder.top - selfBorder.bottom)) * -1;
+            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selfBorder.bottom + scrollerX.offsetHeight) * -1;
           } else {
-            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom - (selfBorder.top - selfBorder.bottom)) * -1;
+            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selfBorder.bottom) * -1;
           }
         } else {
-          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPaddingTop + selfPaddingBottom - (selfBorder.top - selfBorder.bottom)) * -1;
+          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selftBorder.bottom) * -1;
         }
       }
       return {
@@ -693,9 +687,9 @@ Element.prototype.scrollable = function (settings) {
       } else if (newSliderLeft > rightEdge) {
         newSliderLeft = rightEdge;
         if (sliderShift === true) {
-          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPaddingLeft + selfPaddingRight + scroller.offsetWidth - (selfBorder.left - selfBorder.right)) * -1;
+          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPadding.left + selfBorder.left + selfPadding.right + selfBorder.right + scroller.offsetWidth) * -1;
         } else {
-          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPaddingLeft + selfPaddingRight - (selfBorder.left - selfBorder.right)) * -1;
+          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPadding.left + selfBorder.left + selfPadding.right + selfBorder.right) * -1;
         }
       }
       return {

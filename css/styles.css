@@ -6,7 +6,7 @@
   height: 700px;
   margin-left: auto;
   margin-right: auto;
-  padding: 15px;
+  padding: 0px;
   border: 16px solid black;
   border-right: 1px solid black;
   border-bottom: 1px solid black;
@@ -17,6 +17,8 @@
   position: relative;
   display: block;
   width: 1000px;
+  height: 1px;
+  background-color: red;
 }
 
 .scroller-field, .scroller-x-field {
