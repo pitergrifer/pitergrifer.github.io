@@ -50,7 +50,8 @@ Element.prototype.scrollable = function (settings) {
   /* Main function of generation scroller */
   function generateScroller() {
     // -- Block with main variables -- //
-    var scrollerClass = settings.scrollerClass,
+    var textArea = settings.textArea,
+      scrollerClass = settings.scrollerClass,
       arrows = settings.arrows,
       sliderClass = settings.sliderClass,
       sliderHeight = settings.sliderHeight,
@@ -82,8 +83,66 @@ Element.prototype.scrollable = function (settings) {
       var smoothlyScrollOptions = settings.smoothlyScrollOptions;
     }
     
+    // -- Function for detection textarea height by content -- //
+    /*
+    function textAreaHeight(textAreaSelect) {
+      var sampleBlock = document.createElement("div");
+      sampleBlock.style.position = "absolute";
+      sampleBlock.style.width = textAreaSelect.offsetWidth + "px";
+      sampleBlock.style.margin = "0";
+      sampleBlock.style.padding = "0";
+      sampleBlock.style.font = textAreaSelect.style.font;
+      sampleBlock.style.whiteSpace = "pre-wrap";
+      sampleBlock.style.wordWrap = "break-word";
+      sampleBlock.style.visibility = "hidden";
+      document.body.appendChild(sampleBlock);
+      sampleBlock.innerHTML = textAreaSelect.value.replace(/\n/g, "<br>");
+      var sampleBlockHeight = sampleBlock.offsetHeight;
+      document.body.removeChild(sampleBlock);
+      return sampleBlockHeight;
+    }
+    */
+    
+    // -- Logic, if container is <textarea>...</textarea> -- //
+    if (textArea === true) {
+      var textAreaContainer = document.createElement("div"),
+        textAreaID = self.getAttribute("id"),
+        textAreaClass = self.getAttribute("class"),
+        textAreaStyle = self.getAttribute("style");
+      
+      if (textAreaID != undefined) {
+        textAreaContainer.setAttribute("id", textAreaID);
+        self.removeAttribute("id");
+      }
+      if (textAreaClass != undefined) {
+        textAreaContainer.setAttribute("class", textAreaClass);
+        self.removeAttribute("class");
+      }
+      if (textAreaStyle != undefined) {
+        textAreaContainer.setAttribute("style", textAreaStyle);
+        self.removeAttribute("style");
+      }
+      
+      document.body.insertBefore(textAreaContainer, self);
+      textAreaContainer.appendChild(self);
+      self.setAttribute("id", "text-area");
+      
+      self.style.border = "none";
+      self.style.width = "100%";
+      self.style.margin = "0";
+      self.style.padding = "0";
+      self.style.font = "inherit";
+      self.style.resize = "none";
+      self.style.overflow = "hidden";
+      var oldBrowsersSucksBalls = self.scrollHeight;
+      self.style.height = self.scrollHeight + "px";
+      
+      var textAreaBlock = self;
+      self = textAreaContainer;
+    }
+    
     // -- Set attribute "tabindex" at container (it do event "onfocus" available) -- //
-    self.setAttribute("tabindex", "1");
+    self.setAttribute("tabindex", "99");
     // -- Some of elements must have 'data-type' identifier -- //
     self.setAttribute("data-type", "container");
     
@@ -155,8 +214,18 @@ Element.prototype.scrollable = function (settings) {
     if (horizontalScrolling === "auto" || horizontalScrolling === true) {
       setWrapperWidth(wrapper);
     }
-    var wrapperHeight = parseFloat(getStyle(wrapper).height),
-      wrapperWidth = parseFloat(getStyle(wrapper).width);
+    var wrapperHeight = wrapper.offsetHeight,
+      wrapperWidth = wrapper.offsetWidth;
+    
+    if (textArea == true) {
+      textAreaBlock = document.getElementById("text-area");
+    };
+    
+    function updateHeights(textAreaSelect) {
+      oldBrowsersSucksBalls = textAreaBlock.scrollHeight;
+      textAreaBlock.style.height = textAreaBlock.scrollHeight + "px";
+      wrapper.style.height = textAreaBlock.scrollHeight + "px";
+    }
     
     // -- Function for optional shrink content width -- //
     function fixContent() {
@@ -198,6 +267,9 @@ Element.prototype.scrollable = function (settings) {
           scroller.style.height = self.clientHeight + "px";
           if (sliderShift === true) {
             self.style.paddingRight = parseFloat(getStyle(self).paddingRight) + scroller.offsetWidth + "px";
+            if (textArea === true) {
+              updateHeights(textAreaBlock);
+            }
           }
         }
         scroller.style.top = "0px";
@@ -464,41 +536,92 @@ Element.prototype.scrollable = function (settings) {
     
     calcRatioFactor();
     
-    // -- Function for autoconfiguration scrollbars if content is dynamic (infinity scroll, for example) -- //
-    if (settings.dynamicContent === true) {
-      function checkContentSize() {
-        var timerContent = setTimeout(function () {
-          if (parseFloat(getStyle(wrapper).height) !== wrapperHeight) {
-            wrapperHeight = parseFloat(getStyle(wrapper).height);
-            updateSliderHW("Y");
-            calcRatioFactor();
-            var checkedSliderTop = (parseFloat(getStyle(wrapper).top) / ratioFactor.vertical) * -1;
-            if (arrows === true) {
-              checkedSliderTop += arrowUp.offsetHeight;
-            }
-            slider.style.top = checkedSliderTop + "px";
-          }
-          if (contentResize === true) {
-            fixContent();
-          }
-          if (horizontalScrolling === "auto" || horizontalScrolling === true) {
-            setWrapperWidth(wrapper);
-            horizontalScrolling = true;
-            if (parseFloat(getStyle(wrapper).width) !== wrapperWidth) {
-              wrapperWidth = parseFloat(getStyle(wrapper).width);
-              updateSliderHW("X");
-              calcRatioFactor();
-              var checkedSliderXLeft = (parseFloat(getStyle(wrapper).left) / ratioFactor.horizontal) * -1;
-              if (arrows === true) {
-                checkedSliderXLeft += arrowLeft.offsetWidth;
-              }
-              sliderX.style.left = checkedSliderXLeft + "px";
-            }
-          }
-          checkContentSize();
-        }, 4);
+    function checkSliderPosition(axis) {
+      if (axis === "Y") {
+        var checkedSliderTop = ((wrapper.getBoundingClientRect().top - (self.getBoundingClientRect().top + self.clientTop + selfPadding.top)) / ratioFactor.vertical) * -1;
+        if (arrows === true) {
+          checkedSliderTop += arrowUp.offsetHeight;
+        }
+        slider.style.top = checkedSliderTop + "px";
+      } else if (axis === "X") {
+        var checkedSliderXLeft = (parseFloat(getStyle(wrapper).left) / ratioFactor.horizontal) * -1;
+        if (arrows === true) {
+          checkedSliderXLeft += arrowLeft.offsetWidth;
+        }
+        sliderX.style.left = checkedSliderXLeft + "px";
       }
+    }
+    
+    // -- Function for autoconfiguration scrollbars if content is dynamic (infinity scroll, for example) -- //
+    function checkContentSize() {
+      var timerContent = setTimeout(function () {
+        if (wrapper.offsetHeight !== wrapperHeight) {
+          wrapperHeight = wrapper.offsetHeight;
+          updateSliderHW("Y");
+          calcRatioFactor();
+          checkSliderPosition("Y");
+        }
+        if (contentResize === true) {
+          fixContent();
+        }
+        if (horizontalScrolling === "auto" || horizontalScrolling === true) {
+          setWrapperWidth(wrapper);
+          horizontalScrolling = true;
+          if (wrapper.offsetWidth !== wrapperWidth) {
+            wrapperWidth = wrapper.offsetWidth;
+            updateSliderHW("X");
+            calcRatioFactor();
+            checkSliderPosition("X");
+          }
+        }
+        if (textArea !== true) {
+          checkContentSize();
+        }
+      }, 4);
+    }
+    
+    if (settings.dynamicContent === true) {
       checkContentSize();
+    }
+    
+    if (textArea === true) {
+      function updateTextAreaContent() {
+        updateHeights(textAreaBlock);
+        updateSliderHW("Y");
+        checkSliderPosition("Y");
+        calcRatioFactor();
+      }
+      
+      var textAreaTimers = {
+        start: undefined,
+        run: false,
+        end: undefined
+      };
+      
+      eventListener("add", textAreaBlock, "keydown", function () {
+        if (textAreaTimers.start === undefined) {
+          if (textAreaTimers.run === true) {
+            clearTimeout(textAreaTimers.end);
+            textAreaTimers.end = undefined;
+            textAreaTimers.run = false;
+          }
+          textAreaTimers.start = setInterval(function () {
+            updateTextAreaContent();
+          }, 20);
+        }
+      });
+      
+      eventListener("add", textAreaBlock, "keyup", function () {
+        if (textAreaTimers.end === undefined) {
+          textAreaTimers.end = setTimeout(function () {
+            clearInterval(textAreaTimers.start);
+            textAreaTimers.start = undefined;
+            textAreaTimers.end = undefined;
+            textAreaTimers.run = false;
+          }, 1000);
+        }
+        textAreaTimers.run = true;
+      });
     }
     
     // -- Object for detection picked slider -- //
@@ -661,7 +784,7 @@ Element.prototype.scrollable = function (settings) {
             sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selfBorder.bottom) * -1;
           }
         } else {
-          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selftBorder.bottom) * -1;
+          sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selfBorder.bottom) * -1;
         }
       }
       return {
