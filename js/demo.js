@@ -16,7 +16,7 @@ container.scrollable({
   sliderHeight: "auto", // высота ползунка ("auto" - расчитывается в зависимости от контента; число (без указания пикселей или процентов) - высота в пикселях)
   sliderHeightMin: 30, // минимальная высота ползунка в пикселях (указывать еденицу измерения ненужно)
   sliderShift: true, // наличие смещения контента для скроллера (флаги "true", "false")
-  horizontalScrolling: false, // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
+  horizontalScrolling: true, // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
   scrollerXClass: "scroller-x-field",
   stepMultipler: 15, // скорость прокрутки
   scrollBySelection: true, // возможность прокрутки при выделении текста (флаги "true", "false")

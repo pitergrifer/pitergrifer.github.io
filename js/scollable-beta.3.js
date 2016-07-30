@@ -84,24 +84,17 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Function for detection textarea height by content -- //
-    /*
     function textAreaHeight(textAreaSelect) {
-      var sampleBlock = document.createElement("div");
-      sampleBlock.style.position = "absolute";
-      sampleBlock.style.width = textAreaSelect.offsetWidth + "px";
-      sampleBlock.style.margin = "0";
-      sampleBlock.style.padding = "0";
-      sampleBlock.style.font = textAreaSelect.style.font;
-      sampleBlock.style.whiteSpace = "pre-wrap";
-      sampleBlock.style.wordWrap = "break-word";
-      sampleBlock.style.visibility = "hidden";
-      document.body.appendChild(sampleBlock);
-      sampleBlock.innerHTML = textAreaSelect.value.replace(/\n/g, "<br>");
-      var sampleBlockHeight = sampleBlock.offsetHeight;
-      document.body.removeChild(sampleBlock);
-      return sampleBlockHeight;
+      var textAreaStyle = textAreaSelect.style.height;
+      textAreaSelect.style.height = "auto";
+      textAreaSelect.setAttribute("rows", "1");
+      var rowHeight = textAreaSelect.clientHeight;
+      textAreaSelect.removeAttribute("rows");
+      var oldBrowsersSucksBalls = textAreaSelect.scrollHeight;
+      var rows = textAreaSelect.scrollHeight / rowHeight;
+      textAreaSelect.style.height = textAreaStyle;
+      return rows * rowHeight;
     }
-    */
     
     // -- Logic, if container is <textarea>...</textarea> -- //
     if (textArea === true) {
@@ -134,8 +127,7 @@ Element.prototype.scrollable = function (settings) {
       self.style.font = "inherit";
       self.style.resize = "none";
       self.style.overflow = "hidden";
-      var oldBrowsersSucksBalls = self.scrollHeight;
-      self.style.height = self.scrollHeight + "px";
+      self.style.height = textAreaHeight(self) + "px";
       
       var textAreaBlock = self;
       self = textAreaContainer;
@@ -222,9 +214,8 @@ Element.prototype.scrollable = function (settings) {
     };
     
     function updateHeights(textAreaSelect) {
-      oldBrowsersSucksBalls = textAreaBlock.scrollHeight;
-      textAreaBlock.style.height = textAreaBlock.scrollHeight + "px";
-      wrapper.style.height = textAreaBlock.scrollHeight + "px";
+      textAreaBlock.style.height = textAreaHeight(textAreaSelect) + "px";
+      wrapper.style.height = textAreaHeight(textAreaSelect) + "px";
     }
     
     // -- Function for optional shrink content width -- //
@@ -592,14 +583,34 @@ Element.prototype.scrollable = function (settings) {
         calcRatioFactor();
       }
       
+      function isControllKey(event) {
+        if ((event.altKey == true) ||
+            (event.keyCode == 33) ||
+            (event.keyCode == 34) ||
+            (event.keyCode == 38) ||
+            (event.keyCode == 40)) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      
+      var activeNavigation = false;
+      
       var textAreaTimers = {
         start: undefined,
         run: false,
         end: undefined
       };
       
-      eventListener("add", textAreaBlock, "keydown", function () {
-        if (textAreaTimers.start === undefined) {
+      eventListener("add", textAreaBlock, "keydown", function (event) {
+        event = event || window.event;
+        
+        if (event.altKey === true) {
+          activeNavigation = true;
+        }
+        
+        if ((textAreaTimers.start === undefined) && (isControllKey(event) === false)) {
           if (textAreaTimers.run === true) {
             clearTimeout(textAreaTimers.end);
             textAreaTimers.end = undefined;
@@ -611,7 +622,13 @@ Element.prototype.scrollable = function (settings) {
         }
       });
       
-      eventListener("add", textAreaBlock, "keyup", function () {
+      eventListener("add", textAreaBlock, "keyup", function (event) {
+        event = event || window.event;
+        
+        if (event.keyCode === 18) {
+          activeNavigation = false;
+        }
+        
         if (textAreaTimers.end === undefined) {
           textAreaTimers.end = setTimeout(function () {
             clearInterval(textAreaTimers.start);
@@ -891,7 +908,7 @@ Element.prototype.scrollable = function (settings) {
       }
     }
     
-    // -- Event of scrolling by keyboard (wrap event "onkeyboard" in "onfocus" to avoid conflict with native scroller) -- //
+    // -- Event of scrolling by keyboard (wrap event "onkey..." in "onfocus" to avoid conflict with native scroller) -- //
     if (settings.useKeyboardScroll === true) {
       self.onfocus = function (event) {
         self.onkeydown = function (event) {
@@ -934,11 +951,21 @@ Element.prototype.scrollable = function (settings) {
           }
           // condition for bottons "Arrow up" and "Page Up"
           if ((event.keyCode == 38 || event.keyCode == 33) && (sliderHeight > 0)) {
-            keyboardScroll(event, 38, 33, -1);
+            if ((textArea == true) && (activeNavigation == true)) {
+              keyboardScroll(event, 38, 33, -1);
+              return false;
+            } else if (textArea == false) {
+              keyboardScroll(event, 38, 33, -1);
+            }
           }
           // condition for bottons "Arrow down" and "Page Down"
           if ((event.keyCode == 40 || event.keyCode == 34) && (sliderHeight > 0)) {
-            keyboardScroll(event, 40, 34, 1);
+            if ((textArea == true) && (activeNavigation == true)) {
+              keyboardScroll(event, 40, 34, 1);
+              return false;
+            } else if (textArea == false) {
+              keyboardScroll(event, 40, 34, 1);
+            }
           }
           
           // -- Horizontal scrolling -- //
@@ -973,7 +1000,7 @@ Element.prototype.scrollable = function (settings) {
               clearTimeout(removeSmoothTimer);
               removeSmoothTimer = "empty";
               smoothActionPack("set");
-            }
+            };
           }
         };
       };
