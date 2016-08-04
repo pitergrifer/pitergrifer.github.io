@@ -2,8 +2,11 @@ var container = document.getElementById("container");
 container.style.top = document.documentElement.clientHeight / 2 - container.offsetHeight / 2 + "px";
 
 container.scrollable({
-  textArea: false,
-  scrollerClass: "scroller-field", // css-класс скроллера
+  verticalScroller: false,
+  scrollerYClass: "scroller-y-field", // css-класс скроллера
+  horizontalScroller: true, // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
+  scrollerXClass: "scroller-x-field",
+  scrollerShift: true, // наличие смещения контента для скроллера (флаги "true", "false")
   arrows: true, // наличие стрелок (флаги значения: "true", "false") 
   arrowsClass: "scroller-arrows", // css-класс стрелок
   arrowChevron: {
@@ -13,11 +16,8 @@ container.scrollable({
     right: "<div class=\"arrow-chevron-right\"></div>"
   }, // объект с HTML разметкой для "лычек"
   sliderClass: "scroller-slider", // css-класс ползунка
-  sliderHeight: "auto", // высота ползунка ("auto" - расчитывается в зависимости от контента; число (без указания пикселей или процентов) - высота в пикселях)
-  sliderHeightMin: 30, // минимальная высота ползунка в пикселях (указывать еденицу измерения ненужно)
-  sliderShift: true, // наличие смещения контента для скроллера (флаги "true", "false")
-  horizontalScrolling: true, // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
-  scrollerXClass: "scroller-x-field",
+  sliderSize: "auto", // высота ползунка ("auto" - расчитывается в зависимости от контента; число (без указания пикселей или процентов) - высота в пикселях)
+  sliderSizeMin: 30, // минимальная высота ползунка в пикселях (указывать еденицу измерения ненужно)
   stepMultipler: 15, // скорость прокрутки
   scrollBySelection: true, // возможность прокрутки при выделении текста (флаги "true", "false")
   useWheelScroll: true, // возможность прокрутки колесиком мыши (флаги "true", "false")
@@ -39,7 +39,6 @@ container.style.left = (document.documentElement.clientWidth - textarea.offsetWi
 textarea.style.left = (document.documentElement.clientWidth - container.offsetWidth) / 2 - textarea.offsetWidth / 2 + "px";
 
 textarea.scrollable({
-  textArea: true,
   scrollerClass: "scroller-field", // css-класс скроллера
   arrows: true, // наличие стрелок (флаги значения: "true", "false") 
   arrowsClass: "scroller-arrows", // css-класс стрелок

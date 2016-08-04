@@ -49,39 +49,76 @@ Element.prototype.scrollable = function (settings) {
   
   /* Main function of generation scroller */
   function generateScroller() {
+    // -- Function for set default option, if custom undefined -- //
+    function setOption(cust, def) {
+      if (cust === undefined) {
+        return def;
+      } else {
+        return cust;
+      }
+    }
+    
     // -- Block with main variables -- //
-    var textArea = settings.textArea,
-      scrollerClass = settings.scrollerClass,
-      arrows = settings.arrows,
+    var verticalScroller = setOption(settings.verticalScroller, true),
+      horizontalScroller = setOption(settings.horizontalScroller, true),
+      scrollerShift = setOption(settings.scrollerShift, true),
+      arrows = setOption(settings.arrows, true),
       sliderClass = settings.sliderClass,
-      sliderHeight = settings.sliderHeight,
-      sliderStarterHeight = sliderHeight,
-      sliderShift = settings.sliderShift,
-      horizontalScrolling = settings.horizontalScrolling,
-      stepMultipler = settings.stepMultipler,
-      contentResize = settings.contentResize,
-      autoHide = settings.autoHide,
-      smoothlyScroll = settings.smoothlyScroll;
+      sliderSize = setOption(settings.sliderSize, "auto"),
+      sliderStarterSize = sliderSize,
+      stepMultipler = setOption(settings.stepMultipler, 15),
+      contentResize = setOption(settings.contentResize, false),
+      autoHide = setOption(settings.autoHide, true),
+      smoothlyScroll = setOption(settings.smoothlyScroll, false);
+    
+    // Set class for scroller and height for slider, if vertical (Y) scroller available
+    if (verticalScroller === "auto" || verticalScroller === true) {
+      var scrollerYClass = settings.scrollerYClass,
+        sliderHeight = sliderSize,
+        sliderStarterHeight = sliderHeight;
+    }
+    
+    // Set class for scroller and width for slider, if horizontal (X) scroller available
+    if (horizontalScroller === "auto" || horizontalScroller === true) {
+      var scrollerXClass = settings.scrollerXClass,
+        sliderWidth = sliderSize,
+        sliderStarterWidth = sliderWidth;
+    }
+    
+    // Set class for arrows fields and inset HTML-code in there of "chevrones" (yes, you can use Font Awesome), if arrows available
     if (arrows === true) {
       var arrowsClass = settings.arrowsClass,
         arrowChevron = settings.arrowChevron;
     }
-    if (sliderHeight === "auto") {
-      var sliderHeightMin = settings.sliderHeightMin;
+    
+    // Set minimal size for sliders, if sizes are "auto"
+    if (sliderSize === "auto") {
+      var sliderSizeMin = setOption(settings.sliderSizeMin, 15);
     }
+    
+    // Set states of "auto hide" effect, if it available
     if (autoHide === true) {
-      var scrollerOpacityActive = settings.scrollerOpacityActive,
-        scrollerOpacityPassive = settings.scrollerOpacityPassive,
-        scrollerOpacityHidden = settings.scrollerOpacityHidden;
+      var scrollerOpacityActive = setOption(settings.scrollerOpacityActive, 1),
+        scrollerOpacityPassive = setOption(settings.scrollerOpacityPassive, 0.5),
+        scrollerOpacityHidden = setOption(settings.scrollerOpacityHidden, 0.2);
     }
-    if (horizontalScrolling === "auto" || horizontalScrolling === true) {
-      var scrollerXClass = settings.scrollerXClass,
-        sliderWidth = sliderHeight,
-        sliderStarterWidth = sliderWidth;
-    }
+    
+    // Set transition options, if effect of smooth scrolling are active 
     if (smoothlyScroll === true) {
-      var smoothlyScrollOptions = settings.smoothlyScrollOptions;
+      var smoothlyScrollOptions = setOption(settings.smoothlyScrollOptions, "0.3s top, 0.3s left");
     }
+    
+    // -- Function for detection <textarea> -- //
+    function detectTextArea(elem) {
+      if (elem.toString().match(/TextArea/ig)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    
+    // -- Detect <textarea> -- //
+    var isTextArea = detectTextArea(self);
     
     // -- Function for detection textarea height by content -- //
     function textAreaHeight(textAreaSelect) {
@@ -97,7 +134,7 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Logic, if container is <textarea>...</textarea> -- //
-    if (textArea === true) {
+    if (isTextArea === true) {
       var textAreaContainer = document.createElement("div"),
         textAreaID = self.getAttribute("id"),
         textAreaClass = self.getAttribute("class"),
@@ -185,10 +222,10 @@ Element.prototype.scrollable = function (settings) {
         }
       }
       if (contentMaxWidth > wrapper.offsetWidth) {
-        horizontalScrolling = true;
+        horizontalScroller = true;
         wrapper.style.width = contentMaxWidth + "px";
-      } else if (horizontalScrolling === "auto") {
-        horizontalScrolling = false;
+      } else if (horizontalScroller === "auto") {
+        horizontalScroller = false;
       }
     }
     
@@ -201,15 +238,15 @@ Element.prototype.scrollable = function (settings) {
     wrapper.setAttribute("data-type", "wrapper");
     wrapper.innerHTML = content;
     if (contentResize === true) {
-      horizontalScrolling = false;
+      horizontalScroller = false;
     }
-    if (horizontalScrolling === "auto" || horizontalScrolling === true) {
+    if (horizontalScroller === "auto" || horizontalScroller === true) {
       setWrapperWidth(wrapper);
     }
     var wrapperHeight = wrapper.offsetHeight,
       wrapperWidth = wrapper.offsetWidth;
     
-    if (textArea == true) {
+    if (isTextArea == true) {
       textAreaBlock = document.getElementById("text-area");
     };
     
@@ -244,21 +281,29 @@ Element.prototype.scrollable = function (settings) {
       if (axis === "X") { // horizontal scroll bar
         makeByStandart(scroller, self, "absolute", scrollerXClass);
         scroller.setAttribute("data-type", "scrollerX");
-        var scrollersArray = document.querySelectorAll("." + scrollerClass);
-        scroller.style.width = self.clientWidth - scrollersArray[0].offsetWidth + "px";
-        scroller.style.height = scrollersArray[0].offsetWidth + "px";
+        if (verticalScroller === true) {
+          scroller.style.width = self.clientWidth - scrollerY.offsetWidth + "px";
+        } else {
+          scroller.style.width = self.clientWidth + "px";
+          if (scrollerShift === true) {
+            self.style.paddingBottom = parseFloat(getStyle(self).paddingRight) + scroller.offsetWidth + "px";
+            if (isTextArea === true) {
+              updateHeights(textAreaBlock);
+            }
+          }
+        }
         scroller.style.top = self.clientHeight - scroller.offsetHeight + "px";
         scroller.style.left = "0px";
       } else if (axis === "Y") { // vertical scroll bar
-        makeByStandart(scroller, self, "absolute", scrollerClass);
-        scroller.setAttribute("data-type", "scroller");
-        if (horizontalScrolling === true) {
+        makeByStandart(scroller, self, "absolute", scrollerYClass);
+        scroller.setAttribute("data-type", "scrollerY");
+        if (horizontalScroller === true) {
           scroller.style.height = self.clientHeight - scroller.offsetWidth + "px";
         } else {
           scroller.style.height = self.clientHeight + "px";
-          if (sliderShift === true) {
+          if (scrollerShift === true) {
             self.style.paddingRight = parseFloat(getStyle(self).paddingRight) + scroller.offsetWidth + "px";
-            if (textArea === true) {
+            if (isTextArea === true) {
               updateHeights(textAreaBlock);
             }
           }
@@ -281,16 +326,19 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Create a vertical scroll bar -- //
-    var scroller = makeScroller("Y");
+    if (verticalScroller === true) {
+      var scrollerY = makeScroller("Y");
+    }
     if (contentResize === true) {
       fixContent();
     }
     
     // -- Create a horizontal scroll bar -- //
-    if (horizontalScrolling === true) {
+    if (horizontalScroller === true) {
       var scrollerX = makeScroller("X");
     }
     
+    /*
     // -- Create a arrows -- //
     if (arrows === true) {
       var arrowUp = document.createElement("div"),
@@ -298,7 +346,7 @@ Element.prototype.scrollable = function (settings) {
         arrowsPack = [arrowUp, arrowDown],
         chevronPack = [arrowChevron.top, arrowChevron.bottom],
         arrowCounter;
-      if (horizontalScrolling === true) {
+      if (horizontalScroller === true) {
         var arrowLeft = document.createElement("div"),
           arrowRight = document.createElement("div");
         arrowsPack.push(arrowLeft, arrowRight);
@@ -308,24 +356,93 @@ Element.prototype.scrollable = function (settings) {
         if (arrowCounter > 1) {
           makeByStandart(arrowsPack[arrowCounter], scrollerX, "absolute", arrowsClass);
         } else {
-          makeByStandart(arrowsPack[arrowCounter], scroller, "absolute", arrowsClass);
+          makeByStandart(arrowsPack[arrowCounter], scrollerY, "absolute", arrowsClass);
         }
-        arrowsPack[arrowCounter].style.width = scroller.clientWidth + "px";
-        arrowsPack[arrowCounter].style.height = scroller.clientWidth + "px";
+        arrowsPack[arrowCounter].style.width = scrollerY.clientWidth + "px";
+        arrowsPack[arrowCounter].style.height = scrollerY.clientWidth + "px";
         arrowsPack[arrowCounter].innerHTML = chevronPack[arrowCounter];
       }
-      arrowDown.style.top = scroller.clientHeight - arrowDown.offsetHeight + "px";
+      arrowDown.style.top = scrollerY.clientHeight - arrowDown.offsetHeight + "px";
       var topEdge = arrowUp.offsetWidth,
-        sliderFieldHeight = scroller.clientHeight - (arrowUp.offsetHeight + arrowDown.offsetHeight);
-      if (horizontalScrolling === true) {
+        sliderFieldHeight = scrollerY.clientHeight - (arrowUp.offsetHeight + arrowDown.offsetHeight);
+      if (horizontalScroller === true) {
         arrowRight.style.left = scrollerX.clientWidth - arrowRight.offsetWidth + "px";
         var leftEdge = arrowLeft.offsetWidth,
           sliderFieldXWidth = scrollerX.clientWidth - (arrowLeft.offsetWidth + arrowRight.offsetWidth);
       }
     } else {
       var topEdge = 0,
-        sliderFieldHeight = scroller.clientHeight;
-      if (horizontalScrolling === true) {
+        sliderFieldHeight = scrollerY.clientHeight;
+      if (horizontalScroller === true) {
+        var leftEdge = 0,
+          sliderFieldXWidth = scrollerX.clientWidth;
+      }
+    }
+    */
+    
+    // -- Create a arrows, if corresponding option activate and at least one of two scrollers are exist -- //
+    if (arrows === true && ((verticalScroller === true) || (horizontalScroller === true))) {
+      // create arrays for working with cycle 
+      var arrowsPack = [],
+        chevronPack = [],
+        arrowSize;
+      
+      // set size for arrows, based on scrollers width or height
+      if (verticalScroller === true) {
+        arrowSize = scrollerY.clientWidth;
+      } else if (horizontalScroller === true) {
+        arrowSize = scrollerX.clientHeight;
+      }
+      
+      // create "Up" and "Down" arrows and put it in array, if vertical scroller exist
+      if (verticalScroller === true) {
+        var arrowUp = document.createElement("div"),
+          arrowDown = document.createElement("div");
+        arrowsPack.push(arrowUp, arrowDown),
+        chevronPack.push(arrowChevron.top, arrowChevron.bottom);
+      }
+      
+      // create "Left" and "Right" arrows and put it in array, if horizontal scroller exist
+      if (horizontalScroller === true) {
+        var arrowLeft = document.createElement("div"),
+          arrowRight = document.createElement("div");
+        arrowsPack.push(arrowLeft, arrowRight);
+        chevronPack.push(arrowChevron.left, arrowChevron.right);
+      }
+      
+      // start cycle, for more compact code
+      for (var arrowCounter = 0; arrowCounter < arrowsPack.length; arrowCounter++) {
+        if (verticalScroller == true) { // setup "Up" and "Down" arrows by standart, if vertical scroller exist
+          makeByStandart(arrowsPack[arrowCounter], scrollerY, "absolute", arrowsClass);
+        }
+        
+        if (horizontalScroller == true) { // setup "Left" and "Right" arrows by standart, if horizontal scroller exist
+          makeByStandart(arrowsPack[arrowCounter], scrollerX, "absolute", arrowsClass);
+        }
+        
+        arrowsPack[arrowCounter].style.width = arrowSize + "px";
+        arrowsPack[arrowCounter].style.height = arrowSize + "px";
+        arrowsPack[arrowCounter].innerHTML = chevronPack[arrowCounter];
+      }
+      
+      if (verticalScroller === true) {
+        arrowDown.style.top = scrollerY.clientHeight - arrowDown.offsetHeight + "px";
+        var topEdge = arrowUp.offsetWidth,
+          sliderFieldHeight = scrollerY.clientHeight - (arrowUp.offsetHeight + arrowDown.offsetHeight); 
+      }
+      
+      if (horizontalScroller === true) {
+        arrowRight.style.left = scrollerX.clientWidth - arrowRight.offsetWidth + "px";
+        var leftEdge = arrowLeft.offsetWidth,
+          sliderFieldXWidth = scrollerX.clientWidth - (arrowLeft.offsetWidth + arrowRight.offsetWidth);
+      }
+    } else {
+      if (verticalScroller === true) {
+        var topEdge = 0,
+          sliderFieldHeight = scrollerY.clientHeight;  
+      }
+      
+      if (horizontalScroller === true) {
         var leftEdge = 0,
           sliderFieldXWidth = scrollerX.clientWidth;
       }
@@ -344,8 +461,8 @@ Element.prototype.scrollable = function (settings) {
       if (axis === "Y") {
         if (sliderStarterHeight === "auto") {
           var selfWrapperRatio;
-          if (horizontalScrolling === true) {
-            if (sliderShift === true) {
+          if (horizontalScroller === true) {
+            if (scrollerShift === true) {
               selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) / 100);
             } else {
               selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) / 100);
@@ -353,26 +470,26 @@ Element.prototype.scrollable = function (settings) {
           } else {
             selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) / 100);
           }
-          sliderHeight = Math.round(sliderFieldHeight / 100 * selfWrapperRatio);
-          if (sliderHeight < sliderHeightMin) {
-            sliderHeight = sliderHeightMin;
+          sliderSize = Math.round(sliderFieldHeight / 100 * selfWrapperRatio);
+          if (sliderSize < sliderSizeMin) {
+            sliderSize = sliderSizeMin;
           }
         }
-        if (sliderHeight >= sliderFieldHeight) {
-          sliderHeight = 0;
+        if (sliderSize >= sliderFieldHeight) {
+          sliderSize = 0;
         }
-        slider.style.height = sliderHeight + "px";
+        slider.style.height = sliderSize + "px";
       } else if (axis === "X") {
         if (sliderStarterWidth === "auto") {
           var selfWrapperRatioX;
-          if (sliderShift === true) {
-            selfWrapperRatioX = self.clientWidth / ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scroller.offsetWidth) / 100);
+          if (scrollerShift === true) {
+            selfWrapperRatioX = self.clientWidth / ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scrollerY.offsetWidth) / 100);
           } else {
             selfWrapperRatioX = self.clientWidth / ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) / 100);
           }
           sliderWidth = Math.round(sliderFieldXWidth / 100 * selfWrapperRatioX);
-          if (sliderWidth < sliderHeightMin) {
-            sliderWidth = sliderHeightMin;
+          if (sliderWidth < sliderSizeMin) {
+            sliderWidth = sliderSizeMin;
           }
         }
         if (sliderWidth >= sliderFieldXWidth) {
@@ -386,9 +503,9 @@ Element.prototype.scrollable = function (settings) {
     function createSlider(axis) {
       var slider = document.createElement("div");
       if (axis === "Y") { // slider for vertical scroller
-        makeByStandart(slider, scroller, "absolute", sliderClass);
+        makeByStandart(slider, scrollerY, "absolute", sliderClass);
         slider.setAttribute("data-type", "slider");
-        slider.style.width = scroller.clientWidth + "px";
+        slider.style.width = scrollerY.clientWidth + "px";
         slider.style.top = topEdge + "px";
       } else if (axis === "X") { // slider for horizontal scroller
         makeByStandart(slider, scrollerX, "absolute", sliderClass);
@@ -405,22 +522,22 @@ Element.prototype.scrollable = function (settings) {
     updateSliderHW("Y");
     
     // -- Create a horizontal slider -- //
-    if (horizontalScrolling === true) {
+    if (horizontalScroller === true) {
       var sliderX = createSlider("X");
       updateSliderHW("X");
     }
     
     // -- Creatr plug in hole between scrollers -- //
-    if (horizontalScrolling === true) {
+    if ((horizontalScroller === true) && (verticalScroller === true)) {
       var plug = document.createElement("div"),
         selfCoords = self.getBoundingClientRect();
       self.appendChild(plug);
       plug.style.position = "absolute";
-      plug.style.top = scroller.getBoundingClientRect().bottom - selfCoords.top - self.clientTop + "px";
+      plug.style.top = scrollerY.getBoundingClientRect().bottom - selfCoords.top - self.clientTop + "px";
       plug.style.left = scrollerX.getBoundingClientRect().right - selfCoords.left - self.clientLeft + "px";
-      plug.style.width = selfCoords.bottom - selfBorder.bottom - scroller.getBoundingClientRect().bottom + "px";
+      plug.style.width = selfCoords.bottom - selfBorder.bottom - scrollerY.getBoundingClientRect().bottom + "px";
       plug.style.height = selfCoords.right - selfBorder.right - scrollerX.getBoundingClientRect().right + "px";
-      plug.style.backgroundColor = getStyle(scroller).backgroundColor;
+      plug.style.backgroundColor = getStyle(scrollerY).backgroundColor;
     }
     
     // -- Adding effect of hideable scroll bar -- //
@@ -438,23 +555,23 @@ Element.prototype.scrollable = function (settings) {
       }
       var hideBy,
         hideByX;
-      adaptiveHide(scroller, scrollerOpacityHidden);
-      if (horizontalScrolling === true) {
+      adaptiveHide(scrollerY, scrollerOpacityHidden);
+      if (horizontalScroller === true) {
         adaptiveHide(scrollerX, scrollerOpacityHidden);
         adaptiveHide(plug, scrollerOpacityHidden);
       }
       var mousePosition = "unknown";
       self.onmouseenter = function (event) {
-        adaptiveHide(scroller, scrollerOpacityPassive);
-        if (horizontalScrolling === true) {
+        adaptiveHide(scrollerY, scrollerOpacityPassive);
+        if (horizontalScroller === true) {
           adaptiveHide(scrollerX, scrollerOpacityPassive);
           adaptiveHide(plug, scrollerOpacityPassive);
         }
         mousePosition = "inside";
       };
       self.onmouseleave = function (event) {
-        adaptiveHide(scroller, scrollerOpacityHidden);
-        if (horizontalScrolling === true) {
+        adaptiveHide(scrollerY, scrollerOpacityHidden);
+        if (horizontalScroller === true) {
           adaptiveHide(scrollerX, scrollerOpacityHidden);
           adaptiveHide(plug, scrollerOpacityHidden);
         }
@@ -483,19 +600,19 @@ Element.prototype.scrollable = function (settings) {
           if (hideBy != undefined) {
             clearTimeout(hideBy);
           }
-          adaptiveHide(scroller, scrollerOpacityActive);
-          if (horizontalScrolling === true) {
+          adaptiveHide(scrollerY, scrollerOpacityActive);
+          if (horizontalScroller === true) {
             adaptiveHide(plug, scrollerOpacityActive);
           }
           hideBy = setTimeout(function () {
             if (mousePosition === "inside") {
-              adaptiveHide(scroller, scrollerOpacityPassive);
-              if (horizontalScrolling === true) {
+              adaptiveHide(scrollerY, scrollerOpacityPassive);
+              if (horizontalScroller === true) {
                 adaptiveHide(plug, scrollerOpacityPassive);
               }
             } else if (mousePosition === "outside") {
-              adaptiveHide(scroller, scrollerOpacityHidden);
-              if (horizontalScrolling === true) {
+              adaptiveHide(scrollerY, scrollerOpacityHidden);
+              if (horizontalScroller === true) {
                 adaptiveHide(plug, scrollerOpacityHidden);
               }
             }
@@ -512,16 +629,16 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Ratio factor formula for future calculation -- //
     function calcRatioFactor() {
-      if (horizontalScrolling === true) {
-        if (sliderShift === true) {
-          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderHeight);
-          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scroller.offsetWidth) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldXWidth - sliderWidth);
+      if (horizontalScroller === true) {
+        if (scrollerShift === true) {
+          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderSize);
+          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scrollerY.offsetWidth) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldXWidth - sliderWidth);
         } else {
-          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderHeight);
+          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderSize);
           ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldXWidth - sliderWidth);
         }
       } else {
-        ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderHeight);
+        ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderSize);
       }
     }
     
@@ -555,9 +672,9 @@ Element.prototype.scrollable = function (settings) {
         if (contentResize === true) {
           fixContent();
         }
-        if (horizontalScrolling === "auto" || horizontalScrolling === true) {
+        if (horizontalScroller === "auto" || horizontalScroller === true) {
           setWrapperWidth(wrapper);
-          horizontalScrolling = true;
+          horizontalScroller = true;
           if (wrapper.offsetWidth !== wrapperWidth) {
             wrapperWidth = wrapper.offsetWidth;
             updateSliderHW("X");
@@ -565,7 +682,7 @@ Element.prototype.scrollable = function (settings) {
             checkSliderPosition("X");
           }
         }
-        if (textArea !== true) {
+        if (isTextArea !== true) {
           checkContentSize();
         }
       }, 4);
@@ -575,7 +692,7 @@ Element.prototype.scrollable = function (settings) {
       checkContentSize();
     }
     
-    if (textArea === true) {
+    if (isTextArea === true) {
       function updateTextAreaContent() {
         updateHeights(textAreaBlock);
         updateSliderHW("Y");
@@ -681,8 +798,8 @@ Element.prototype.scrollable = function (settings) {
               adaptiveHide(scrollerX, scrollerOpacityPassive);
               adaptiveHide(plug, scrollerOpacityPassive);
             } else if (axis === "Y") {
-              adaptiveHide(scroller, scrollerOpacityPassive);
-              if (horizontalScrolling === true) {
+              adaptiveHide(scrollerY, scrollerOpacityPassive);
+              if (horizontalScroller === true) {
                 adaptiveHide(plug, scrollerOpacityPassive);
               }
             }
@@ -691,8 +808,8 @@ Element.prototype.scrollable = function (settings) {
               adaptiveHide(scrollerX, scrollerOpacityHidden);
               adaptiveHide(plug, scrollerOpacityHidden);
             } else if (axis === "Y") {
-              adaptiveHide(scroller, scrollerOpacityHidden);
-              if (horizontalScrolling === true) {
+              adaptiveHide(scrollerY, scrollerOpacityHidden);
+              if (horizontalScroller === true) {
                 adaptiveHide(plug, scrollerOpacityHidden);
               }
             }
@@ -718,8 +835,8 @@ Element.prototype.scrollable = function (settings) {
       var сorrectPick = event.clientY - slider.getBoundingClientRect().top;
       function sliderScroll(event) {
         var sliderCoordsOld = slider.getBoundingClientRect(),
-          newTop = event.clientY - scroller.getBoundingClientRect().top - scroller.clientTop - сorrectPick,
-          bottomEdge = sliderFieldHeight - sliderHeight;
+          newTop = event.clientY - scrollerY.getBoundingClientRect().top - scrollerY.clientTop - сorrectPick,
+          bottomEdge = sliderFieldHeight - sliderSize;
         if (arrows === true) {
           bottomEdge += arrowDown.offsetHeight;  
         }
@@ -734,8 +851,8 @@ Element.prototype.scrollable = function (settings) {
         sliderPick.wrapperY -= scrollSpeed;
         wrapper.style.top = Math.round(sliderPick.wrapperY) + "px";
         if (autoHide === true) {
-          adaptiveHide(scroller, scrollerOpacityActive);
-          if (horizontalScrolling === true) {
+          adaptiveHide(scrollerY, scrollerOpacityActive);
+          if (horizontalScroller === true) {
             adaptiveHide(plug, scrollerOpacityActive);
           }
         }
@@ -752,7 +869,7 @@ Element.prototype.scrollable = function (settings) {
     };
     
     // -- Event "Drag'n Drop" for horizontal slider -- //
-    if (horizontalScrolling === true) {
+    if (horizontalScroller === true) {
       sliderX.onmousedown = function (event) {
         event = event || window.event;
         smoothly("remove", wrapper);
@@ -799,7 +916,7 @@ Element.prototype.scrollable = function (settings) {
       if (arrows === true) {
         newSliderTop += arrowUp.offsetHeight;
       }
-      var bottomEdge = sliderFieldHeight - sliderHeight;
+      var bottomEdge = sliderFieldHeight - sliderSize;
       if (arrows === true) {
         bottomEdge += arrowDown.offsetHeight;
       }
@@ -808,8 +925,8 @@ Element.prototype.scrollable = function (settings) {
         sliderPick.wrapperY = 0;
       } else if (newSliderTop > bottomEdge) {
         newSliderTop = bottomEdge;
-        if (horizontalScrolling === true) {
-          if (sliderShift === true) {
+        if (horizontalScroller === true) {
+          if (scrollerShift === true) {
             sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selfBorder.bottom + scrollerX.offsetHeight) * -1;
           } else {
             sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selfBorder.bottom) * -1;
@@ -840,8 +957,8 @@ Element.prototype.scrollable = function (settings) {
         sliderPick.wrapperX = 0;
       } else if (newSliderLeft > rightEdge) {
         newSliderLeft = rightEdge;
-        if (sliderShift === true) {
-          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPadding.left + selfBorder.left + selfPadding.right + selfBorder.right + scroller.offsetWidth) * -1;
+        if (scrollerShift === true) {
+          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPadding.left + selfBorder.left + selfPadding.right + selfBorder.right + scrollerY.offsetWidth) * -1;
         } else {
           sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPadding.left + selfBorder.left + selfPadding.right + selfBorder.right) * -1;
         }
@@ -909,13 +1026,13 @@ Element.prototype.scrollable = function (settings) {
     function smoothActionPack(action) {
       if (action === "set") {
         smoothly("set", slider);
-        if (horizontalScrolling === true) {
+        if (horizontalScroller === true) {
           smoothly("set", sliderX);
         }
         smoothly("set", wrapper);
       } else if (action === "remove") {
         smoothly("remove", slider);
-        if (horizontalScrolling === true) {
+        if (horizontalScroller === true) {
           smoothly("remove", sliderX);
         }
         smoothly("remove", wrapper);
@@ -952,7 +1069,7 @@ Element.prototype.scrollable = function (settings) {
               scrollStep = stepMultipler * positivity;
               freezTransition("Y");
             } else if (event.keyCode === pageBtnCode) {
-              if (horizontalScrolling === true) {
+              if (horizontalScroller === true) {
                 scrollStep = (self.clientHeight - scrollerX.offsetHeight) * positivity;
               } else {
                 scrollStep = (self.clientHeight) * positivity;
@@ -966,31 +1083,31 @@ Element.prototype.scrollable = function (settings) {
             wrapper.style.top = result.newWrapperTop + "px";
           }
           // condition for bottons "Arrow up" and "Page Up"
-          if ((event.keyCode == 38 || event.keyCode == 33) && (sliderHeight > 0)) {
-            if ((textArea == true) && (activeNavigation == true)) {
+          if ((event.keyCode == 38 || event.keyCode == 33) && (sliderSize > 0)) {
+            if ((isTextArea == true) && (activeNavigation == true)) {
               keyboardScroll(event, 38, 33, -1);
-            } else if (textArea == false) {
+            } else if (isTextArea == false) {
               keyboardScroll(event, 38, 33, -1);
             }
           }
           // condition for bottons "Arrow down" and "Page Down"
-          if ((event.keyCode == 40 || event.keyCode == 34) && (sliderHeight > 0)) {
-            if ((textArea == true) && (activeNavigation == true)) {
+          if ((event.keyCode == 40 || event.keyCode == 34) && (sliderSize > 0)) {
+            if ((isTextArea == true) && (activeNavigation == true)) {
               keyboardScroll(event, 40, 34, 1);
-            } else if (textArea == false) {
+            } else if (isTextArea == false) {
               keyboardScroll(event, 40, 34, 1);
             }
           }
           
           // -- Horizontal scrolling -- //
-          if (horizontalScrolling === true) {
+          if (horizontalScroller === true) {
             function keyboardScrollX(event, arrowBtnCode, pageBtnCode, positivity) {
               var scrollStep = 0;
               if (event.keyCode === arrowBtnCode) {
                 scrollStep = stepMultipler * positivity;
                 freezTransition("X");
               } else if (event.keyCode === pageBtnCode) {
-                scrollStep = (self.clientWidth - scroller.offsetWidth) * positivity;
+                scrollStep = (self.clientWidth - scrollerY.offsetWidth) * positivity;
               }
               var result = scrollGenericX(event, scrollStep);
               if (autoHide === true) {
@@ -1001,17 +1118,17 @@ Element.prototype.scrollable = function (settings) {
             }
             // condition for bottons "Arrow left" and "Home"
             if ((event.keyCode == 37 || event.keyCode == 36) && (sliderWidth > 0)) {
-              if ((textArea == true) && (activeNavigation == true)) {
+              if ((isTextArea == true) && (activeNavigation == true)) {
                 keyboardScrollX(event, 37, 36, -1);
-              } else if (textArea == false) {
+              } else if (isTextArea == false) {
                 keyboardScrollX(event, 37, 36, -1);
               }
             }
             // condition for bottons "Arrow right" and "End"
             if ((event.keyCode == 39 || event.keyCode == 35) && (sliderWidth > 0)) {
-              if ((textArea == true) && (activeNavigation == true)) {
+              if ((isTextArea == true) && (activeNavigation == true)) {
                 keyboardScrollX(event, 39, 35, 1);
-              } else if (textArea == false) {
+              } else if (isTextArea == false) {
                 keyboardScrollX(event, 39, 35, 1);
               }
             }
@@ -1034,15 +1151,15 @@ Element.prototype.scrollable = function (settings) {
         event = event || window.event;
         var target = event.target || event.srcElement;
         self.focus();
-        if (horizontalScrolling === true) {
-          if (scroller.contains(target) || scrollerX.contains(target)) {
+        if (horizontalScroller === true) {
+          if (scrollerY.contains(target) || scrollerX.contains(target)) {
             return;
           }
           if (sliderPick.slider != false || sliderPick.sliderX != false) {
             return;
           }
         } else {
-          if (scroller.contains(target)) {
+          if (scrollerY.contains(target)) {
             return;
           }
           if (sliderPick.slider != false) {
@@ -1071,7 +1188,7 @@ Element.prototype.scrollable = function (settings) {
         });
         
         // -- Horizontal scrolling -- //
-        if (horizontalScrolling === true) {
+        if (horizontalScroller === true) {
           function selectionScrollX(event) {
             var scrollStep = 0;
             if (event.clientX < self.getBoundingClientRect().left) {
@@ -1108,7 +1225,7 @@ Element.prototype.scrollable = function (settings) {
         if (type === "Arrow") {
           scrollStep = stepMultipler * positivity;
         } else if (type === "Scroller") {
-          if (horizontalScrolling === true) {
+          if (horizontalScroller === true) {
             scrollStep = (self.clientHeight - scrollerX.offsetHeight) * positivity;
           } else {
             scrollStep = self.clientHeight * positivity;
@@ -1123,13 +1240,13 @@ Element.prototype.scrollable = function (settings) {
       }
       
       // -- Function for horizontal scrolling -- //
-      if (horizontalScrolling === true) {
+      if (horizontalScroller === true) {
         function mouseGenericX(positivity, type) {
           var scrollStep;
           if (type === "Arrow") {
             scrollStep = stepMultipler * positivity;
           } else if (type === "Scroller") {
-            scrollStep = (self.clientWidth - scroller.offsetWidth) * positivity;
+            scrollStep = (self.clientWidth - scrollerY.offsetWidth) * positivity;
           }
           var result = scrollGenericX(event, scrollStep);
           sliderX.style.left = result.newSliderLeft + "px";
@@ -1146,7 +1263,7 @@ Element.prototype.scrollable = function (settings) {
           function repeatAgain() {
             if (loops.repeat === true) {
               var repeater = setTimeout(function() {
-                if (scroller.contains(target)) {
+                if (scrollerY.contains(target)) {
                   mouseGeneric(positivity, type);
                 } else if (scrollerX.contains(target)) {
                   mouseGenericX(positivity, type);
@@ -1164,7 +1281,7 @@ Element.prototype.scrollable = function (settings) {
       }
       
       if (arrows === true) {
-        if (sliderHeight > 0) {
+        if (sliderSize > 0) {
           if (arrowUp.contains(target)) { // condition for click on vitrual arrow up
             mouseGeneric(-1, "Arrow");
             loopedMouseGeneric(-1, "Arrow");
@@ -1174,7 +1291,7 @@ Element.prototype.scrollable = function (settings) {
             loopedMouseGeneric(1, "Arrow");
           }
         }
-        if (horizontalScrolling === true) {
+        if (horizontalScroller === true) {
           if (sliderWidth > 0) {
             if (arrowLeft.contains(target)) { // condition for click on vitrual arrow left
               mouseGenericX(-1, "Arrow");
@@ -1188,7 +1305,7 @@ Element.prototype.scrollable = function (settings) {
         }
       }
       
-      if ((target.getAttribute("data-type") === "scroller") && (sliderHeight > 0)) { // condition for click on empty field of vertical scroll bar
+      if ((target.getAttribute("data-type") === "scrollerY") && (sliderSize > 0)) { // condition for click on empty field of vertical scroll bar
         if (event.clientY < slider.getBoundingClientRect().top) {
           mouseGeneric(-1, "Scroller");
           loopedMouseGeneric(-1, "Scroller");
@@ -1198,7 +1315,7 @@ Element.prototype.scrollable = function (settings) {
         }
       }
       
-      if (horizontalScrolling === true) {
+      if (horizontalScroller === true) {
         if ((target.getAttribute("data-type") === "scrollerX") && (sliderWidth > 0)) { // condition for click on empty field of horizontal scroll bar
           if (event.clientX < sliderX.getBoundingClientRect().left) {
             mouseGenericX(-1, "Scroller");
@@ -1221,9 +1338,9 @@ Element.prototype.scrollable = function (settings) {
         smoothActionPack("set");
       }
     }
-    eventListener("add", scroller, "mousedown", virtualScrolling);
-    eventListener("add", scroller, "mouseup", stopVirtualScrolling);
-    if (horizontalScrolling === true) {
+    eventListener("add", scrollerY, "mousedown", virtualScrolling);
+    eventListener("add", scrollerY, "mouseup", stopVirtualScrolling);
+    if (horizontalScroller === true) {
       eventListener("add", scrollerX, "mousedown", virtualScrolling);
       eventListener("add", scrollerX, "mouseup", stopVirtualScrolling);
     }
