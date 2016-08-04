@@ -2,7 +2,7 @@ var container = document.getElementById("container");
 container.style.top = document.documentElement.clientHeight / 2 - container.offsetHeight / 2 + "px";
 
 container.scrollable({
-  verticalScroller: false,
+  verticalScroller: true,
   scrollerYClass: "scroller-y-field", // css-класс скроллера
   horizontalScroller: true, // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
   scrollerXClass: "scroller-x-field",

@@ -338,48 +338,6 @@ Element.prototype.scrollable = function (settings) {
       var scrollerX = makeScroller("X");
     }
     
-    /*
-    // -- Create a arrows -- //
-    if (arrows === true) {
-      var arrowUp = document.createElement("div"),
-        arrowDown = document.createElement("div"),
-        arrowsPack = [arrowUp, arrowDown],
-        chevronPack = [arrowChevron.top, arrowChevron.bottom],
-        arrowCounter;
-      if (horizontalScroller === true) {
-        var arrowLeft = document.createElement("div"),
-          arrowRight = document.createElement("div");
-        arrowsPack.push(arrowLeft, arrowRight);
-        chevronPack.push(arrowChevron.left, arrowChevron.right);
-      }
-      for (arrowCounter = 0; arrowCounter < arrowsPack.length; arrowCounter++) {
-        if (arrowCounter > 1) {
-          makeByStandart(arrowsPack[arrowCounter], scrollerX, "absolute", arrowsClass);
-        } else {
-          makeByStandart(arrowsPack[arrowCounter], scrollerY, "absolute", arrowsClass);
-        }
-        arrowsPack[arrowCounter].style.width = scrollerY.clientWidth + "px";
-        arrowsPack[arrowCounter].style.height = scrollerY.clientWidth + "px";
-        arrowsPack[arrowCounter].innerHTML = chevronPack[arrowCounter];
-      }
-      arrowDown.style.top = scrollerY.clientHeight - arrowDown.offsetHeight + "px";
-      var topEdge = arrowUp.offsetWidth,
-        sliderFieldHeight = scrollerY.clientHeight - (arrowUp.offsetHeight + arrowDown.offsetHeight);
-      if (horizontalScroller === true) {
-        arrowRight.style.left = scrollerX.clientWidth - arrowRight.offsetWidth + "px";
-        var leftEdge = arrowLeft.offsetWidth,
-          sliderFieldXWidth = scrollerX.clientWidth - (arrowLeft.offsetWidth + arrowRight.offsetWidth);
-      }
-    } else {
-      var topEdge = 0,
-        sliderFieldHeight = scrollerY.clientHeight;
-      if (horizontalScroller === true) {
-        var leftEdge = 0,
-          sliderFieldXWidth = scrollerX.clientWidth;
-      }
-    }
-    */
-    
     // -- Create a arrows, if corresponding option activate and at least one of two scrollers are exist -- //
     if (arrows === true && ((verticalScroller === true) || (horizontalScroller === true))) {
       // create arrays for working with cycle 
@@ -410,41 +368,62 @@ Element.prototype.scrollable = function (settings) {
         chevronPack.push(arrowChevron.left, arrowChevron.right);
       }
       
-      // start cycle, for more compact code
-      for (var arrowCounter = 0; arrowCounter < arrowsPack.length; arrowCounter++) {
-        if (verticalScroller == true) { // setup "Up" and "Down" arrows by standart, if vertical scroller exist
-          makeByStandart(arrowsPack[arrowCounter], scrollerY, "absolute", arrowsClass);
-        }
-        
-        if (horizontalScroller == true) { // setup "Left" and "Right" arrows by standart, if horizontal scroller exist
-          makeByStandart(arrowsPack[arrowCounter], scrollerX, "absolute", arrowsClass);
-        }
-        
+      // pick count of arrows
+      var arrowsCount = arrowsPack.length;
+      
+      // function with generick action at arrows at all cases
+      function generickArrowsOptions(arrowCounter) {
         arrowsPack[arrowCounter].style.width = arrowSize + "px";
         arrowsPack[arrowCounter].style.height = arrowSize + "px";
         arrowsPack[arrowCounter].innerHTML = chevronPack[arrowCounter];
       }
       
+      // start cycle, for more compact code
+      for (var arrowCounter = 0; arrowCounter < arrowsPack.length; arrowCounter++) {
+        if (arrowsCount == 4) { // algorithm, if both scrollers exist
+          if (arrowCounter < 2) { // setup "Up" and "Down" arrows by standart, if vertical scroller exist
+            makeByStandart(arrowsPack[arrowCounter], scrollerY, "absolute", arrowsClass);
+          } else if (arrowCounter >= 2) { // setup "Left" and "Right" arrows by standart, if horizontal scroller exist
+            makeByStandart(arrowsPack[arrowCounter], scrollerX, "absolute", arrowsClass);
+          }
+          
+          // other generick options
+          generickArrowsOptions(arrowCounter);
+        } else if (arrowsCount == 2) { // algorithm, if only one scroller exist
+          if (verticalScroller === true) { // setup arrows at vertical scroller, if it exist
+            makeByStandart(arrowsPack[arrowCounter], scrollerY, "absolute", arrowsClass);
+            generickArrowsOptions(arrowCounter);
+          }
+          
+          if (horizontalScroller === true) { // setup arrows at horizontal scroller, if it exist
+            makeByStandart(arrowsPack[arrowCounter], scrollerX, "absolute", arrowsClass);
+            generickArrowsOptions(arrowCounter);
+          }
+        }
+      }
+      
+      // positioning "Down" arrow, and get data about margins of walking for slider
       if (verticalScroller === true) {
         arrowDown.style.top = scrollerY.clientHeight - arrowDown.offsetHeight + "px";
         var topEdge = arrowUp.offsetWidth,
-          sliderFieldHeight = scrollerY.clientHeight - (arrowUp.offsetHeight + arrowDown.offsetHeight); 
+          sliderFieldY = scrollerY.clientHeight - (arrowUp.offsetHeight + arrowDown.offsetHeight); 
       }
       
+      // positioning "Right" arrow, and get data about margins of walking for slider
       if (horizontalScroller === true) {
         arrowRight.style.left = scrollerX.clientWidth - arrowRight.offsetWidth + "px";
         var leftEdge = arrowLeft.offsetWidth,
-          sliderFieldXWidth = scrollerX.clientWidth - (arrowLeft.offsetWidth + arrowRight.offsetWidth);
+          sliderFieldX = scrollerX.clientWidth - (arrowLeft.offsetWidth + arrowRight.offsetWidth);
       }
-    } else {
-      if (verticalScroller === true) {
+    } else { // get data about margins of walking for slider, if arrows doesn't exist...
+      if (verticalScroller === true) { // ...and vertical scroller exist
         var topEdge = 0,
-          sliderFieldHeight = scrollerY.clientHeight;  
+          sliderFieldY = scrollerY.clientHeight;  
       }
       
-      if (horizontalScroller === true) {
+      if (horizontalScroller === true) { // ...and horizontal scroller exist
         var leftEdge = 0,
-          sliderFieldXWidth = scrollerX.clientWidth;
+          sliderFieldX = scrollerX.clientWidth;
       }
     }
     
@@ -470,12 +449,12 @@ Element.prototype.scrollable = function (settings) {
           } else {
             selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) / 100);
           }
-          sliderSize = Math.round(sliderFieldHeight / 100 * selfWrapperRatio);
+          sliderSize = Math.round(sliderFieldY / 100 * selfWrapperRatio);
           if (sliderSize < sliderSizeMin) {
             sliderSize = sliderSizeMin;
           }
         }
-        if (sliderSize >= sliderFieldHeight) {
+        if (sliderSize >= sliderFieldY) {
           sliderSize = 0;
         }
         slider.style.height = sliderSize + "px";
@@ -487,12 +466,12 @@ Element.prototype.scrollable = function (settings) {
           } else {
             selfWrapperRatioX = self.clientWidth / ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) / 100);
           }
-          sliderWidth = Math.round(sliderFieldXWidth / 100 * selfWrapperRatioX);
+          sliderWidth = Math.round(sliderFieldX / 100 * selfWrapperRatioX);
           if (sliderWidth < sliderSizeMin) {
             sliderWidth = sliderSizeMin;
           }
         }
-        if (sliderWidth >= sliderFieldXWidth) {
+        if (sliderWidth >= sliderFieldX) {
           sliderWidth = 0;
         }
         sliderX.style.width = sliderWidth + "px";
@@ -631,14 +610,14 @@ Element.prototype.scrollable = function (settings) {
     function calcRatioFactor() {
       if (horizontalScroller === true) {
         if (scrollerShift === true) {
-          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderSize);
-          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scrollerY.offsetWidth) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldXWidth - sliderWidth);
+          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderSize);
+          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scrollerY.offsetWidth) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldX - sliderWidth);
         } else {
-          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderSize);
-          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldXWidth - sliderWidth);
+          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderSize);
+          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldX - sliderWidth);
         }
       } else {
-        ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldHeight - sliderSize);
+        ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderSize);
       }
     }
     
@@ -836,7 +815,7 @@ Element.prototype.scrollable = function (settings) {
       function sliderScroll(event) {
         var sliderCoordsOld = slider.getBoundingClientRect(),
           newTop = event.clientY - scrollerY.getBoundingClientRect().top - scrollerY.clientTop - сorrectPick,
-          bottomEdge = sliderFieldHeight - sliderSize;
+          bottomEdge = sliderFieldY - sliderSize;
         if (arrows === true) {
           bottomEdge += arrowDown.offsetHeight;  
         }
@@ -878,7 +857,7 @@ Element.prototype.scrollable = function (settings) {
         function sliderXScroll(event) {
           var sliderXCoordsOld = sliderX.getBoundingClientRect(),
             newLeft = event.clientX - scrollerX.getBoundingClientRect().left - scrollerX.clientLeft - correctPick,
-            rightEdge = sliderFieldXWidth - sliderWidth;
+            rightEdge = sliderFieldX - sliderWidth;
           if (arrows === true) {
             rightEdge += arrowRight.offsetWidth;
           }
@@ -916,7 +895,7 @@ Element.prototype.scrollable = function (settings) {
       if (arrows === true) {
         newSliderTop += arrowUp.offsetHeight;
       }
-      var bottomEdge = sliderFieldHeight - sliderSize;
+      var bottomEdge = sliderFieldY - sliderSize;
       if (arrows === true) {
         bottomEdge += arrowDown.offsetHeight;
       }
@@ -948,7 +927,7 @@ Element.prototype.scrollable = function (settings) {
       if (arrows === true) {
         newSliderLeft += arrowLeft.offsetWidth;
       }
-      var rightEdge = sliderFieldXWidth - sliderWidth;
+      var rightEdge = sliderFieldX - sliderWidth;
       if (arrows === true) {
         rightEdge += arrowRight.offsetWidth;
       }
