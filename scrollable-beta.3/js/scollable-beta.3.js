@@ -436,78 +436,124 @@ Element.prototype.scrollable = function (settings) {
     };
     
     // -- Function for calculate height or width for sliders  -- //
-    function updateSliderHW(axis) {
-      if (axis === "Y") {
-        if (sliderStarterHeight === "auto") {
-          var selfWrapperRatio;
-          if (horizontalScroller === true) {
-            if (scrollerShift === true) {
-              selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) / 100);
-            } else {
-              selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) / 100);
+    function setSliderSize(axis) {
+      if (axis === "Y") { // algorithm for vertical slider
+        if (sliderStarterHeight === "auto") { // if slider size is "auto", strt calculation
+          // ratio factor of container and wrapper heights
+          var selfWrapperRatioY;
+          
+          // calculations, considering...
+          if (horizontalScroller === true) { // ...availability of horizontal scroller
+            if (scrollerShift === true) { // ...availability of shift content for scroller
+              selfWrapperRatioY = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) / 100);
+            } else { //... or absence of shift content for scroller
+              selfWrapperRatioY = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) / 100);
             }
-          } else {
-            selfWrapperRatio = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) / 100);
+          } else { //... or absence of horizontal scroller
+            selfWrapperRatioY = self.clientHeight / ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) / 100);
           }
-          sliderSize = Math.round(sliderFieldY / 100 * selfWrapperRatio);
-          if (sliderSize < sliderSizeMin) {
-            sliderSize = sliderSizeMin;
+          
+          // slider size must be rounded, to prevent fractional numbers
+          sliderHeight = Math.round(sliderFieldY / 100 * selfWrapperRatioY);
+          
+          // slider size cant't be less, then minimal size
+          // P.S. if container contain to much content, this case save slider from collapse
+          if (sliderHeight < sliderSizeMin) {
+            sliderHeight = sliderSizeMin;
           }
         }
-        if (sliderSize >= sliderFieldY) {
-          sliderSize = 0;
+        
+        // collapse slider, if content occupy not all space of container
+        if (sliderHeight >= sliderFieldY) {
+          sliderHeight = 0;
         }
-        slider.style.height = sliderSize + "px";
-      } else if (axis === "X") {
+        
+        // finaly, set calculated size
+        sliderY.style.height = sliderHeight + "px";
+      } else if (axis === "X") { // algorithm for horizontal slider
         if (sliderStarterWidth === "auto") {
+          // ratio factor of container and wrapper widths
           var selfWrapperRatioX;
-          if (scrollerShift === true) {
-            selfWrapperRatioX = self.clientWidth / ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scrollerY.offsetWidth) / 100);
-          } else {
+          
+          // calculations, considering...
+          if (verticalScroller === true) { // ...availability of vertical scroller
+            if (scrollerShift === true) { // ...availability of shift content for scroller
+              selfWrapperRatioX = self.clientWidth / ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scrollerY.offsetWidth) / 100);
+            } else { //... or absence of shift content for scroller
+              selfWrapperRatioX = self.clientWidth / ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) / 100);
+            } 
+          } else { //... or absence of vertical scroller
             selfWrapperRatioX = self.clientWidth / ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) / 100);
           }
+          
+          // slider size must be rounded, to prevent fractional numbers
           sliderWidth = Math.round(sliderFieldX / 100 * selfWrapperRatioX);
+          
+          // slider size cant't be less, then minimal size
+          // P.S. if container contain to much content, this case save slider from collapse
           if (sliderWidth < sliderSizeMin) {
             sliderWidth = sliderSizeMin;
           }
         }
+        
+        // collapse slider, if content occupy not all space of container
         if (sliderWidth >= sliderFieldX) {
           sliderWidth = 0;
         }
+        
+        // finaly, set calculated size
         sliderX.style.width = sliderWidth + "px";
       }
     }
     
     // -- Function for creation a vertical and horizontal sliders -- //
     function createSlider(axis) {
+      // create <div>-element
       var slider = document.createElement("div");
-      if (axis === "Y") { // slider for vertical scroller
+      
+      if (axis === "Y") { // case for vertical slider
+        // set standart style features
         makeByStandart(slider, scrollerY, "absolute", sliderClass);
+        
+        // set data-attribute
         slider.setAttribute("data-type", "slider");
+        
+        // set other style feature
         slider.style.width = scrollerY.clientWidth + "px";
         slider.style.top = topEdge + "px";
-      } else if (axis === "X") { // slider for horizontal scroller
+      } else if (axis === "X") { // case for horizontal slider
+        // set standart style features
         makeByStandart(slider, scrollerX, "absolute", sliderClass);
+        
+        // set data-attribute
         slider.setAttribute("data-type", "sliderX");
+        
+        // set other style feature
         slider.style.height = scrollerX.clientHeight + "px";
         slider.style.left = leftEdge + "px";
       }
+      
+      // set smooth scrolling effect to slider 
       smoothly("set", slider);
+      
+      // return computed <div>-element
       return slider;
     }
     
     // -- Create a vertical slider -- //
-    var slider = createSlider("Y");
-    updateSliderHW("Y");
+    if (verticalScroller === true) {
+      var sliderY = createSlider("Y");
+      setSliderSize("Y");
+    }
     
     // -- Create a horizontal slider -- //
     if (horizontalScroller === true) {
       var sliderX = createSlider("X");
-      updateSliderHW("X");
+      setSliderSize("X");
     }
     
-    // -- Creatr plug in hole between scrollers -- //
-    if ((horizontalScroller === true) && (verticalScroller === true)) {
+    // -- Insert plug in hole between scrollers -- //
+    if ((horizontalScroller === true) && (verticalScroller === true)) { // ...if both scrollers exist 
       var plug = document.createElement("div"),
         selfCoords = self.getBoundingClientRect();
       self.appendChild(plug);
@@ -519,85 +565,172 @@ Element.prototype.scrollable = function (settings) {
       plug.style.backgroundColor = getStyle(scrollerY).backgroundColor;
     }
     
+    // -- Function for set "transition" and "opacity" in cross-browser way -- //
+    function adaptiveHide(element, value) {
+      // transition propertie
+      element.style.MozTransition = "opacity, 0.4s"; // old Firefox
+      element.style.OTransition = "opacity, 0.4s"; // old Opera
+      element.style.WebkitTransition = "opacity, 0.4s"; // old Chrome and other
+      element.style.transition = "opacity, 0.4s"; // standart
+      
+      // opacity propertie
+      element.style.MsFilter = "\"progid:DXImageTransform.Microsoft.Alpha(Opacity=" + (value * 100) + ")\""; // MSIE
+      element.style.filter = "alpha(opacity=" + (value * 100) + ")"; // MSIE
+      element.style.MozOpacity = value; // old Firefox
+      element.style.KhtmlOpacity = value; // old Safari
+      element.style.opacity = value; // standart
+    }
+    
     // -- Adding effect of hideable scroll bar -- //
     if (autoHide === true) {
-      function adaptiveHide(element, value) {
-        element.style.MozTransition = "opacity, 0.4s";
-        element.style.OTransition = "opacity, 0.4s";
-        element.style.WebkitTransition = "opacity, 0.4s";
-        element.style.transition = "opacity, 0.4s";
-        element.style.MsFilter = "\"progid:DXImageTransform.Microsoft.Alpha(Opacity=" + (value * 100) + ")\"";
-        element.style.filter = "alpha(opacity=" + (value * 100) + ")";
-        element.style.MozOpacity = value;
-        element.style.KhtmlOpacity = value;
-        element.style.opacity = value;
-      }
-      var hideBy,
+      // pick id for future timers
+      var hideByY,
         hideByX;
-      adaptiveHide(scrollerY, scrollerOpacityHidden);
+      
+      // add cross-browser css-properties for vertical scroller in hidden condition 
+      if (verticalScroller === true) {
+        adaptiveHide(scrollerY, scrollerOpacityHidden);
+      }
+      
+      // add cross-browser css-properties for horizontal scroller in hidden condition 
       if (horizontalScroller === true) {
         adaptiveHide(scrollerX, scrollerOpacityHidden);
+      }
+      
+      // add cross-browser css-properties for plug in hidden condition 
+      if ((verticalScroller === true) && (horizontalScroller === true)) {
         adaptiveHide(plug, scrollerOpacityHidden);
       }
+      
+      // it help us known cursor over the container or not
       var mousePosition = "unknown";
+      
+      // event, when cursor enter in container
       self.onmouseenter = function (event) {
-        adaptiveHide(scrollerY, scrollerOpacityPassive);
+        // change cross-browser css-properties for vertical scroller to passive (semi-hidden) condition 
+        if (verticalScroller === true) {
+          adaptiveHide(scrollerY, scrollerOpacityPassive);
+        }
+        
+        // change cross-browser css-properties for horizontal scroller to passive (semi-hidden) condition 
         if (horizontalScroller === true) {
           adaptiveHide(scrollerX, scrollerOpacityPassive);
+        }
+        
+        // change cross-browser css-properties for plug scroller to passive (semi-hidden) condition 
+        if ((verticalScroller === true) && (horizontalScroller === true)) {
           adaptiveHide(plug, scrollerOpacityPassive);
         }
+        
+        // change information about cursor 
         mousePosition = "inside";
       };
+      
+      // event, when cursor leave container
       self.onmouseleave = function (event) {
-        adaptiveHide(scrollerY, scrollerOpacityHidden);
+        // change cross-browser css-properties for vertical scroller to hidden condition 
+        if (verticalScroller === true) {
+          adaptiveHide(scrollerY, scrollerOpacityHidden);
+        }
+        
+        // change cross-browser css-properties for horizontal scroller to hidden condition 
         if (horizontalScroller === true) {
           adaptiveHide(scrollerX, scrollerOpacityHidden);
+        }
+        
+        // change cross-browser css-properties for plug scroller to hidden condition 
+        if ((verticalScroller === true) && (horizontalScroller === true)) {
           adaptiveHide(plug, scrollerOpacityHidden);
         }
-        if (hideBy != undefined) {
-          clearTimeout(hideBy);
-        }
+        
+        // change information about cursor 
         mousePosition = "outside";
       };
-      function autoHideOnEvents(axis) {
-        if (axis === "X") {
-          if (hideByX != undefined) {
-            clearTimeout(hideByX);
-          }
-          adaptiveHide(scrollerX, scrollerOpacityActive);
+    }
+    
+    // -- Function for hiding scrollers at events -- //
+    function autoHideOnEvents(axis) {
+      if (axis === "Y") { // algorithm for vertical scroller
+        // if timer already run, clear it
+        if (hideByY != undefined) {
+          clearTimeout(hideByY);
+        }
+        
+        // change vertical scroller condition to active, if user interact with it 
+        if (verticalScroller === true) {
+          adaptiveHide(scrollerY, scrollerOpacityActive);
+        }
+        
+        // change plug condition to active, if user interact with scroller 
+        if ((horizontalScroller === true) && (verticalScroller === true))  {
           adaptiveHide(plug, scrollerOpacityActive);
-          hideByX = setTimeout(function () {
-            if (mousePosition === "inside") {
-              adaptiveHide(scrollerX, scrollerOpacityPassive);
+        }
+        
+        // set timer, which change scrollers condition, if user don`t interact with it... 
+        hideByY = setTimeout(function () {
+          if (mousePosition === "inside") { // ...in case, where cursor over the container
+            // change vertical scroller condition to passive 
+            if (verticalScroller === true) {
+              adaptiveHide(scrollerY, scrollerOpacityPassive);
+            }
+            
+            // change plug condition to passive
+            if ((verticalScroller === true) && (horizontalScroller === true)) {
               adaptiveHide(plug, scrollerOpacityPassive);
-            } else if (mousePosition === "outside") {
-              adaptiveHide(scrollerX, scrollerOpacityHidden);
+            }
+          } else if (mousePosition === "outside") { // ...in case, where cursor out from the container  
+            // change vertical scroller condition to hidden 
+            if (verticalScroller === true) {
+              adaptiveHide(scrollerY, scrollerOpacityHidden);
+            }
+            
+            // change plug condition to hidden
+            if ((verticalScroller === true) && (horizontalScroller === true)) {
               adaptiveHide(plug, scrollerOpacityHidden);
             }
-          }, 1000);
-        } else if (axis === "Y") {
-          if (hideBy != undefined) {
-            clearTimeout(hideBy);
           }
-          adaptiveHide(scrollerY, scrollerOpacityActive);
-          if (horizontalScroller === true) {
-            adaptiveHide(plug, scrollerOpacityActive);
-          }
-          hideBy = setTimeout(function () {
-            if (mousePosition === "inside") {
-              adaptiveHide(scrollerY, scrollerOpacityPassive);
-              if (horizontalScroller === true) {
-                adaptiveHide(plug, scrollerOpacityPassive);
-              }
-            } else if (mousePosition === "outside") {
-              adaptiveHide(scrollerY, scrollerOpacityHidden);
-              if (horizontalScroller === true) {
-                adaptiveHide(plug, scrollerOpacityHidden);
-              }
-            }
-          }, 1000);
+        }, 1000);
+      } else if (axis === "X") { // algorithm for horizontal scroller
+        // if timer already run, clear it
+        if (hideByX != undefined) {
+          clearTimeout(hideByX);
         }
-      }
+        
+        // change horizontal scroller condition to active, if user interact with it 
+        if (horizontalScroller === true) {
+          adaptiveHide(scrollerX, scrollerOpacityActive);
+        }
+        
+        // change plug condition to active, if user interact with scroller 
+        if ((horizontalScroller === true) && (verticalScroller === true))  {
+          adaptiveHide(plug, scrollerOpacityActive);
+        }
+        
+        // set timer, which change scrollers condition, if user don`t interact with it... 
+        hideByX = setTimeout(function () {
+          if (mousePosition === "inside") { // ...in case, where cursor over the container
+            // change horizontal scroller condition to passive 
+            if (horizontalScroller === true) {
+              adaptiveHide(scrollerX, scrollerOpacityPassive);
+            }
+            
+            // change plug condition to passive
+            if ((verticalScroller === true) && (horizontalScroller === true)) {
+              adaptiveHide(plug, scrollerOpacityPassive);
+            }
+          } else if (mousePosition === "outside") { // ...in case, where cursor out from the container  
+            // change horizontal scroller condition to hidden 
+            if (horizontalScroller === true) {
+              adaptiveHide(scrollerX, scrollerOpacityHidden);
+            }
+            
+            // change plug condition to hidden
+            if ((verticalScroller === true) && (horizontalScroller === true)) {
+              adaptiveHide(plug, scrollerOpacityHidden);
+            }
+          }
+        }, 1000);
+      } 
     }
     
     // -- Ratio factor calculation results -- //
@@ -610,14 +743,14 @@ Element.prototype.scrollable = function (settings) {
     function calcRatioFactor() {
       if (horizontalScroller === true) {
         if (scrollerShift === true) {
-          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderSize);
+          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderHeight);
           ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scrollerY.offsetWidth) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldX - sliderWidth);
         } else {
-          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderSize);
+          ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderHeight);
           ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldX - sliderWidth);
         }
       } else {
-        ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderSize);
+        ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderHeight);
       }
     }
     
@@ -629,7 +762,7 @@ Element.prototype.scrollable = function (settings) {
         if (arrows === true) {
           checkedSliderTop += arrowUp.offsetHeight;
         }
-        slider.style.top = checkedSliderTop + "px";
+        sliderY.style.top = checkedSliderTop + "px";
       } else if (axis === "X") {
         var checkedSliderXLeft = (parseFloat(getStyle(wrapper).left) / ratioFactor.horizontal) * -1;
         if (arrows === true) {
@@ -644,7 +777,7 @@ Element.prototype.scrollable = function (settings) {
       var timerContent = setTimeout(function () {
         if (wrapper.offsetHeight !== wrapperHeight) {
           wrapperHeight = wrapper.offsetHeight;
-          updateSliderHW("Y");
+          setSliderSize("Y");
           calcRatioFactor();
           checkSliderPosition("Y");
         }
@@ -656,7 +789,7 @@ Element.prototype.scrollable = function (settings) {
           horizontalScroller = true;
           if (wrapper.offsetWidth !== wrapperWidth) {
             wrapperWidth = wrapper.offsetWidth;
-            updateSliderHW("X");
+            setSliderSize("X");
             calcRatioFactor();
             checkSliderPosition("X");
           }
@@ -674,7 +807,7 @@ Element.prototype.scrollable = function (settings) {
     if (isTextArea === true) {
       function updateTextAreaContent() {
         updateHeights(textAreaBlock);
-        updateSliderHW("Y");
+        setSliderSize("Y");
         checkSliderPosition("Y");
         calcRatioFactor();
       }
@@ -753,7 +886,7 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Object for detection picked slider -- //
     var sliderPick = {
-      slider: false,
+      sliderY: false,
       sliderX: false,
       wrapperY: 0,
       wrapperX: 0
@@ -798,8 +931,8 @@ Element.prototype.scrollable = function (settings) {
           sliderPick.sliderX = false;
           smoothly("set", sliderX);
         } else if (axis === "Y") {
-          sliderPick.slider = false;
-          smoothly("set", slider);
+          sliderPick.sliderY = false;
+          smoothly("set", sliderY);
         }
         smoothly("set", wrapper);
       }
@@ -807,15 +940,15 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Event "Drag'n Drop" for vertical slider -- //
-    slider.onmousedown = function (event) {
+    sliderY.onmousedown = function (event) {
       event = event || window.event;
       smoothly("remove", wrapper);
-      smoothly("remove", slider);
-      var сorrectPick = event.clientY - slider.getBoundingClientRect().top;
+      smoothly("remove", sliderY);
+      var сorrectPick = event.clientY - sliderY.getBoundingClientRect().top;
       function sliderScroll(event) {
-        var sliderCoordsOld = slider.getBoundingClientRect(),
+        var sliderCoordsOld = sliderY.getBoundingClientRect(),
           newTop = event.clientY - scrollerY.getBoundingClientRect().top - scrollerY.clientTop - сorrectPick,
-          bottomEdge = sliderFieldY - sliderSize;
+          bottomEdge = sliderFieldY - sliderHeight;
         if (arrows === true) {
           bottomEdge += arrowDown.offsetHeight;  
         }
@@ -824,8 +957,8 @@ Element.prototype.scrollable = function (settings) {
         } else if (newTop >= bottomEdge) {
           newTop = bottomEdge;
         }
-        slider.style.top = newTop + "px";
-        var sliderCoordsNew = slider.getBoundingClientRect(),
+        sliderY.style.top = newTop + "px";
+        var sliderCoordsNew = sliderY.getBoundingClientRect(),
           scrollSpeed = (sliderCoordsNew.top - sliderCoordsOld.top) * ratioFactor.vertical;
         sliderPick.wrapperY -= scrollSpeed;
         wrapper.style.top = Math.round(sliderPick.wrapperY) + "px";
@@ -836,7 +969,7 @@ Element.prototype.scrollable = function (settings) {
           }
         }
         return sliderPick = {
-          slider: true,
+          sliderY: true,
           wrapperY: sliderPick.wrapperY,
           sliderX: false,
           wrapperX: sliderPick.wrapperX
@@ -878,7 +1011,7 @@ Element.prototype.scrollable = function (settings) {
           return sliderPick = {
             sliderX: true,
             wrapperX: sliderPick.wrapperX,
-            slider: false,
+            sliderY: false,
             wrapperY: sliderPick.wrapperY
           };
         }
@@ -895,7 +1028,7 @@ Element.prototype.scrollable = function (settings) {
       if (arrows === true) {
         newSliderTop += arrowUp.offsetHeight;
       }
-      var bottomEdge = sliderFieldY - sliderSize;
+      var bottomEdge = sliderFieldY - sliderHeight;
       if (arrows === true) {
         bottomEdge += arrowDown.offsetHeight;
       }
@@ -982,7 +1115,7 @@ Element.prototype.scrollable = function (settings) {
           autoHideOnEvents("Y");
         }
         wrapper.style.top = result.newWrapperTop + "px";
-        slider.style.top = result.newSliderTop + "px";
+        sliderY.style.top = result.newSliderTop + "px";
       }
       // set event listener
       onwheelFixer(self, wheelScroll);
@@ -1004,13 +1137,13 @@ Element.prototype.scrollable = function (settings) {
     
     function smoothActionPack(action) {
       if (action === "set") {
-        smoothly("set", slider);
+        smoothly("set", sliderY);
         if (horizontalScroller === true) {
           smoothly("set", sliderX);
         }
         smoothly("set", wrapper);
       } else if (action === "remove") {
-        smoothly("remove", slider);
+        smoothly("remove", sliderY);
         if (horizontalScroller === true) {
           smoothly("remove", sliderX);
         }
@@ -1031,7 +1164,7 @@ Element.prototype.scrollable = function (settings) {
               if (removeSmoothTimer === "empty") {
                 removeSmoothTimer = setTimeout(function() {
                   if (axis === "Y") {
-                    smoothly("remove", slider);  
+                    smoothly("remove", sliderY);  
                   } else if (axis == "X") {
                     smoothly("remove", sliderX);
                   }
@@ -1058,11 +1191,11 @@ Element.prototype.scrollable = function (settings) {
             if (autoHide === true) {
               autoHideOnEvents("Y");
             }
-            slider.style.top = result.newSliderTop + "px";
+            sliderY.style.top = result.newSliderTop + "px";
             wrapper.style.top = result.newWrapperTop + "px";
           }
           // condition for bottons "Arrow up" and "Page Up"
-          if ((event.keyCode == 38 || event.keyCode == 33) && (sliderSize > 0)) {
+          if ((event.keyCode == 38 || event.keyCode == 33) && (sliderHeight > 0)) {
             if ((isTextArea == true) && (activeNavigation == true)) {
               keyboardScroll(event, 38, 33, -1);
             } else if (isTextArea == false) {
@@ -1070,7 +1203,7 @@ Element.prototype.scrollable = function (settings) {
             }
           }
           // condition for bottons "Arrow down" and "Page Down"
-          if ((event.keyCode == 40 || event.keyCode == 34) && (sliderSize > 0)) {
+          if ((event.keyCode == 40 || event.keyCode == 34) && (sliderHeight > 0)) {
             if ((isTextArea == true) && (activeNavigation == true)) {
               keyboardScroll(event, 40, 34, 1);
             } else if (isTextArea == false) {
@@ -1134,14 +1267,14 @@ Element.prototype.scrollable = function (settings) {
           if (scrollerY.contains(target) || scrollerX.contains(target)) {
             return;
           }
-          if (sliderPick.slider != false || sliderPick.sliderX != false) {
+          if (sliderPick.sliderY != false || sliderPick.sliderX != false) {
             return;
           }
         } else {
           if (scrollerY.contains(target)) {
             return;
           }
-          if (sliderPick.slider != false) {
+          if (sliderPick.sliderY != false) {
             return; 
           }
         }
@@ -1157,7 +1290,7 @@ Element.prototype.scrollable = function (settings) {
           }
           var result = scrollGeneric(event, scrollStep);
           wrapper.style.top = result.newWrapperTop + "px";
-          slider.style.top = result.newSliderTop + "px";
+          sliderY.style.top = result.newSliderTop + "px";
         }
         selectionScroll(event);
         eventListener("add", document, "mousemove", selectionScroll);
@@ -1211,7 +1344,7 @@ Element.prototype.scrollable = function (settings) {
           }
         };
         var result = scrollGeneric(event, scrollStep);
-        slider.style.top = result.newSliderTop + "px";
+        sliderY.style.top = result.newSliderTop + "px";
         wrapper.style.top = result.newWrapperTop + "px";
         if (autoHide === true) {
           autoHideOnEvents("Y");
@@ -1260,7 +1393,7 @@ Element.prototype.scrollable = function (settings) {
       }
       
       if (arrows === true) {
-        if (sliderSize > 0) {
+        if (sliderHeight > 0) {
           if (arrowUp.contains(target)) { // condition for click on vitrual arrow up
             mouseGeneric(-1, "Arrow");
             loopedMouseGeneric(-1, "Arrow");
@@ -1284,11 +1417,11 @@ Element.prototype.scrollable = function (settings) {
         }
       }
       
-      if ((target.getAttribute("data-type") === "scrollerY") && (sliderSize > 0)) { // condition for click on empty field of vertical scroll bar
-        if (event.clientY < slider.getBoundingClientRect().top) {
+      if ((target.getAttribute("data-type") === "scrollerY") && (sliderHeight > 0)) { // condition for click on empty field of vertical scroll bar
+        if (event.clientY < sliderY.getBoundingClientRect().top) {
           mouseGeneric(-1, "Scroller");
           loopedMouseGeneric(-1, "Scroller");
-        } else if (event.clientY > slider.getBoundingClientRect().bottom) {
+        } else if (event.clientY > sliderY.getBoundingClientRect().bottom) {
           mouseGeneric(1, "Scroller");
           loopedMouseGeneric(1, "Scroller");
         }
