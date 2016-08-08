@@ -172,6 +172,7 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Set attribute "tabindex" at container (it do event "onfocus" available) -- //
     self.setAttribute("tabindex", "99");
+    
     // -- Some of elements must have 'data-type' identifier -- //
     self.setAttribute("data-type", "container");
     
@@ -193,56 +194,79 @@ Element.prototype.scrollable = function (settings) {
       element.style.overflow = "hidden";
     }
     
-    // -- Function for set effect of smoothly scrolling -- //
+    // -- Function for set/remove effect of smoothly scrolling -- //
     function smoothly(action, element) {
-      if (smoothlyScroll === true) {
-        if (action === "set") {
-          element.style.MozTransition = smoothlyScrollOptions;
-          element.style.OTransition = smoothlyScrollOptions;
-          element.style.WebkitTransition = smoothlyScrollOptions;
-          element.style.transition = smoothlyScrollOptions;
-        } else if (action === "remove") {
-          element.style.MozTransition = "none";
-          element.style.OTransition = "none";
-          element.style.WebkitTransition = "none";
-          element.style.transition = "none";
-        }
+      if (action === "set") { // set case
+        element.style.MozTransition = smoothlyScrollOptions;
+        element.style.OTransition = smoothlyScrollOptions;
+        element.style.WebkitTransition = smoothlyScrollOptions;
+        element.style.transition = smoothlyScrollOptions;
+      } else if (action === "remove") { // remove case
+        element.style.MozTransition = "none";
+        element.style.OTransition = "none";
+        element.style.WebkitTransition = "none";
+        element.style.transition = "none";
       }
     }
     
     // -- Function for set wrapper width -- //
     function setWrapperWidth(wrapper) {
-      var wrappedContent = wrapper.children,
-        wrappedContentLength = wrappedContent.length,
-        contentMaxWidth = wrappedContent[0].offsetWidth,
-        wrapperCounter;
-      for (wrapperCounter = 1; wrapperCounter < wrappedContentLength; wrapperCounter++) {
+      var wrappedContent = wrapper.children, // create array from all elements in wrapper,.. 
+        wrappedContentLength = wrappedContent.length, // ...save length of it
+        contentMaxWidth = wrappedContent[0].offsetWidth; // ... and save width of first children
+      
+      // strat cycle for detect max width of all childrens
+      for (var wrapperCounter = 1; wrapperCounter < wrappedContentLength; wrapperCounter++) {
+        // update "contentMaxWidth", if current children has width bigger, then previoust
         if (wrappedContent[wrapperCounter].offsetWidth > contentMaxWidth) {
           contentMaxWidth = wrappedContent[wrapperCounter].offsetWidth;
         }
       }
+      
+      // activate horizontal scroller and set new width for wrapper, if their content to big...
       if (contentMaxWidth > wrapper.offsetWidth) {
         horizontalScroller = true;
         wrapper.style.width = contentMaxWidth + "px";
-      } else if (horizontalScroller === "auto") {
+      } else if (horizontalScroller === "auto") { // ...or deactivate horizontal scroller
         horizontalScroller = false;
       }
     }
     
     // -- Wrap the whole content of the container in div "wrapper" -- //
+    // save content of container 
     var content = self.innerHTML;
+    
+    // remove content from container
     self.innerHTML = "";
+    
+    // create wrapper
     var wrapper = document.createElement("div");
+    
+    // set standart style settings to wrapper
     makeByStandart(wrapper, self, "relative");
-    smoothly("set", wrapper);
+    
+    // set attribute to wrapper 
     wrapper.setAttribute("data-type", "wrapper");
+    
+    // set transition for smooth scrolling effect, if iy avalible
+    if (smoothlyScroll === true) {
+      smoothly("set", wrapper);
+    }
+    
+    // inset HTML-code of conteiner content in to wrapper
     wrapper.innerHTML = content;
+    
+    //
     if (contentResize === true) {
       horizontalScroller = false;
     }
+    
+    // set wrapper width, if horizontal scrolling avalible
     if (horizontalScroller === "auto" || horizontalScroller === true) {
       setWrapperWidth(wrapper);
     }
+    
+    // save wrapper width and height for future calculations
     var wrapperHeight = wrapper.offsetHeight,
       wrapperWidth = wrapper.offsetWidth;
     
@@ -277,51 +301,76 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Function for creation vertical and horizontal scrollbars -- //
     function makeScroller(axis) {
+      // create scroller, as DOM-element
       var scroller = document.createElement("div");
-      if (axis === "X") { // horizontal scroll bar
-        makeByStandart(scroller, self, "absolute", scrollerXClass);
-        scroller.setAttribute("data-type", "scrollerX");
-        if (verticalScroller === true) {
-          scroller.style.width = self.clientWidth - scrollerY.offsetWidth + "px";
-        } else {
-          scroller.style.width = self.clientWidth + "px";
-          if (scrollerShift === true) {
-            self.style.paddingBottom = parseFloat(getStyle(self).paddingRight) + scroller.offsetWidth + "px";
-            if (isTextArea === true) {
-              updateHeights(textAreaBlock);
-            }
-          }
-        }
-        scroller.style.top = self.clientHeight - scroller.offsetHeight + "px";
-        scroller.style.left = "0px";
-      } else if (axis === "Y") { // vertical scroll bar
+      
+      if (axis === "Y") { // case for vertical scroll bar
+        // set standart css-properties
         makeByStandart(scroller, self, "absolute", scrollerYClass);
+        
+        // set attribute at vertical scroller
         scroller.setAttribute("data-type", "scrollerY");
-        if (horizontalScroller === true) {
+        
+        if (horizontalScroller === true) { // set height for vertical scroller with considering horizontal scroller, if it exist
           scroller.style.height = self.clientHeight - scroller.offsetWidth + "px";
-        } else {
+        } else { // set width for vertical scroller without considering horizontal scroller
           scroller.style.height = self.clientHeight + "px";
-          if (scrollerShift === true) {
+          
+          if (scrollerShift === true) { // grow right padding at container, if it option active
             self.style.paddingRight = parseFloat(getStyle(self).paddingRight) + scroller.offsetWidth + "px";
+            
             if (isTextArea === true) {
               updateHeights(textAreaBlock);
             }
           }
         }
+        
+        // set position for vertical slider
         scroller.style.top = "0px";
         scroller.style.left = self.clientWidth - scroller.offsetWidth + "px";
+      } else if (axis === "X") { // case for horizontal scrollbar
+        // set standart css-properties
+        makeByStandart(scroller, self, "absolute", scrollerXClass);
+        
+        // set attribute at vertical scroller
+        scroller.setAttribute("data-type", "scrollerX");
+        
+        if (verticalScroller === true) { // set width for horizontal scroller with considering vertical scroller width, if it exist
+          scroller.style.width = self.clientWidth - scrollerY.offsetWidth + "px";
+        } else { // set width for horizontal scroller without considering horizontal scroller height
+          scroller.style.width = self.clientWidth + "px";
+          
+          if (scrollerShift === true) { // grow bottom padding at container, if it option active
+            self.style.paddingBottom = parseFloat(getStyle(self).paddingRight) + scroller.offsetWidth + "px";
+            
+            if (isTextArea === true) { // 
+              updateHeights(textAreaBlock);
+            }
+          }
+        }
+        
+        // set position for horizontal scroller
+        scroller.style.top = self.clientHeight - scroller.offsetHeight + "px";
+        scroller.style.left = "0px";
       }
-      if (navigator.userAgent.match(/MSIE/ig)) {
-        if (getStyle(scroller).backgroundColor === "transparent") {
+      
+      if (navigator.userAgent.match(/MSIE/ig)) { // fix "blind click" bug in IEs at event onclick on object without background color
+        if (getStyle(scroller).backgroundColor === "transparent") { // if scroller background color is transparent (or it doesn't exist)...
+          // .., pick container background color, and...
           var parentBackground = getStyle(self).backgroundColor;
-          if (parentBackground !== "transparent") {
+          
+          if (parentBackground !== "transparent") { // ... if container has background color, set it to scroller
             scroller.style.backgroundColor = parentBackground;
-          } else {
+          } else { // ... set white color as background to scroller, if container background color transparent
             scroller.style.backgroundColor = "white";
           }
         }
       }
+      
+      // set z-index for fix opacity inheritance from parents in IEs 
       scroller.style.zIndex = 5;
+      
+      // return created element
       return scroller;
     }
     
@@ -329,6 +378,8 @@ Element.prototype.scrollable = function (settings) {
     if (verticalScroller === true) {
       var scrollerY = makeScroller("Y");
     }
+    
+    //
     if (contentResize === true) {
       fixContent();
     }
@@ -534,7 +585,9 @@ Element.prototype.scrollable = function (settings) {
       }
       
       // set smooth scrolling effect to slider 
-      smoothly("set", slider);
+      if (smoothlyScroll === true) {
+        smoothly("set", slider);
+      }
       
       // return computed <div>-element
       return slider;
@@ -741,66 +794,112 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Ratio factor formula for future calculation -- //
     function calcRatioFactor() {
-      if (horizontalScroller === true) {
-        if (scrollerShift === true) {
+      // calc ratio factor for vertical scrolling
+      if (verticalScroller === true) {
+        if ((horizontalScroller === true) && (scrollerShift === true)) { // case, if horizontal scroller and shif avalible
           ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom + scrollerX.offsetHeight) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderHeight);
-          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scrollerY.offsetWidth) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldX - sliderWidth);
-        } else {
+        } else { // case, if horizontal scroller and shif not avalible
           ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderHeight);
+        }
+      }
+      
+      // calc ratio factor for horizontal scrolling
+      if (horizontalScroller === true) {
+        if ((verticalScroller === true) && (scrollerShift === true)) {  // case, if vertical scroller and shif avalible
+          ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right + scrollerY.offsetWidth) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldX - sliderWidth);
+        } else {  // case, if vertical scroller and shif not avalible
           ratioFactor.horizontal = ((wrapper.offsetWidth + selfPadding.left + selfPadding.right) - (self.offsetWidth - selfBorder.left - selfBorder.right)) / (sliderFieldX - sliderWidth);
         }
-      } else {
-        ratioFactor.vertical = ((wrapper.offsetHeight + selfPadding.top + selfPadding.bottom) - (self.offsetHeight - selfBorder.top - selfBorder.bottom)) / (sliderFieldY - sliderHeight);
       }
     }
     
+    // -- Calculate ratio factor by formula -- //
     calcRatioFactor();
     
-    function checkSliderPosition(axis) {
-      if (axis === "Y") {
-        var checkedSliderTop = ((wrapper.getBoundingClientRect().top - (self.getBoundingClientRect().top + self.clientTop + selfPadding.top)) / ratioFactor.vertical) * -1;
+    // -- Function for update sliders pisitions in case, where content is dynamic -- // 
+    function updateSliderPosition(axis) {
+      if (axis === "Y") { // case for vertical slider
+        // calculate new position for vertical slider
+        var updatedSliderYTop = ((wrapper.getBoundingClientRect().top - (self.getBoundingClientRect().top + self.clientTop + selfPadding.top)) / ratioFactor.vertical) * -1;
+        
+        // correct pisition, if arrow exist
         if (arrows === true) {
-          checkedSliderTop += arrowUp.offsetHeight;
+          updatedSliderYTop += arrowUp.offsetHeight;
         }
-        sliderY.style.top = checkedSliderTop + "px";
-      } else if (axis === "X") {
+        
+        // set new position
+        sliderY.style.top = updatedSliderYTop + "px";
+      } else if (axis === "X") { // case for horizontal slider
+        // calculate new position for horizontal slider
         var checkedSliderXLeft = (parseFloat(getStyle(wrapper).left) / ratioFactor.horizontal) * -1;
+        
+        // correct pisition, if arrow exist
         if (arrows === true) {
           checkedSliderXLeft += arrowLeft.offsetWidth;
         }
+        
+        // set new position
         sliderX.style.left = checkedSliderXLeft + "px";
       }
     }
     
-    // -- Function for autoconfiguration scrollbars if content is dynamic (infinity scroll, for example) -- //
+    // -- Function for autoconfiguration wrapper and sliders, if content is dynamic (infinity scroll, for example) -- //
     function checkContentSize() {
+      // set listener on updating content 
       var timerContent = setTimeout(function () {
-        if (wrapper.offsetHeight !== wrapperHeight) {
-          wrapperHeight = wrapper.offsetHeight;
-          setSliderSize("Y");
-          calcRatioFactor();
-          checkSliderPosition("Y");
+        // case for vertical scroller
+        if ((verticalScroller === "auto") || (verticalScroller === true)) {
+          //setWrapperHeight(wrapper);
+          
+          //verticalScroller = true;
+          
+          // if current wrapper height does not equal old value, update it  
+          if (wrapper.offsetHeight !== wrapperHeight) {
+            wrapperHeight = wrapper.offsetHeight;
+            
+            // besides, set new slider size and pisition...
+            setSliderSize("Y");
+            updateSliderPosition("Y");
+            
+            // ...and calculate ratio factor again 
+            calcRatioFactor();
+          }
         }
+        
         if (contentResize === true) {
           fixContent();
         }
-        if (horizontalScroller === "auto" || horizontalScroller === true) {
+        
+        // case for horizontal scroller
+        if ((horizontalScroller === "auto") || (horizontalScroller === true)) {
+          // set new wrapper width 
           setWrapperWidth(wrapper);
+          
+          // activate horizontal scroller
           horizontalScroller = true;
+          
+          // if current wrapper width does not equal old value, update it
           if (wrapper.offsetWidth !== wrapperWidth) {
             wrapperWidth = wrapper.offsetWidth;
+            
+            // besides, set new slider size and pisition...
             setSliderSize("X");
+            updateSliderPosition("X");
+            
+            // ...and calculate ratio factor again
             calcRatioFactor();
-            checkSliderPosition("X");
           }
         }
+        
+        // if container is not a textarea, call function again 
         if (isTextArea !== true) {
           checkContentSize();
         }
       }, 4);
     }
     
-    if (settings.dynamicContent === true) {
+    // -- Call function, which autoconfigurat wrapper and sliders, if content is dynamic -- //
+    if ((settings.dynamicContent === true) && (isTextArea !== true)) {
       checkContentSize();
     }
     
@@ -808,7 +907,7 @@ Element.prototype.scrollable = function (settings) {
       function updateTextAreaContent() {
         updateHeights(textAreaBlock);
         setSliderSize("Y");
-        checkSliderPosition("Y");
+        updateSliderPosition("Y");
         calcRatioFactor();
       }
       
@@ -894,120 +993,232 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Generic function for vertical and horozontal sliders -- //
     function genericSlidersEvent(event, axis, sliderMainFunction) {
+      // function for prevent selection, while user interact with slider
       function cancelSelection(event) {
         event = event || window.event;
         return false;
       }
+      
+      // set event listener on "selectstart" event for prevent selection
       eventListener("add", document, "selectstart", cancelSelection);
+      
+      // set event listener on "mousemove" event for "drag" action with slider  
       eventListener("add", document, "mousemove", sliderMainFunction);
+      
+      // function for clear events listeners
       function clearEvent() {
+        // remove "mousemove", "selectstart", "mouseup" events on document
         eventListener("remove", document, "mousemove", sliderMainFunction);
         eventListener("remove", document, "selectstart", cancelSelection);
         eventListener("remove", document, "mouseup", clearEvent);
+        
+        // change opacity of scrollers, if option of auto hide effect is on
         if (autoHide === true) {
-          if (mousePosition === "inside") {
-            if (axis === "X") {
+          if (mousePosition === "inside") { // case, where cursor is over container
+            if (axis === "X") { // case for horizontal scroller
+              // change horizontal scroller condition to passive, after interaction 
               adaptiveHide(scrollerX, scrollerOpacityPassive);
-              adaptiveHide(plug, scrollerOpacityPassive);
-            } else if (axis === "Y") {
+              
+              if ((verticalScroller === true) || (horizontalScroller === true)) { // if plug exist...
+                // ...change it condition to passive, after iteraction with scroller
+                adaptiveHide(plug, scrollerOpacityPassive);
+              }
+            } else if (axis === "Y") { // case for vertical scroller
+              // change vertical scroller condition to passive, after interaction 
               adaptiveHide(scrollerY, scrollerOpacityPassive);
-              if (horizontalScroller === true) {
+              
+              if ((verticalScroller === true) || (horizontalScroller === true)) { // if plug exist...
+                // ...change it condition to passive, after iteraction with scroller
                 adaptiveHide(plug, scrollerOpacityPassive);
               }
             }
-          } else if (mousePosition === "outside") {
-            if (axis === "X") {
+          } else if (mousePosition === "outside") { // case, where cursor is over container
+            if (axis === "X") { // case for horizontal scroller
+              // change horizontal scroller condition to hidden, after interaction 
               adaptiveHide(scrollerX, scrollerOpacityHidden);
-              adaptiveHide(plug, scrollerOpacityHidden);
-            } else if (axis === "Y") {
+              
+              if ((verticalScroller === true) || (horizontalScroller === true)) { // if plug exist...
+                // ...change it condition to hidden, after iteraction with scroller
+                adaptiveHide(plug, scrollerOpacityHidden);
+              }
+            } else if (axis === "Y") { // case for vertical scroller
+              // change vertical scroller condition to hidden, after interaction 
               adaptiveHide(scrollerY, scrollerOpacityHidden);
-              if (horizontalScroller === true) {
+              
+              if ((verticalScroller === true) || (horizontalScroller === true)) { // if plug exist...
+                // ...change it condition to hidden, after iteraction with scroller
                 adaptiveHide(plug, scrollerOpacityHidden);
               }
             }
           }
         }
-        if (axis === "X") {
+        
+        // update information about picked slider
+        if (axis === "X") { // ...if it horizontal
           sliderPick.sliderX = false;
-          smoothly("set", sliderX);
-        } else if (axis === "Y") {
+          
+          // activate effect of smooth scrolling again for horizontal slider, if it exist before
+          if (smoothlyScroll === true) {
+            smoothly("set", sliderX);
+          }
+        } else if (axis === "Y") { // ...if it vertical
           sliderPick.sliderY = false;
-          smoothly("set", sliderY);
+          
+          // activate effect of smooth scrolling again for vertical slider, if it exist before
+          if (smoothlyScroll === true) {
+            smoothly("set", sliderY);
+          }
         }
-        smoothly("set", wrapper);
+        
+        // activate effect of smooth scrolling again for wrapper, if it exist before
+        if (smoothlyScroll === true) {
+          smoothly("set", wrapper);
+        }
       }
+      
+      // call function, which clear all events, on "mouseup" event
       eventListener("add", document, "mouseup", clearEvent);
     }
     
     // -- Event "Drag'n Drop" for vertical slider -- //
-    sliderY.onmousedown = function (event) {
-      event = event || window.event;
-      smoothly("remove", wrapper);
-      smoothly("remove", sliderY);
-      var сorrectPick = event.clientY - sliderY.getBoundingClientRect().top;
-      function sliderScroll(event) {
-        var sliderCoordsOld = sliderY.getBoundingClientRect(),
-          newTop = event.clientY - scrollerY.getBoundingClientRect().top - scrollerY.clientTop - сorrectPick,
-          bottomEdge = sliderFieldY - sliderHeight;
-        if (arrows === true) {
-          bottomEdge += arrowDown.offsetHeight;  
+    if (verticalScroller === true) {
+      sliderY.onmousedown = function (event) {
+        event = event || window.event;
+        
+        // stop smooth scrolling effect, while user interact with slider 
+        if (smoothlyScroll === true) {
+          smoothly("remove", wrapper);
+          smoothly("remove", sliderY);
         }
-        if (newTop <= topEdge) {
-          newTop = topEdge;
-        } else if (newTop >= bottomEdge) {
-          newTop = bottomEdge;
-        }
-        sliderY.style.top = newTop + "px";
-        var sliderCoordsNew = sliderY.getBoundingClientRect(),
-          scrollSpeed = (sliderCoordsNew.top - sliderCoordsOld.top) * ratioFactor.vertical;
-        sliderPick.wrapperY -= scrollSpeed;
-        wrapper.style.top = Math.round(sliderPick.wrapperY) + "px";
-        if (autoHide === true) {
-          adaptiveHide(scrollerY, scrollerOpacityActive);
-          if (horizontalScroller === true) {
-            adaptiveHide(plug, scrollerOpacityActive);
+        
+        // detect area, where user pick slider, for correct behavior of "D'n D" interation type
+        var сorrectPick = event.clientY - sliderY.getBoundingClientRect().top;
+        
+        // function for moving slider and wrapper
+        function sliderYScroll(event) {
+          // some variables: 
+          var sliderYCoordsOld = sliderY.getBoundingClientRect(), // slider pisition before draging
+            newTop = event.clientY - scrollerY.getBoundingClientRect().top - scrollerY.clientTop - сorrectPick, // new position for slider at start of interaction
+            bottomEdge = sliderFieldY - sliderHeight; // detect lower allowable position
+          
+          // change lower allowable position, if arrows exist
+          if (arrows === true) {
+            bottomEdge += arrowDown.offsetHeight;  
           }
+          
+          // prevent out of range
+          if (newTop <= topEdge) { // if new position out higher allowable position...
+            // ...new position must be equal higher allowable position
+            newTop = topEdge;
+          } else if (newTop >= bottomEdge) { // if new position out lower allowable position...
+            // ...new position must be equal lower allowable position
+            newTop = bottomEdge;
+          }
+          
+          // set calculated position
+          sliderY.style.top = newTop + "px";
+          
+          // detect new coords of slider...
+          var sliderYCoordsNew = sliderY.getBoundingClientRect(),
+            scrollSpeed = (sliderYCoordsNew.top - sliderYCoordsOld.top) * ratioFactor.vertical; // and calculate scrolling speed of wrapper
+          
+          // calculate new position for wrapper
+          sliderPick.wrapperY -= scrollSpeed;
+          
+          // set calculaterd position for wrapper, which give scrolling effect
+          wrapper.style.top = Math.round(sliderPick.wrapperY) + "px";
+          
+          // change opacity of scrollers, if option of auto hide effect is on 
+          if (autoHide === true) {
+            // on interaction, change vertical scroller condition to active 
+            adaptiveHide(scrollerY, scrollerOpacityActive);
+            
+            if ((verticalScroller === true) && (horizontalScroller === true)) { // if plug exist...
+              // on interaction, change plug condition to active
+              adaptiveHide(plug, scrollerOpacityActive);
+            }
+          }
+          
+          // return data about picked slider and new wrapper position
+          return sliderPick = {
+            sliderY: true,
+            wrapperY: sliderPick.wrapperY,
+            sliderX: false,
+            wrapperX: sliderPick.wrapperX
+          };
         }
-        return sliderPick = {
-          sliderY: true,
-          wrapperY: sliderPick.wrapperY,
-          sliderX: false,
-          wrapperX: sliderPick.wrapperX
-        };
-      }
-      sliderScroll(event);
-      genericSlidersEvent(event, "Y", sliderScroll);
-      return false;
-    };
+        
+        // call function for moving slider and content
+        sliderYScroll(event);
+        
+        // call generic actions
+        genericSlidersEvent(event, "Y", sliderYScroll);
+        
+        // prevent default browser event
+        return false;
+      };
+    }
     
     // -- Event "Drag'n Drop" for horizontal slider -- //
     if (horizontalScroller === true) {
       sliderX.onmousedown = function (event) {
         event = event || window.event;
-        smoothly("remove", wrapper);
-        smoothly("remove", sliderX);
+        
+        // stop smooth scrolling effect, while user interact with slider
+        if (smoothlyScroll === true) {
+          smoothly("remove", wrapper);
+          smoothly("remove", sliderX);
+        }
+        
+        // detect area, where user pick slider, for correct behavior of "D'n D" interation type
         var correctPick = event.clientX - sliderX.getBoundingClientRect().left;
+        
+        // function for moving slider and content
         function sliderXScroll(event) {
-          var sliderXCoordsOld = sliderX.getBoundingClientRect(),
-            newLeft = event.clientX - scrollerX.getBoundingClientRect().left - scrollerX.clientLeft - correctPick,
-            rightEdge = sliderFieldX - sliderWidth;
+          // some variables: 
+          var sliderXCoordsOld = sliderX.getBoundingClientRect(),// slider pisition before draging
+            newLeft = event.clientX - scrollerX.getBoundingClientRect().left - scrollerX.clientLeft - correctPick, // new position for slider at start of interaction
+            rightEdge = sliderFieldX - sliderWidth; // detect lower allowable position
+          
+          // change lower allowable position, if arrows exist
           if (arrows === true) {
             rightEdge += arrowRight.offsetWidth;
           }
-          if (newLeft <= leftEdge) {
+          
+          // prevent out of range
+          if (newLeft <= leftEdge) { // if new position out of leftmost allowable position...
+            // ...new position must be equal leftmost allowable position
             newLeft = leftEdge;
-          } else if (newLeft >= rightEdge) {
+          } else if (newLeft >= rightEdge) { // if new position out of rightmost allowable position...
+            // ...new position must be equal rightmost allowable position
             newLeft = rightEdge;
           }
+          
+          // set calculated position
           sliderX.style.left = newLeft + "px";
+          
+          // detect new coords of slider...
           var sliderXCoordsNew = sliderX.getBoundingClientRect(),
-            scrollXSpeed = (sliderXCoordsNew.left - sliderXCoordsOld.left) * ratioFactor.horizontal;
+            scrollXSpeed = (sliderXCoordsNew.left - sliderXCoordsOld.left) * ratioFactor.horizontal; // and calculate scrolling speed of wrapper
+          
+          // calculate new position for wrapper
           sliderPick.wrapperX -= scrollXSpeed;
+          
+          // set calculaterd position for wrapper, which give scrolling effect
           wrapper.style.left = Math.round(sliderPick.wrapperX) + "px";
+          
+          // change opacity of scrollers, if option of auto hide effect is on 
           if (autoHide === true) {
+            // on interaction, change vertical scroller condition to active 
             adaptiveHide(scrollerX, scrollerOpacityActive);
-            adaptiveHide(plug, scrollerOpacityActive);
+              
+            if ((verticalScroller === true) || (horizontalScroller === true)) { // if plug exist...
+              // on interaction, change plug condition to active
+              adaptiveHide(plug, scrollerOpacityActive);
+            }
           }
+          
+          // return data about picked slider and new wrapper position
           return sliderPick = {
             sliderX: true,
             wrapperX: sliderPick.wrapperX,
@@ -1015,38 +1226,61 @@ Element.prototype.scrollable = function (settings) {
             wrapperY: sliderPick.wrapperY
           };
         }
+        
+        // call function for moving slider and content
         sliderXScroll(event);
+        
+        // call generic actions
         genericSlidersEvent(event, "X", sliderXScroll);
+        
+        // prevent default browser event
         return false;
       };
     }
     
     // -- General function of vertical scrolling action for mouse wheel, keyboard and virtual arrows -- //
-    function scrollGeneric(event, scrollStep) {
+    function scrollYGeneric(event, scrollStep) {
+      // calculate new position for wrapper
       sliderPick.wrapperY -= scrollStep;
+      
+      // calculate new slider position
       var newSliderTop = (sliderPick.wrapperY / ratioFactor.vertical) * -1;
-      if (arrows === true) {
-        newSliderTop += arrowUp.offsetHeight;
-      }
+      
+      // detect lower allowable slider position
       var bottomEdge = sliderFieldY - sliderHeight;
-      if (arrows === true) {
+      
+      if (arrows === true) { // if arrows exist...
+        // ...change slider position
+        newSliderTop += arrowUp.offsetHeight;
+        
+        // ...change lower allowable slider position
         bottomEdge += arrowDown.offsetHeight;
       }
-      if (newSliderTop < topEdge) {
+      
+      // prevent out of range
+      if (newSliderTop < topEdge) { // if new slider position out of higher allowable position...
+        // ...new position must be equal higher allowable position
         newSliderTop = topEdge;
+        
+        // ...and wrapper position must be equal 0
         sliderPick.wrapperY = 0;
-      } else if (newSliderTop > bottomEdge) {
+      } else if (newSliderTop > bottomEdge) { // if new position out of lower allowable position...
+        // ...new position must be equal lower allowable position
         newSliderTop = bottomEdge;
-        if (horizontalScroller === true) {
-          if (scrollerShift === true) {
+        
+        // ...calculate wrapper lower allowable position
+        if (horizontalScroller === true) { // if horizontal scroller exist, and...
+          if (scrollerShift === true) { // ... scroller shift is on
             sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selfBorder.bottom + scrollerX.offsetHeight) * -1;
-          } else {
+          } else { // ..scroller shift is off
             sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selfBorder.bottom) * -1;
           }
-        } else {
+        } else { // if horizontal scroller does't exist
           sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selfBorder.bottom) * -1;
         }
       }
+      
+      // return data about slider and wrapper positions
       return {
         newSliderTop: newSliderTop,
         newWrapperTop: sliderPick.wrapperY
@@ -1054,27 +1288,48 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- General function of horizontal scrolling action for keyboard and virtual arrows -- //
-    function scrollGenericX(event, scrollStep) {
+    function scrollXGeneric(event, scrollStep) {
+      // calculate new position for wrapper
       sliderPick.wrapperX -= scrollStep;
+      
+      // calculate new slider position
       var newSliderLeft = (sliderPick.wrapperX / ratioFactor.horizontal) * -1;
-      if (arrows === true) {
-        newSliderLeft += arrowLeft.offsetWidth;
-      }
+      
+      // detect rightmost allowable slider position
       var rightEdge = sliderFieldX - sliderWidth;
-      if (arrows === true) {
+      
+      if (arrows === true) { // if arrows exist...
+        // ...change slider position
+        newSliderLeft += arrowLeft.offsetWidth;
+        
+        // ...change rightmost allowable slider position
         rightEdge += arrowRight.offsetWidth;
       }
-      if (newSliderLeft < leftEdge) {
+      
+      // prevent out of range
+      if (newSliderLeft < leftEdge) { // if new slider position out of leftmost allowable position...
+        // ...new slider position must be equal leftmost allowable position
         newSliderLeft = leftEdge;
+        
+        // ...new wrapper position must be equal 0
         sliderPick.wrapperX = 0;
-      } else if (newSliderLeft > rightEdge) {
+      } else if (newSliderLeft > rightEdge) { // if new slider position out of rightmost allowable position...
+        // ...new slider position must be equal leftmost allowable position
         newSliderLeft = rightEdge;
-        if (scrollerShift === true) {
-          sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPadding.left + selfBorder.left + selfPadding.right + selfBorder.right + scrollerY.offsetWidth) * -1;
-        } else {
+        
+        // ...calculate wrapper rightmost allowable position 
+        if (verticalScroller === true) { // if vertical scroller exist, and...
+          if (scrollerShift === true) { // ...scroller shift is on
+            sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPadding.left + selfBorder.left + selfPadding.right + selfBorder.right + scrollerY.offsetWidth) * -1;
+          } else { // ...scroller shift is off
+            sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPadding.left + selfBorder.left + selfPadding.right + selfBorder.right) * -1;
+          }
+        } else { // if vertical scroller does't exist
           sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPadding.left + selfBorder.left + selfPadding.right + selfBorder.right) * -1;
         }
       }
+      
+      // return data about slider and wrapper positions
       return {
         newSliderLeft: newSliderLeft,
         newWrapperLeft: sliderPick.wrapperX
@@ -1100,23 +1355,49 @@ Element.prototype.scrollable = function (settings) {
           elem.attachEvent("onmousewheel", func);
         }
       }
+      
       // function of scrolling by mouse wheel
       function wheelScroll(event) {
         event = event || window.event;
+        
+        // detect cross-browser delta 
         var delta = event.deltaY || event.detail || (event.wheelDelta * -1),
           scrollStep;
-        if (delta > 0) {
+        
+        // set scroll step as...
+        if (delta > 0) { // ...positive number
           scrollStep = stepMultipler;
-        } else if (delta < 0) {
+        } else if (delta < 0) { // ... negative number
           scrollStep = stepMultipler * -1;
         }
-        var result = scrollGeneric(event, scrollStep);
-        if (autoHide === true) {
-          autoHideOnEvents("Y");
+        
+        if (verticalScroller !== true) { // scroll by X-axis, if vertical scroller does't exist
+          // change vertical scroller opacity condition 
+          if (autoHide === true) {
+            autoHideOnEvents("X");
+          }
+          
+          // calculate new positions for vertical slider and wrapper 
+          var result = scrollXGeneric(event, scrollStep);
+          
+          // set new positions for wrapper and slider  
+          wrapper.style.left = result.newWrapperLeft + "px";
+          sliderX.style.left = result.newSliderLeft + "px";
+        } else { // scroll by Y-axis, if vertical scroller exist
+          // change vertical scroller opacity condition 
+          if (autoHide === true) {
+            autoHideOnEvents("Y");
+          }
+          
+          // calculate new positions for vertical slider and wrapper 
+          var result = scrollYGeneric(event, scrollStep);
+          
+          // set new positions for wrapper and slider  
+          wrapper.style.top = result.newWrapperTop + "px";
+          sliderY.style.top = result.newSliderTop + "px";
         }
-        wrapper.style.top = result.newWrapperTop + "px";
-        sliderY.style.top = result.newSliderTop + "px";
       }
+      
       // set event listener
       onwheelFixer(self, wheelScroll);
     };
@@ -1130,23 +1411,43 @@ Element.prototype.scrollable = function (settings) {
       return durationInSeconds * 1000;
     }
     
+    // -- If smooth effect on scrolling is on... -- //
     if (smoothlyScroll === true) {
-      var transitionDuration = getTransitionDurationMs(),
-        removeSmoothTimer = "empty";
+      var transitionDuration = getTransitionDurationMs(), // ...get time on transition
+        removeSmoothTimer = "empty"; // ...set ID for future timer
     }
     
+    // -- Some duplicate actions with options of smooth effect -- //
     function smoothActionPack(action) {
-      if (action === "set") {
-        smoothly("set", sliderY);
+      if (action === "set") { // in case, where need add smooth effect 
+        // if vertical scroller exist...
+        if (verticalScroller === true) {
+          // ...set this effect on it 
+          smoothly("set", sliderY);
+        }
+        
+        // if horizontal scroller exist...
         if (horizontalScroller === true) {
+          // ...set this effect on it
           smoothly("set", sliderX);
         }
+        
+        // set this effect on wrapper
         smoothly("set", wrapper);
-      } else if (action === "remove") {
-        smoothly("remove", sliderY);
+      } else if (action === "remove") { // in case, where need delete smooth effect
+        // if vertical scroller exist...
+        if (verticalScroller === true) {
+          // ...remove this effect from it
+          smoothly("remove", sliderY);
+        }
+        
+        // if horizontal scroller exist...
         if (horizontalScroller === true) {
+          // ...remove this effect from it
           smoothly("remove", sliderX);
         }
+        
+        // remove this effect from wrapper
         smoothly("remove", wrapper);
       }
     }
@@ -1159,97 +1460,132 @@ Element.prototype.scrollable = function (settings) {
         self.onkeydown = function (event) {
           event = event || window.event;
           
+          // function, which freez smooth effect, when key pressed a long time
           function freezTransition(axis) {
-            if (smoothlyScroll === true) {
-              if (removeSmoothTimer === "empty") {
-                removeSmoothTimer = setTimeout(function() {
-                  if (axis === "Y") {
-                    smoothly("remove", sliderY);  
-                  } else if (axis == "X") {
-                    smoothly("remove", sliderX);
-                  }
-                  smoothly("remove", wrapper);
-                }, transitionDuration);
-              }
+            // perform function, if effect of smooth scrolling is active and timer does't already run
+            if ((smoothlyScroll === true) && (removeSmoothTimer === "empty"))  {
+              // start freezing, after complete first iteration of smooth action (it`s transition duration)
+              removeSmoothTimer = setTimeout(function() {
+                 // stop smooth effect...
+                if (axis === "Y") { // ...on vertical slider, ...
+                  smoothly("remove", sliderY);  
+                } else if (axis == "X") { // ...or horizontal slider, ... 
+                  smoothly("remove", sliderX);
+                }
+                // ... and wrapper
+                smoothly("remove", wrapper);
+              }, transitionDuration);
             }
           }
           
-          // -- Vertical scrolling -- //
-          function keyboardScroll(event, arrowBtnCode, pageBtnCode, positivity) {
+          // function of vertical scrolling by keys 
+          function keyboardScrollY(event, arrowBtnCode, pageBtnCode, positivity) {
+            // set scroll step for next calculation
             var scrollStep = 0;
-            if (event.keyCode === arrowBtnCode) {
+            
+            // calculate scroll step...
+            if (event.keyCode === arrowBtnCode) { // ...if it one of "Arrow" keys  
               scrollStep = stepMultipler * positivity;
-              freezTransition("Y");
-            } else if (event.keyCode === pageBtnCode) {
-              if (horizontalScroller === true) {
+            } else if (event.keyCode === pageBtnCode) { // ...if it one of "Page" keys
+              if (horizontalScroller === true) { // in case, where horizontal scroller exist
                 scrollStep = (self.clientHeight - scrollerX.offsetHeight) * positivity;
-              } else {
+              } else { // in case without horizontal scroller
                 scrollStep = (self.clientHeight) * positivity;
               }
             }
-            var result = scrollGeneric(event, scrollStep);
+            
+            // freez smooth effect
+            freezTransition("Y");
+            
+            // change opacity condition for vertical scroller
             if (autoHide === true) {
               autoHideOnEvents("Y");
             }
+            
+            // calculate new positions for wrapper and slider
+            var result = scrollYGeneric(event, scrollStep);
+            
+            // set at wrapper and slider calculated positions
             sliderY.style.top = result.newSliderTop + "px";
             wrapper.style.top = result.newWrapperTop + "px";
-          }
-          // condition for bottons "Arrow up" and "Page Up"
-          if ((event.keyCode == 38 || event.keyCode == 33) && (sliderHeight > 0)) {
-            if ((isTextArea == true) && (activeNavigation == true)) {
-              keyboardScroll(event, 38, 33, -1);
-            } else if (isTextArea == false) {
-              keyboardScroll(event, 38, 33, -1);
-            }
-          }
-          // condition for bottons "Arrow down" and "Page Down"
-          if ((event.keyCode == 40 || event.keyCode == 34) && (sliderHeight > 0)) {
-            if ((isTextArea == true) && (activeNavigation == true)) {
-              keyboardScroll(event, 40, 34, 1);
-            } else if (isTextArea == false) {
-              keyboardScroll(event, 40, 34, 1);
-            }
-          }
+          } 
           
-          // -- Horizontal scrolling -- //
-          if (horizontalScroller === true) {
-            function keyboardScrollX(event, arrowBtnCode, pageBtnCode, positivity) {
-              var scrollStep = 0;
-              if (event.keyCode === arrowBtnCode) {
-                scrollStep = stepMultipler * positivity;
-                freezTransition("X");
-              } else if (event.keyCode === pageBtnCode) {
+          // function of vertical scrolling by keys
+          function keyboardScrollX(event, arrowBtnCode, pageBtnCode, positivity) {
+            // set scroll step for next calculation
+            var scrollStep = 0;
+            
+            // calculate scroll step...
+            if (event.keyCode === arrowBtnCode) { // ...if it one of "Arrow" keys  
+              scrollStep = stepMultipler * positivity;
+            } else if (event.keyCode === pageBtnCode) { // ...if it one of "Page" keys
+              if (verticalScroller === true) { // in case, where vertical scroller exist
                 scrollStep = (self.clientWidth - scrollerY.offsetWidth) * positivity;
-              }
-              var result = scrollGenericX(event, scrollStep);
-              if (autoHide === true) {
-                autoHideOnEvents("X");
-              }
-              sliderX.style.left = result.newSliderLeft + "px";
-              wrapper.style.left = result.newWrapperLeft + "px";
-            }
-            // condition for bottons "Arrow left" and "Home"
-            if ((event.keyCode == 37 || event.keyCode == 36) && (sliderWidth > 0)) {
-              if ((isTextArea == true) && (activeNavigation == true)) {
-                keyboardScrollX(event, 37, 36, -1);
-              } else if (isTextArea == false) {
-                keyboardScrollX(event, 37, 36, -1);
+              } else { // in case without vertical scroller
+                scrollStep = self.clientWidth * positivity;
               }
             }
-            // condition for bottons "Arrow right" and "End"
-            if ((event.keyCode == 39 || event.keyCode == 35) && (sliderWidth > 0)) {
-              if ((isTextArea == true) && (activeNavigation == true)) {
-                keyboardScrollX(event, 39, 35, 1);
-              } else if (isTextArea == false) {
-                keyboardScrollX(event, 39, 35, 1);
-              }
+            
+            // freez smooth effect
+            freezTransition("X");
+            
+            // change opacity condition for horizontal scroller
+            if (autoHide === true) {
+              autoHideOnEvents("X");
+            }
+            
+            // calculate new positions for wrapper and slider
+            var result = scrollXGeneric(event, scrollStep);
+            
+            // set at wrapper and slider calculated positions
+            sliderX.style.left = result.newSliderLeft + "px";
+            wrapper.style.left = result.newWrapperLeft + "px";
+          }
+          
+          // condition for bottons "Arrow up" and "Page Up"
+          if ((event.keyCode == 38 || event.keyCode == 33) && (sliderHeight > 0) && (verticalScroller === true)) {
+            if ((isTextArea == true) && (activeNavigation == true)) { // in case if it textarea
+              keyboardScrollY(event, 38, 33, -1);
+            } else if (isTextArea == false) { // in other cases
+              keyboardScrollY(event, 38, 33, -1);
             }
           }
           
-          if (smoothlyScroll === true) {
+          // condition for bottons "Arrow down" and "Page Down"
+          if ((event.keyCode == 40 || event.keyCode == 34) && (sliderHeight > 0) && (verticalScroller === true)) {
+            if ((isTextArea == true) && (activeNavigation == true)) { // in case if it textarea
+              keyboardScrollY(event, 40, 34, 1);
+            } else if (isTextArea == false) { // in other cases
+              keyboardScrollY(event, 40, 34, 1);
+            }
+          }
+          
+          // condition for bottons "Arrow left" and "Home"
+          if ((event.keyCode == 37 || event.keyCode == 36) && (sliderWidth > 0) && (horizontalScroller === true)) {
+            if ((isTextArea == true) && (activeNavigation == true)) { // in case if it textarea
+              keyboardScrollX(event, 37, 36, -1);
+            } else if (isTextArea == false) { // in other cases
+              keyboardScrollX(event, 37, 36, -1);
+            }
+          }
+          
+          // condition for bottons "Arrow right" and "End"
+          if ((event.keyCode == 39 || event.keyCode == 35) && (sliderWidth > 0) && (horizontalScroller === true)) {
+            if ((isTextArea == true) && (activeNavigation == true)) { // in case if it textarea
+              keyboardScrollX(event, 39, 35, 1);
+            } else if (isTextArea == false) { // in other cases
+              keyboardScrollX(event, 39, 35, 1);
+            }
+          }
+          
+          // if effect of smooth scrolling is on...
+          if (smoothlyScroll === true) { // ...set event listener on "keyup", which...
             self.onkeyup = function () {
+              // ... clear timer, which delay freezing...
               clearTimeout(removeSmoothTimer);
               removeSmoothTimer = "empty";
+              
+              // ...and set smooth effect effect
               smoothActionPack("set");
             };
           }
@@ -1261,61 +1597,113 @@ Element.prototype.scrollable = function (settings) {
     if (settings.scrollBySelection === true) {
       self.onmousedown = function (event) {
         event = event || window.event;
+        
+        // get cross-browser "target" element
         var target = event.target || event.srcElement;
+        
+        // set focus to container
         self.focus();
-        if (horizontalScroller === true) {
-          if (scrollerY.contains(target) || scrollerX.contains(target)) {
-            return;
-          }
-          if (sliderPick.sliderY != false || sliderPick.sliderX != false) {
-            return;
-          }
-        } else {
+        
+        // prevent event, if... 
+        // ... vertical scroller exist, and...
+        if (verticalScroller === true) {
+          // ...it contanis target
           if (scrollerY.contains(target)) {
             return;
           }
+          
+          // ...user interact with slider
           if (sliderPick.sliderY != false) {
             return; 
           }
         }
+        
+        // ... vertical scroller exist, and...
+        if (horizontalScroller === true) {
+          // ...it contanis target
+          if (scrollerX.contains(target)) {
+            return;
+          }
+          
+          // ...user interact with slider
+          if (sliderPick.sliderX != false) {
+            return; 
+          }
+        }
+        
+        // remove smooth effect, while scrolling
         smoothActionPack("remove");
         
-        // -- Vertical scrolling -- //
-        function selectionScroll(event) {
+        // function of vertical scrolling by text selection
+        function selectionScrollY(event) {
+          // set scroll step for future calculation
           var scrollStep = 0;
-          if (event.clientY < self.getBoundingClientRect().top) {
+          
+          // calculate scroll step...
+          if (event.clientY < self.getBoundingClientRect().top) { // ...if cursor over the top of container
             scrollStep = stepMultipler * -1;
-          } else if (event.clientY > self.getBoundingClientRect().bottom) {
+          } else if (event.clientY > self.getBoundingClientRect().bottom) { // ...if cursor under the bottom of container
             scrollStep = stepMultipler;
           }
-          var result = scrollGeneric(event, scrollStep);
+          
+          // calculate new positions for wrapper and vertical slider
+          var result = scrollYGeneric(event, scrollStep);
+          
+          // set calculated positions to wrapper and vertical slider
           wrapper.style.top = result.newWrapperTop + "px";
           sliderY.style.top = result.newSliderTop + "px";
         }
-        selectionScroll(event);
-        eventListener("add", document, "mousemove", selectionScroll);
-        eventListener("add", document, "mouseup", function(event) {
-          eventListener("remove", document, "mousemove", selectionScroll);
-          smoothActionPack("set");
-        });
         
-        // -- Horizontal scrolling -- //
-        if (horizontalScroller === true) {
-          function selectionScrollX(event) {
-            var scrollStep = 0;
-            if (event.clientX < self.getBoundingClientRect().left) {
-              scrollStep = stepMultipler * -1;
-            } else if (event.clientX > self.getBoundingClientRect().right) {
-              scrollStep = stepMultipler;
-            };
-            var result = scrollGenericX(event, scrollStep);
-            wrapper.style.left = result.newWrapperLeft + "px";
-            sliderX.style.left = result.newSliderLeft + "px";
-          }
-          selectionScrollX(event);
-          eventListener("add", document, "mousemove", selectionScrollX);
+        // function of horizontal scrolling by text selection
+        function selectionScrollX(event) {
+          // set scroll step for future calculation
+          var scrollStep = 0;
+          
+          // calculate scroll step...
+          if (event.clientX < self.getBoundingClientRect().left) { // ...if cursor came out the left side of container
+            scrollStep = stepMultipler * -1;
+          } else if (event.clientX > self.getBoundingClientRect().right) { // ...if cursor came out the right side of container
+            scrollStep = stepMultipler;
+          };
+          
+          // calculate new positions for wrapper and horizontal slider
+          var result = scrollXGeneric(event, scrollStep);
+          
+          // set calculated positions for wrapper and horizontal slider
+          wrapper.style.left = result.newWrapperLeft + "px";
+          sliderX.style.left = result.newSliderLeft + "px";
+        }
+        
+        // case of vertical scrolling
+        if (verticalScroller === true) {
+          // call function of vertical scrolling by text selection
+          selectionScrollY(event);
+          
+          // set event listener on "mousemove" event
+          eventListener("add", document, "mousemove", selectionScrollY);
+          
+          // set listener, which...
           eventListener("add", document, "mouseup", function(event) {
+            // ...clear listener of "mousemove" event and...
+            eventListener("remove", document, "mousemove", selectionScrollY);
+            // ...return smooth effect back again
+            smoothActionPack("set");
+          });
+        }
+        
+        // case of horizontal scrolling
+        if (horizontalScroller === true) {
+          // call function of horizontal scrolling by text selection
+          selectionScrollX(event);
+          
+          // set event listener on "mousemove" event
+          eventListener("add", document, "mousemove", selectionScrollX);
+          
+          // set listener, which...
+          eventListener("add", document, "mouseup", function(event) {
+            // ...clear listener of "mousemove" event and...
             eventListener("remove", document, "mousemove", selectionScrollX);
+            // ...return smooth effect back again
             smoothActionPack("set");
           });
         }
@@ -1343,7 +1731,7 @@ Element.prototype.scrollable = function (settings) {
             scrollStep = self.clientHeight * positivity;
           }
         };
-        var result = scrollGeneric(event, scrollStep);
+        var result = scrollYGeneric(event, scrollStep);
         sliderY.style.top = result.newSliderTop + "px";
         wrapper.style.top = result.newWrapperTop + "px";
         if (autoHide === true) {
@@ -1360,7 +1748,7 @@ Element.prototype.scrollable = function (settings) {
           } else if (type === "Scroller") {
             scrollStep = (self.clientWidth - scrollerY.offsetWidth) * positivity;
           }
-          var result = scrollGenericX(event, scrollStep);
+          var result = scrollXGeneric(event, scrollStep);
           sliderX.style.left = result.newSliderLeft + "px";
           wrapper.style.left = result.newWrapperLeft + "px";
           if (autoHide === true) {
