@@ -67,7 +67,6 @@ Element.prototype.scrollable = function (settings) {
       sliderSize = setOption(settings.sliderSize, "auto"),
       sliderStarterSize = sliderSize,
       stepMultipler = setOption(settings.stepMultipler, 15),
-      contentResize = setOption(settings.contentResize, false),
       autoHide = setOption(settings.autoHide, true),
       smoothlyScroll = setOption(settings.smoothlyScroll, false);
     
@@ -209,6 +208,17 @@ Element.prototype.scrollable = function (settings) {
       }
     }
     
+    // -- Function for detection existense of vertical scroller -- //
+    function verticalScrollerExist() {
+      if (verticalScroller === "auto") {
+        if ((self.clientHeight - parseFloat(getStyle(self).paddingTop) - parseFloat(getStyle(self).paddingBottom)) < wrapper.offsetHeight) {
+          verticalScroller = true;
+        } else {
+          verticalScroller = false;
+        }
+      }
+    }
+    
     // -- Function for set wrapper width -- //
     function setWrapperWidth(wrapper) {
       var wrappedContent = wrapper.children, // create array from all elements in wrapper,.. 
@@ -223,10 +233,14 @@ Element.prototype.scrollable = function (settings) {
         }
       }
       
-      // activate horizontal scroller and set new width for wrapper, if their content to big...
+      // set new width for wrapper, if content of it to big...
       if (contentMaxWidth > wrapper.offsetWidth) {
-        horizontalScroller = true;
         wrapper.style.width = contentMaxWidth + "px";
+        
+        // ...and activate horizontal scroller if option set to "auto" 
+        if (horizontalScroller === "auto" ) {
+          horizontalScroller = true;  
+        }
       } else if (horizontalScroller === "auto") { // ...or deactivate horizontal scroller
         horizontalScroller = false;
       }
@@ -256,10 +270,8 @@ Element.prototype.scrollable = function (settings) {
     // inset HTML-code of conteiner content in to wrapper
     wrapper.innerHTML = content;
     
-    //
-    if (contentResize === true) {
-      horizontalScroller = false;
-    }
+    // detect existense of vertical scroller
+    verticalScrollerExist();
     
     // set wrapper width, if horizontal scrolling avalible
     if (horizontalScroller === "auto" || horizontalScroller === true) {
@@ -341,7 +353,7 @@ Element.prototype.scrollable = function (settings) {
           scroller.style.width = self.clientWidth + "px";
           
           if (scrollerShift === true) { // grow bottom padding at container, if it option active
-            self.style.paddingBottom = parseFloat(getStyle(self).paddingRight) + scroller.offsetWidth + "px";
+            self.style.paddingBottom = parseFloat(getStyle(self).paddingBottom) + scroller.offsetHeight + "px";
             
             if (isTextArea === true) { // 
               updateHeights(textAreaBlock);
@@ -377,11 +389,6 @@ Element.prototype.scrollable = function (settings) {
     // -- Create a vertical scroll bar -- //
     if (verticalScroller === true) {
       var scrollerY = makeScroller("Y");
-    }
-    
-    //
-    if (contentResize === true) {
-      fixContent();
     }
     
     // -- Create a horizontal scroll bar -- //
@@ -866,10 +873,6 @@ Element.prototype.scrollable = function (settings) {
           }
         }
         
-        if (contentResize === true) {
-          fixContent();
-        }
-        
         // case for horizontal scroller
         if ((horizontalScroller === "auto") || (horizontalScroller === true)) {
           // set new wrapper width 
@@ -1019,7 +1022,7 @@ Element.prototype.scrollable = function (settings) {
               // change horizontal scroller condition to passive, after interaction 
               adaptiveHide(scrollerX, scrollerOpacityPassive);
               
-              if ((verticalScroller === true) || (horizontalScroller === true)) { // if plug exist...
+              if ((verticalScroller === true) && (horizontalScroller === true)) { // if plug exist...
                 // ...change it condition to passive, after iteraction with scroller
                 adaptiveHide(plug, scrollerOpacityPassive);
               }
@@ -1027,7 +1030,7 @@ Element.prototype.scrollable = function (settings) {
               // change vertical scroller condition to passive, after interaction 
               adaptiveHide(scrollerY, scrollerOpacityPassive);
               
-              if ((verticalScroller === true) || (horizontalScroller === true)) { // if plug exist...
+              if ((verticalScroller === true) && (horizontalScroller === true)) { // if plug exist...
                 // ...change it condition to passive, after iteraction with scroller
                 adaptiveHide(plug, scrollerOpacityPassive);
               }
@@ -1037,7 +1040,7 @@ Element.prototype.scrollable = function (settings) {
               // change horizontal scroller condition to hidden, after interaction 
               adaptiveHide(scrollerX, scrollerOpacityHidden);
               
-              if ((verticalScroller === true) || (horizontalScroller === true)) { // if plug exist...
+              if ((verticalScroller === true) && (horizontalScroller === true)) { // if plug exist...
                 // ...change it condition to hidden, after iteraction with scroller
                 adaptiveHide(plug, scrollerOpacityHidden);
               }
@@ -1045,7 +1048,7 @@ Element.prototype.scrollable = function (settings) {
               // change vertical scroller condition to hidden, after interaction 
               adaptiveHide(scrollerY, scrollerOpacityHidden);
               
-              if ((verticalScroller === true) || (horizontalScroller === true)) { // if plug exist...
+              if ((verticalScroller === true) && (horizontalScroller === true)) { // if plug exist...
                 // ...change it condition to hidden, after iteraction with scroller
                 adaptiveHide(plug, scrollerOpacityHidden);
               }
@@ -1212,7 +1215,7 @@ Element.prototype.scrollable = function (settings) {
             // on interaction, change vertical scroller condition to active 
             adaptiveHide(scrollerX, scrollerOpacityActive);
               
-            if ((verticalScroller === true) || (horizontalScroller === true)) { // if plug exist...
+            if ((verticalScroller === true) && (horizontalScroller === true)) { // if plug exist...
               // on interaction, change plug condition to active
               adaptiveHide(plug, scrollerOpacityActive);
             }
@@ -1711,145 +1714,218 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Event of scrolling by click on virtual arrows and empty scroller field (using delegation) -- //
+    // object with info about loops for emulated "press/hold" event on virtual control elements 
     var loops = {
       looper: undefined,
       repeat: true 
     };
+    
+    // function of scrolling by virtual arrows and clicking on scroller
     function virtualScrolling(event) {
       event = event || window.event;
+      
+      // cross-browser target
       var target = event.target || event.srcElement;
       
-      // -- Function for vertical scrolling -- //
-      function mouseGeneric(positivity, type) {
+      // function of vertical scrolling
+      function mouseGenericY(positivity, type) {
+        // set scroll step for next calculations
         var scrollStep;
-        if (type === "Arrow") {
+        
+        // calculate scroll step...
+        if (type === "Arrow") { // ...in case for arrows 
           scrollStep = stepMultipler * positivity;
-        } else if (type === "Scroller") {
-          if (horizontalScroller === true) {
+        } else if (type === "Scroller") { // ...in case for scroller...
+          if (horizontalScroller === true) { // ...if horizontal scroller exist
             scrollStep = (self.clientHeight - scrollerX.offsetHeight) * positivity;
-          } else {
+          } else { // ...if horizontal scroller does't exist
             scrollStep = self.clientHeight * positivity;
           }
-        };
-        var result = scrollYGeneric(event, scrollStep);
-        sliderY.style.top = result.newSliderTop + "px";
-        wrapper.style.top = result.newWrapperTop + "px";
+        }
+        
+        // change opacity condition of active controll elements
         if (autoHide === true) {
           autoHideOnEvents("Y");
         }
+        
+        // calculate new positions for vertical slider and wrapper
+        var result = scrollYGeneric(event, scrollStep);
+        
+        // set calculated position to vertical slider and wrapper
+        sliderY.style.top = result.newSliderTop + "px";
+        wrapper.style.top = result.newWrapperTop + "px";
       }
       
-      // -- Function for horizontal scrolling -- //
-      if (horizontalScroller === true) {
-        function mouseGenericX(positivity, type) {
-          var scrollStep;
-          if (type === "Arrow") {
-            scrollStep = stepMultipler * positivity;
-          } else if (type === "Scroller") {
+      // function of horizontal scrolling
+      function mouseGenericX(positivity, type) {
+        // set scroll step for next calculations
+        var scrollStep;
+        
+        // calculate scroll step...
+        if (type === "Arrow") { // ...in case for arrows 
+          scrollStep = stepMultipler * positivity;
+        } else if (type === "Scroller") { // ...in case for scroller...
+          if (verticalScroller === true) { // ...if horizontal scroller exist
             scrollStep = (self.clientWidth - scrollerY.offsetWidth) * positivity;
-          }
-          var result = scrollXGeneric(event, scrollStep);
-          sliderX.style.left = result.newSliderLeft + "px";
-          wrapper.style.left = result.newWrapperLeft + "px";
-          if (autoHide === true) {
-            autoHideOnEvents("X");
+          } else { // ...if horizontal scroller does't exist
+            scrollStep = self.clientWidth * positivity;
           }
         }
+        
+        // change opacity condition of active controll elements
+        if (autoHide === true) {
+          autoHideOnEvents("X");
+        }
+        
+        // calculate new positions for horizontal slider and wrapper
+        var result = scrollXGeneric(event, scrollStep);
+        
+        // set calculated position to horizontal slider and wrapper
+        sliderX.style.left = result.newSliderLeft + "px";
+        wrapper.style.left = result.newWrapperLeft + "px";
       }
       
+      // function, which emulated "press/hold" behavior on virtual controlls elements
       function loopedMouseGeneric(positivity, type) {
+        // start loop, if user hold virtual key to long
         var looper = setTimeout(function() {
+          // remove effect of smooth scrolling
           smoothActionPack("remove");
+          
+          // repeat same action again, ...
           function repeatAgain() {
-            if (loops.repeat === true) {
+            if (loops.repeat === true) { // ...while user hold virtual key...
               var repeater = setTimeout(function() {
-                if (scrollerY.contains(target)) {
-                  mouseGeneric(positivity, type);
-                } else if (scrollerX.contains(target)) {
+                if ((verticalScroller === true) && (scrollerY.contains(target))) { // ...in case where it vertical scroller
+                  mouseGenericY(positivity, type);
+                } else if ((horizontalScroller === true) && (scrollerX.contains(target))) { // ...in case where it horizontal scroller
                   mouseGenericX(positivity, type);
                 }
+                
+                // recursion of it function
                 repeatAgain();
               }, 30);
             }
           }
+          
+          // call function, which repeat scrolling action
           repeatAgain();
         }, 300);
+        
+        // return data about conditions of loops
         return loops = {
           looper: looper,
           repeat: true
         };
       }
       
+      // use scrolling by virtual arrows, if it exist
       if (arrows === true) {
-        if (sliderHeight > 0) {
-          if (arrowUp.contains(target)) { // condition for click on vitrual arrow up
-            mouseGeneric(-1, "Arrow");
+        if ((verticalScroller === true) && (sliderHeight > 0)) { // case for vertical scroller
+          if (arrowUp.contains(target)) { // condition for click on vitrual "Arrow up"
+            // standart scroll action
+            mouseGenericY(-1, "Arrow");
+            // looped scroll action, if user hold it virtual key
             loopedMouseGeneric(-1, "Arrow");
           }
-          if (arrowDown.contains(target)) { // condition for click on virtual arrow down
-            mouseGeneric(1, "Arrow");
+          
+          if (arrowDown.contains(target)) { // condition for click on virtual "Arrow down"
+            // standart scroll action
+            mouseGenericY(1, "Arrow");
+            // looped scroll action, if user hold it virtual key
             loopedMouseGeneric(1, "Arrow");
           }
         }
-        if (horizontalScroller === true) {
-          if (sliderWidth > 0) {
-            if (arrowLeft.contains(target)) { // condition for click on vitrual arrow left
-              mouseGenericX(-1, "Arrow");
-              loopedMouseGeneric(-1, "Arrow");
-            }
-            if (arrowRight.contains(target)) { // condition for click on virtual arrow right
-              mouseGenericX(1, "Arrow");
-              loopedMouseGeneric(1, "Arrow");
-            }
+        
+        if ((horizontalScroller === true) && (sliderWidth > 0)) { // case for horizontal scroller
+          if (arrowLeft.contains(target)) { // condition for click on vitrual "Arrow left"
+            // standart scroll action
+            mouseGenericX(-1, "Arrow");
+            // looped scroll action, if user hold it virtual key
+            loopedMouseGeneric(-1, "Arrow");
+          }
+          
+          if (arrowRight.contains(target)) { // condition for click on virtual "Arrow right"
+            // standart scroll action
+            mouseGenericX(1, "Arrow");
+            // looped scroll action, if user hold it virtual key
+            loopedMouseGeneric(1, "Arrow");
           }
         }
       }
       
-      if ((target.getAttribute("data-type") === "scrollerY") && (sliderHeight > 0)) { // condition for click on empty field of vertical scroll bar
-        if (event.clientY < sliderY.getBoundingClientRect().top) {
-          mouseGeneric(-1, "Scroller");
-          loopedMouseGeneric(-1, "Scroller");
-        } else if (event.clientY > sliderY.getBoundingClientRect().bottom) {
-          mouseGeneric(1, "Scroller");
-          loopedMouseGeneric(1, "Scroller");
-        }
-      }
-      
-      if (horizontalScroller === true) {
-        if ((target.getAttribute("data-type") === "scrollerX") && (sliderWidth > 0)) { // condition for click on empty field of horizontal scroll bar
-          if (event.clientX < sliderX.getBoundingClientRect().left) {
-            mouseGenericX(-1, "Scroller");
+      // condition for click on empty field of vertical scroll bar
+      if (verticalScroller === true) {
+        if ((target.getAttribute("data-type") === "scrollerY") && (sliderHeight > 0)) {
+          if (event.clientY < sliderY.getBoundingClientRect().top) { // case, if user click above slider
+            // standart scroll action
+            mouseGenericY(-1, "Scroller");
+            // looped scroll action, if user hold it virtual key
             loopedMouseGeneric(-1, "Scroller");
-          } else if (event.clientX > sliderX.getBoundingClientRect().right) {
-            mouseGenericX(1, "Scroller");
+          } else if (event.clientY > sliderY.getBoundingClientRect().bottom) { // case, if user click under slider
+            // standart scroll action
+            mouseGenericY(1, "Scroller");
+            // looped scroll action, if user hold it virtual key
             loopedMouseGeneric(1, "Scroller");
           }
         }
       }
       
-      return;
+      // condition for click on empty field of horizontal scroll bar
+      if (horizontalScroller === true) {
+        if ((target.getAttribute("data-type") === "scrollerX") && (sliderWidth > 0)) {
+          if (event.clientX < sliderX.getBoundingClientRect().left) { // case, if user click to the left of slider
+            // standart scroll action
+            mouseGenericX(-1, "Scroller");
+            // looped scroll action, if user hold it virtual key
+            loopedMouseGeneric(-1, "Scroller");
+          } else if (event.clientX > sliderX.getBoundingClientRect().right) { // case, if user click to the right of slider
+            // standart scroll action
+            mouseGenericX(1, "Scroller");
+            // looped scroll action, if user hold it virtual key
+            loopedMouseGeneric(1, "Scroller");
+          }
+        }
+      }
+      
+      // prevent default browser event
+      return false;
     }
     
-    // Stop scrolling function if it run
+    // stop scrolling function if it run
     function stopVirtualScrolling() {
       if (loops.looper != undefined) {
+        // remove runned timer
         clearTimeout(loops.looper);
+        
+        // stop repeating action
         loops.repeat = false;
+        
+        // set smooth effect again
         smoothActionPack("set");
       }
     }
-    eventListener("add", scrollerY, "mousedown", virtualScrolling);
-    eventListener("add", scrollerY, "mouseup", stopVirtualScrolling);
-    if (horizontalScroller === true) {
+    
+    // set event listeners for...
+    if (verticalScroller === true) { // ... vertical scroller, if it exist
+      // listener of "mousedown" event, which scrolling and run loops
+      eventListener("add", scrollerY, "mousedown", virtualScrolling);
+      // listener of "mouseup" event, which stop all loops
+      eventListener("add", scrollerY, "mouseup", stopVirtualScrolling);
+    }
+    
+    if (horizontalScroller === true) { // ... horizontal scroller, if it exist
+      // listener of "mousedown" event, which scrolling and run loops
       eventListener("add", scrollerX, "mousedown", virtualScrolling);
+      // listener of "mouseup" event, which stop all loops
       eventListener("add", scrollerX, "mouseup", stopVirtualScrolling);
     }
   }
   
   /* Check type of device */
-  if(isMobile() === true) {
+  if (isMobile() === true) { // use default scroller, if it mobile device
     self.style.overflowY = "scroll";
-  } else {
+  } else { // use custom scroller, if it desktop
     generateScroller();
   }
 };
