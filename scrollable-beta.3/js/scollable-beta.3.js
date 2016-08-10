@@ -67,52 +67,58 @@ Element.prototype.scrollable = function (settings) {
       sliderSize = setOption(settings.sliderSize, "auto"),
       sliderStarterSize = sliderSize,
       stepMultipler = setOption(settings.stepMultipler, 15),
+      scrollBySelection = setOption(settings.scrollBySelection, true),
+      useWheelScroll = setOption(settings.useWheelScroll, true),
+      useKeyboardScroll = setOption(settings.useKeyboardScroll, true),
+      dynamicContent = setOption(settings.dynamicContent, false),
       autoHide = setOption(settings.autoHide, true),
       smoothlyScroll = setOption(settings.smoothlyScroll, false);
     
-    // Set class for scroller and height for slider, if vertical (Y) scroller available
+    // set class for scroller and height for slider, if vertical (Y) scroller available
     if (verticalScroller === "auto" || verticalScroller === true) {
       var scrollerYClass = settings.scrollerYClass,
         sliderHeight = sliderSize,
         sliderStarterHeight = sliderHeight;
     }
     
-    // Set class for scroller and width for slider, if horizontal (X) scroller available
+    // set class for scroller and width for slider, if horizontal (X) scroller available
     if (horizontalScroller === "auto" || horizontalScroller === true) {
       var scrollerXClass = settings.scrollerXClass,
         sliderWidth = sliderSize,
         sliderStarterWidth = sliderWidth;
     }
     
-    // Set class for arrows fields and inset HTML-code in there of "chevrones" (yes, you can use Font Awesome), if arrows available
+    // set class for arrows fields and inset HTML-code in there of "chevrones" (yes, you can use Font Awesome), if arrows available
     if (arrows === true) {
       var arrowsClass = settings.arrowsClass,
         arrowChevron = settings.arrowChevron;
     }
     
-    // Set minimal size for sliders, if sizes are "auto"
+    // set minimal size for sliders, if sizes are "auto"
     if (sliderSize === "auto") {
       var sliderSizeMin = setOption(settings.sliderSizeMin, 15);
     }
     
-    // Set states of "auto hide" effect, if it available
+    // set states of "auto hide" effect, if it available
     if (autoHide === true) {
       var scrollerOpacityActive = setOption(settings.scrollerOpacityActive, 1),
         scrollerOpacityPassive = setOption(settings.scrollerOpacityPassive, 0.5),
         scrollerOpacityHidden = setOption(settings.scrollerOpacityHidden, 0.2);
     }
     
-    // Set transition options, if effect of smooth scrolling are active 
+    // set transition options, if effect of smooth scrolling are active 
     if (smoothlyScroll === true) {
       var smoothlyScrollOptions = setOption(settings.smoothlyScrollOptions, "0.3s top, 0.3s left");
     }
     
     // -- Function for detection <textarea> -- //
     function detectTextArea(elem) {
-      if (elem.toString().match(/TextArea/ig)) {
-        return true;
+      // convert data about type of HMTL-element to string and use regV for search "TextArea"
+      // P.S. don`t use .toString() function, because IE after convertation return "[object]", instead "[object HTMLTextAreaElement]" (it fucked up at "space")
+      if ((elem + "").match(/TextArea/ig)) {
+        return true; // HTML-element is <textarea>
       } else {
-        return false;
+        return false; // HTML-element is not <textarea>
       }
     }
     
@@ -121,41 +127,69 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Function for detection textarea height by content -- //
     function textAreaHeight(textAreaSelect) {
-      var textAreaStyle = textAreaSelect.style.height;
-      textAreaSelect.style.height = "auto";
+      // set for textarea number of rows at "1", for measurements
       textAreaSelect.setAttribute("rows", "1");
+      
+      console.log(getStyle(textAreaSelect).padding);
+      
+      // detect height of single row
       var rowHeight = textAreaSelect.clientHeight;
+      
+      // reset counts of rows
       textAreaSelect.removeAttribute("rows");
+      
+      // it really necessary for old browsers, trust me
       var oldBrowsersSucksBalls = textAreaSelect.scrollHeight;
+      
+      // detect number of rows
       var rows = textAreaSelect.scrollHeight / rowHeight;
-      textAreaSelect.style.height = textAreaStyle;
+      
+      // return calculated textarea height 
       return rows * rowHeight;
     }
     
     // -- Logic, if container is <textarea>...</textarea> -- //
     if (isTextArea === true) {
+      // create container for textarea and detect some attributes
       var textAreaContainer = document.createElement("div"),
         textAreaID = self.getAttribute("id"),
         textAreaClass = self.getAttribute("class"),
         textAreaStyle = self.getAttribute("style");
       
+      // if textarea has "ID" attribute...
       if (textAreaID != undefined) {
+        // ...set it to container...
         textAreaContainer.setAttribute("id", textAreaID);
+        // ...and remove from textarea
         self.removeAttribute("id");
       }
+      
+      // if textarea has "Class" attribute...
       if (textAreaClass != undefined) {
+        // ...set it to container...
         textAreaContainer.setAttribute("class", textAreaClass);
+        // ...and remove from textarea
         self.removeAttribute("class");
       }
+      
+      // if text area has "Style" attribute...
       if (textAreaStyle != undefined) {
+        // ...set it to container...
         textAreaContainer.setAttribute("style", textAreaStyle);
+        // ...and remove from textarea
         self.removeAttribute("style");
       }
       
+      // insert created container to DOM
       document.body.insertBefore(textAreaContainer, self);
+      
+      // replace textarea in to container
       textAreaContainer.appendChild(self);
+      
+      // set id for textarea for interaction with it
       self.setAttribute("id", "text-area");
       
+      // configurate replaced textarea
       self.style.border = "none";
       self.style.width = "100%";
       self.style.margin = "0";
@@ -165,6 +199,7 @@ Element.prototype.scrollable = function (settings) {
       self.style.overflow = "hidden";
       self.style.height = textAreaHeight(self) + "px";
       
+      // change pointers
       var textAreaBlock = self;
       self = textAreaContainer;
     }
@@ -210,10 +245,11 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Function for detection existense of vertical scroller -- //
     function verticalScrollerExist() {
-      if (verticalScroller === "auto") {
-        if ((self.clientHeight - parseFloat(getStyle(self).paddingTop) - parseFloat(getStyle(self).paddingBottom)) < wrapper.offsetHeight) {
+      if (verticalScroller === "auto") { // start detection only, if vertical option set to "auto" 
+        if ((self.clientHeight - parseFloat(getStyle(self).paddingTop) - parseFloat(getStyle(self).paddingBottom)) < wrapper.offsetHeight) { // if content to big...
+          // ... activate vertical scroller
           verticalScroller = true;
-        } else {
+        } else { // if wrapper can show all content by Y-axis, don`t use vertical scroller
           verticalScroller = false;
         }
       }
@@ -282,25 +318,15 @@ Element.prototype.scrollable = function (settings) {
     var wrapperHeight = wrapper.offsetHeight,
       wrapperWidth = wrapper.offsetWidth;
     
+    // -- if we work with textarea, pick replaced textarea -- //
     if (isTextArea == true) {
       textAreaBlock = document.getElementById("text-area");
     };
     
+    // -- Function for updating heights for textarea and wrapper -- //
     function updateHeights(textAreaSelect) {
       textAreaBlock.style.height = textAreaHeight(textAreaSelect) + "px";
       wrapper.style.height = textAreaHeight(textAreaSelect) + "px";
-    }
-    
-    // -- Function for optional shrink content width -- //
-    function fixContent() {
-      var wrappedContent = wrapper.children,
-        wrappedContentLength = wrappedContent.length,
-        wrapperCounter;
-      for (wrapperCounter = 1; wrapperCounter < wrappedContentLength; wrapperCounter++) {
-        if (wrappedContent[wrapperCounter].offsetWidth > wrapper.offsetWidth) {
-          wrappedContent[wrapperCounter].style.width = wrapper.offsetWidth + "px";
-        }
-      }
     }
     
     // -- Get borders of container for future calculations -- //
@@ -330,10 +356,6 @@ Element.prototype.scrollable = function (settings) {
           
           if (scrollerShift === true) { // grow right padding at container, if it option active
             self.style.paddingRight = parseFloat(getStyle(self).paddingRight) + scroller.offsetWidth + "px";
-            
-            if (isTextArea === true) {
-              updateHeights(textAreaBlock);
-            }
           }
         }
         
@@ -354,10 +376,6 @@ Element.prototype.scrollable = function (settings) {
           
           if (scrollerShift === true) { // grow bottom padding at container, if it option active
             self.style.paddingBottom = parseFloat(getStyle(self).paddingBottom) + scroller.offsetHeight + "px";
-            
-            if (isTextArea === true) { // 
-              updateHeights(textAreaBlock);
-            }
           }
         }
         
@@ -856,10 +874,6 @@ Element.prototype.scrollable = function (settings) {
       var timerContent = setTimeout(function () {
         // case for vertical scroller
         if ((verticalScroller === "auto") || (verticalScroller === true)) {
-          //setWrapperHeight(wrapper);
-          
-          //verticalScroller = true;
-          
           // if current wrapper height does not equal old value, update it  
           if (wrapper.offsetHeight !== wrapperHeight) {
             wrapperHeight = wrapper.offsetHeight;
@@ -902,11 +916,14 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Call function, which autoconfigurat wrapper and sliders, if content is dynamic -- //
-    if ((settings.dynamicContent === true) && (isTextArea !== true)) {
+    if ((dynamicContent === true) && (isTextArea !== true)) {
       checkContentSize();
     }
     
+    // -- Part of code, where sets listeners on updating content of textarea -- //
     if (isTextArea === true) {
+      
+      // function, which update sizes of some elements, and recalc ratio factor 
       function updateTextAreaContent() {
         updateHeights(textAreaBlock);
         setSliderSize("Y");
@@ -914,6 +931,7 @@ Element.prototype.scrollable = function (settings) {
         calcRatioFactor();
       }
       
+      // function for detect type of pressed key, which return...
       function isControllKey(event) {
         if ((event.altKey == true) ||
             (event.keyCode == 33) ||
@@ -924,64 +942,84 @@ Element.prototype.scrollable = function (settings) {
             (event.keyCode == 39) ||
             (event.keyCode == 38) ||
             (event.keyCode == 40)) {
-          return true;
+          return true; // ...true, if it controll kay... 
         } else {
-          return false;
+          return false; // ...or false, if it is not controll kay
         }
       }
       
+      // function, which prevent native scrolling
       function preventNativeScroll() {
         self.scrollTop = 0;
       }
       
+      // it variable shows have a controll kay pressed
       var activeNavigation = false;
       
+      // object with data about timers, which start and end update content in textarea
       var textAreaTimers = {
         start: undefined,
         run: false,
         end: undefined
       };
       
+      // user can't use keyboard for scrolling, without holding "Alt" key, if content is now editing  
       textAreaBlock.onfocus = function () {
         activeNavigation = false;
       }
       
+      // listener at "keydown" event, which start updating content
       eventListener("add", textAreaBlock, "keydown", function (event) {
         event = event || window.event;
         
+        // prevent native scroll, when cursor goes from edge of visibility
         self.onscroll = preventNativeScroll;
         
+        // activate keyboard scrolling, if "Alt" key is pressed
         if (event.altKey === true) {
           activeNavigation = true;
         }
         
+        // if timer does't exist yet, and pressed key is not controll key...
         if ((textAreaTimers.start === undefined) && (isControllKey(event) === false)) {
+          
+          // if timer already run...
           if (textAreaTimers.run === true) {
-            clearTimeout(textAreaTimers.end);
-            textAreaTimers.end = undefined;
-            textAreaTimers.run = false;
+            clearTimeout(textAreaTimers.end); // ...stop it, ...
+            textAreaTimers.end = undefined; // ...stop ending timer to, ...
+            textAreaTimers.run = false; // ...and change info about runned timer
           }
+          
+          // ... start updating content
           textAreaTimers.start = setInterval(function () {
             updateTextAreaContent();
           }, 20);
         }
       });
       
+      // listener at "keyup" event, which ending update content
       eventListener("add", textAreaBlock, "keyup", function (event) {
         event = event || window.event;
         
+        // if user stop holding "Alt" key, deactivate keyboard scrolling
         if (event.keyCode === 18) {
           activeNavigation = false;
         }
         
+        // if timer of ending update does't exist yet - start it
         if (textAreaTimers.end === undefined) {
           textAreaTimers.end = setTimeout(function () {
+            // remove timer of start updating...
             clearInterval(textAreaTimers.start);
+            
+            // ...and change info about timers to default...
             textAreaTimers.start = undefined;
             textAreaTimers.end = undefined;
             textAreaTimers.run = false;
-          }, 1000);
+          }, 1000); // ...when time is come
         }
+        
+        // change info abaut runned timer
         textAreaTimers.run = true;
       });
     }
@@ -1340,7 +1378,7 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Event of scrolling by mouse wheel -- //
-    if (settings.useWheelScroll === true) {
+    if (useWheelScroll === true) {
       // polyfill for event "onwheel"
       function onwheelFixer(elem, func) {
         if (elem.addEventListener) {
@@ -1456,7 +1494,7 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Event of scrolling by keyboard (wrap event "onkey..." in "onfocus" to avoid conflict with native scroller) -- //
-    if (settings.useKeyboardScroll === true) {
+    if (useKeyboardScroll === true) {
       self.onfocus = function (event) {
         activeNavigation = true;
         
@@ -1597,7 +1635,7 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Event of scrolling by text selection -- //
-    if (settings.scrollBySelection === true) {
+    if (scrollBySelection === true) {
       self.onmousedown = function (event) {
         event = event || window.event;
         
