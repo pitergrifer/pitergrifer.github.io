@@ -125,36 +125,76 @@ Element.prototype.scrollable = function (settings) {
     // -- Detect <textarea> -- //
     var isTextArea = detectTextArea(self);
     
-    // -- Function for detection textarea height by content -- //
-    function textAreaHeight(textAreaSelect) {
-      // set for textarea number of rows at "1", for measurements
-      textAreaSelect.setAttribute("rows", "1");
-      
-      console.log(getStyle(textAreaSelect).padding);
-      
-      // detect height of single row
-      var rowHeight = textAreaSelect.clientHeight;
-      
-      // reset counts of rows
-      textAreaSelect.removeAttribute("rows");
-      
-      // it really necessary for old browsers, trust me
-      var oldBrowsersSucksBalls = textAreaSelect.scrollHeight;
-      
-      // detect number of rows
-      var rows = textAreaSelect.scrollHeight / rowHeight;
-      
-      // return calculated textarea height 
-      return rows * rowHeight;
+    // -- Function for detect textarea sizes by content -- //
+    function getTextAreaSize(elem, size) {
+      if (size === "height") { // case to get height
+        // get current element height 
+        var currentHeight = elem.offsetHeight;
+        
+        // reset current element height
+        elem.style.height = "auto";
+        
+        // set for textarea number of rows at "1", for measurements
+        elem.setAttribute("rows", "1");
+        
+        // detect height of single row
+        var rowHeight = elem.clientHeight;
+        
+        // reset counts of rows
+        elem.removeAttribute("rows");
+        
+        // it really necessary for old browsers, trust me
+        var oldBrowsersSucksBalls = elem.scrollHeight;
+        
+        // detect number of rows
+        var rows = elem.scrollHeight / rowHeight;
+        
+        // return current element height
+        elem.style.height = currentHeight + "px";
+        
+        // return calculated textarea height 
+        return rows * rowHeight;
+      } else if (size === "width") { // case to get width
+        // get current element width
+        var currentWidth = elem.offsetWidth;
+        
+        // reset element current width
+        elem.style.width = "auto";
+        
+        // set for textarea number of cols at "1", for measurements
+        elem.setAttribute("cols", "1");
+        
+        // detect width of single col
+        var colWidth = elem.clientWidth;
+        
+        // reset counts of cols
+        elem.removeAttribute("cols");
+        
+        // it really necessary for old browsers, trust me
+        var oldBrowsersSucksBalls = elem.scrollWidth;
+        
+        // detect number of cols
+        var cols = elem.scrollWidth / colWidth;
+        
+        // return current element width
+        elem.style.width = currentWidth + "px";
+        
+        // return calculated textarea width
+        return cols * colWidth;
+      }
     }
     
     // -- Logic, if container is <textarea>...</textarea> -- //
     if (isTextArea === true) {
-      // create container for textarea and detect some attributes
+      // create container for textarea, detect some attributes and get primal sizes
       var textAreaContainer = document.createElement("div"),
         textAreaID = self.getAttribute("id"),
         textAreaClass = self.getAttribute("class"),
-        textAreaStyle = self.getAttribute("style");
+        textAreaStyle = self.getAttribute("style"),
+        textArea = {
+          width: self.offsetWidth,
+          height: self.offsetHeight
+        };
       
       // if textarea has "ID" attribute...
       if (textAreaID != undefined) {
@@ -183,6 +223,10 @@ Element.prototype.scrollable = function (settings) {
       // insert created container to DOM
       document.body.insertBefore(textAreaContainer, self);
       
+      // set sizes, equal to textarea's
+      textAreaContainer.style.width = textArea.width + "px";
+      textAreaContainer.style.height = textArea.height + "px";
+      
       // replace textarea in to container
       textAreaContainer.appendChild(self);
       
@@ -194,10 +238,42 @@ Element.prototype.scrollable = function (settings) {
       self.style.width = "100%";
       self.style.margin = "0";
       self.style.padding = "0";
+      self.style.direction = getStyle(textAreaContainer).direction;
       self.style.font = "inherit";
+      self.style.fontFamily = getStyle(textAreaContainer).fontFamily;
+      self.style.fontKerning = getStyle(textAreaContainer).fontKerning;
+      self.style.fontSize = getStyle(textAreaContainer).fontSize;
+      self.style.fontStretch = getStyle(textAreaContainer).fontStretch;
+      self.style.fontStyle = getStyle(textAreaContainer).fontStyle;
+      self.style.fontVariant = getStyle(textAreaContainer).fontVariant;
+      self.style.fontWeight = getStyle(textAreaContainer).fontWeight;
+      self.style.hyphens = getStyle(textAreaContainer).hyphens;
+      self.style.letterSpacing = getStyle(textAreaContainer).letterSpacing;
+      self.style.lineHeight = getStyle(textAreaContainer).lineHeight;
+      self.style.tabSize = getStyle(textAreaContainer).tabSize;
+      self.style.textAlign = getStyle(textAreaContainer).textAlign;
+      self.style.textAlignLast = getStyle(textAreaContainer).textAlignLast;
+      self.style.textDecoration = getStyle(textAreaContainer).textDecoration;
+      self.style.textDecorationColor = getStyle(textAreaContainer).textDecorationColor;
+      self.style.textDecorationLine = getStyle(textAreaContainer).textDecorationLine;
+      self.style.textDecorationStyle = getStyle(textAreaContainer).textDecorationStyle;
+      self.style.textIndent = getStyle(textAreaContainer).textIndent;
+      self.style.textOverflow = getStyle(textAreaContainer).textOverflow;
+      self.style.textShadow = getStyle(textAreaContainer).textShadow;
+      self.style.textTransform = getStyle(textAreaContainer).textTransform;
+      self.style.unicodeBidi = getStyle(textAreaContainer).unicodeBidi;
+      self.style.wordSpacing = getStyle(textAreaContainer).wordSpacing;
+      self.style.wordBreak = getStyle(textAreaContainer).wordBreak;
+      self.style.wordWrap = getStyle(textAreaContainer).wordWrap;
+      self.style.whiteSpace = getStyle(textAreaContainer).whiteSpace;
       self.style.resize = "none";
       self.style.overflow = "hidden";
-      self.style.height = textAreaHeight(self) + "px";
+      self.style.height = getTextAreaSize(self, "height") + "px";
+      
+      // calculate new width, if automatic line break is disabled 
+      if (self.offsetWidth < self.scrollWidth) {
+        self.style.width = getTextAreaSize(self, "width") + "px";
+      }
       
       // change pointers
       var textAreaBlock = self;
@@ -323,10 +399,15 @@ Element.prototype.scrollable = function (settings) {
       textAreaBlock = document.getElementById("text-area");
     };
     
-    // -- Function for updating heights for textarea and wrapper -- //
-    function updateHeights(textAreaSelect) {
-      textAreaBlock.style.height = textAreaHeight(textAreaSelect) + "px";
-      wrapper.style.height = textAreaHeight(textAreaSelect) + "px";
+    // -- Function for updating sizes for textarea and wrapper -- //
+    function updateTextAreaSize(textAreaSelect, size) {
+      if (size === "height") { // case, where updating heights for textarea and wrapper 
+        textAreaBlock.style.height = getTextAreaSize(textAreaSelect, "height") + "px";
+        wrapper.style.height = getTextAreaSize(textAreaSelect, "height") + "px";
+      } else if (size === "width") { // case, where updating widths for textarea and wrapper
+        textAreaBlock.style.width = getTextAreaSize(textAreaSelect, "width") + "px";
+        wrapper.style.width = getTextAreaSize(textAreaSelect, "width") + "px";
+      }
     }
     
     // -- Get borders of container for future calculations -- //
@@ -923,11 +1004,29 @@ Element.prototype.scrollable = function (settings) {
     // -- Part of code, where sets listeners on updating content of textarea -- //
     if (isTextArea === true) {
       
-      // function, which update sizes of some elements, and recalc ratio factor 
-      function updateTextAreaContent() {
-        updateHeights(textAreaBlock);
-        setSliderSize("Y");
-        updateSliderPosition("Y");
+      // function, which... 
+      function updateTextAreaContent(axis) {
+        if (axis === "Y") { // ...in case for Y-axis...
+          // ...update heights of textarea, wrapper ...
+          updateTextAreaSize(textAreaBlock, "height");
+          
+          // ...and slider,
+          setSliderSize("Y");
+          
+          // ...also, update slider poisition...
+          updateSliderPosition("Y");
+        } else if (axis === "X") { // in case for X-axis...
+          // ...update widths of textarea, wrapper ...
+          updateTextAreaSize(textAreaBlock, "width");
+          
+          // ...and slider,
+          setSliderSize("X");
+          
+          // ...also, update slider poisition...
+          updateSliderPosition("X"); 
+        }
+        
+        // ...and recalc ratio factor
         calcRatioFactor();
       }
       
@@ -951,6 +1050,7 @@ Element.prototype.scrollable = function (settings) {
       // function, which prevent native scrolling
       function preventNativeScroll() {
         self.scrollTop = 0;
+        self.scrollLeft = 0;
       }
       
       // it variable shows have a controll kay pressed
@@ -990,9 +1090,10 @@ Element.prototype.scrollable = function (settings) {
             textAreaTimers.run = false; // ...and change info about runned timer
           }
           
-          // ... start updating content
+          // ...start updating content
           textAreaTimers.start = setInterval(function () {
-            updateTextAreaContent();
+            updateTextAreaContent("Y");
+            updateTextAreaContent("X");
           }, 20);
         }
       });
