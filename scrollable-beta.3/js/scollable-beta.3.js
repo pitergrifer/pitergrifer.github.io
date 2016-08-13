@@ -230,15 +230,15 @@ Element.prototype.scrollable = function (settings) {
       // replace textarea in to container
       textAreaContainer.appendChild(self);
       
-      // set id for textarea for interaction with it
+      // set attributes for textarea for interaction with it
       self.setAttribute("id", "text-area");
+      self.setAttribute("data-type", "TextArea");
       
       // configurate replaced textarea
       self.style.border = "none";
       self.style.width = "100%";
       self.style.margin = "0";
       self.style.padding = "0";
-      self.style.direction = getStyle(textAreaContainer).direction;
       self.style.font = "inherit";
       self.style.fontFamily = getStyle(textAreaContainer).fontFamily;
       self.style.fontKerning = getStyle(textAreaContainer).fontKerning;
@@ -1595,10 +1595,14 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Event of scrolling by keyboard (wrap event "onkey..." in "onfocus" to avoid conflict with native scroller) -- //
-    if (useKeyboardScroll === true) {
-      self.onfocus = function (event) {
-        activeNavigation = true;
+    self.onfocus = function (event) {
+      if (useKeyboardScroll === true) {
+        // activate navigation, by keyboard at textarea
+        if (isTextArea === true) {
+          activeNavigation = true;
+        }
         
+        // set events listener on "keydown" event
         self.onkeydown = function (event) {
           event = event || window.event;
           
@@ -1727,13 +1731,13 @@ Element.prototype.scrollable = function (settings) {
               clearTimeout(removeSmoothTimer);
               removeSmoothTimer = "empty";
               
-              // ...and set smooth effect effect
+              // ...and set smooth effect again
               smoothActionPack("set");
             };
           }
         };
-      };
-    }
+      }
+    };
     
     // -- Event of scrolling by text selection -- //
     if (scrollBySelection === true) {
@@ -1743,8 +1747,63 @@ Element.prototype.scrollable = function (settings) {
         // get cross-browser "target" element
         var target = event.target || event.srcElement;
         
-        // set focus to container
-        self.focus();
+        // set focus
+        if (isTextArea === true) { // if we work with textarea...
+          
+          function setSelectionRange(input, selectionStart, selectionEnd) {
+            if (input.setSelectionRange) {
+              input.focus();
+              input.setSelectionRange(selectionStart, selectionEnd);
+            }
+            else if (input.createTextRange) {
+              var range = input.createTextRange();
+              range.collapse(true);
+              range.moveEnd('character', selectionEnd);
+              range.moveStart('character', selectionStart);
+              range.select();
+            }
+          }
+          
+          function setCaretToPos(input, pos) {
+            setSelectionRange(input, pos, pos);
+          }
+          
+          // ...get container coords
+          var selfCoords = self.getBoundingClientRect();
+          
+          // ...get coords of empty zone in container
+          var emptyContainerZone = {
+            top: textAreaBlock.getBoundingClientRect().bottom,
+            left: selfCoords.left + self.clientLeft
+          };
+          
+          // ...calculate right edge of this zone...
+          if (verticalScroller === true) { // ...if vertical scroller exist
+            emptyContainerZone.right = scrollerY.getBoundingClientRect().left;
+          } else { // ...if vertical scroller does`t exist
+            emptyContainerZone.right = selfCoords.right - parseFloat(getStyle(self).borderRightWidth);
+          }
+          
+          // ...calculate bottom edge of this zone...
+          if (horizontalScroller === true) { // ...if horizontal scroller exist
+            emptyContainerZone.bottom = scrollerX.getBoundingClientRect().top;
+          } else {  // ...if horizontal scroller does`t exist
+            emptyContainerZone.bottom = selfCoords.bottom - parseFloat(getStyle(self).borderBottomWidth);
+          }
+          
+          // ...set focus to...
+          if ((event.clientY >= emptyContainerZone.top) && (event.clientY <= emptyContainerZone.bottom) && ((event.clientX >= emptyContainerZone.left) && (event.clientY <= emptyContainerZone.right))) {
+            // ...textarea, if user click on empty zone of container
+            textAreaBlock.focus();
+            setCaretToPos(textAreaBlock, 1);
+          } else if (target.getAttribute("data-type") !== "TextArea") {
+            // ...container, if it not textarea
+            self.focus();
+          }
+        } else { // if we work with not textarea-block...
+          // ...set focus to container
+          self.focus();
+        }
         
         // prevent event, if... 
         // ... vertical scroller exist, and...
