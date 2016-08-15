@@ -140,14 +140,14 @@ Element.prototype.scrollable = function (settings) {
         // detect height of single row
         var rowHeight = elem.clientHeight;
         
-        // reset counts of rows
-        elem.removeAttribute("rows");
-        
         // it really necessary for old browsers, trust me
         var oldBrowsersSucksBalls = elem.scrollHeight;
         
         // detect number of rows
         var rows = elem.scrollHeight / rowHeight;
+        
+        // reset counts of rows
+        elem.removeAttribute("rows");
         
         // return current element height
         elem.style.height = currentHeight + "px";
@@ -167,14 +167,14 @@ Element.prototype.scrollable = function (settings) {
         // detect width of single col
         var colWidth = elem.clientWidth;
         
-        // reset counts of cols
-        elem.removeAttribute("cols");
-        
         // it really necessary for old browsers, trust me
         var oldBrowsersSucksBalls = elem.scrollWidth;
         
         // detect number of cols
         var cols = elem.scrollWidth / colWidth;
+        
+        // reset counts of cols
+        elem.removeAttribute("cols");
         
         // return current element width
         elem.style.width = currentWidth + "px";
@@ -1739,6 +1739,54 @@ Element.prototype.scrollable = function (settings) {
       }
     };
     
+    // -- Function, which set focus at textarea at some cases -- //
+    function setFocusOnTextArea(event) {
+      event = event || window.event;
+      
+      // get cross-browser "target" element
+      var target = event.target || event.srcElement;
+      
+      // set focus
+      if (isTextArea === true) { // if we work with textarea...
+        // ...get container coords
+        var selfCoords = self.getBoundingClientRect();
+        
+        // ...get coords of empty zone in container
+        var emptyContainerZone = {
+          top: textAreaBlock.getBoundingClientRect().bottom,
+          left: selfCoords.left + self.clientLeft
+        };
+        
+        // ...calculate right edge of this zone...
+        if (verticalScroller === true) { // ...if vertical scroller exist
+          emptyContainerZone.right = scrollerY.getBoundingClientRect().left;
+        } else { // ...if vertical scroller does`t exist
+          emptyContainerZone.right = selfCoords.right - parseFloat(getStyle(self).borderRightWidth);
+        }
+        
+        // ...calculate bottom edge of this zone...
+        if (horizontalScroller === true) { // ...if horizontal scroller exist
+          emptyContainerZone.bottom = scrollerX.getBoundingClientRect().top;
+        } else {  // ...if horizontal scroller does`t exist
+          emptyContainerZone.bottom = selfCoords.bottom - parseFloat(getStyle(self).borderBottomWidth);
+        }
+        
+        // ...set focus to...
+        if (((event.clientY >= emptyContainerZone.top) && (event.clientY <= emptyContainerZone.bottom)) && ((event.clientX >= emptyContainerZone.left) && (event.clientX <= emptyContainerZone.right))) {
+          // ...textarea, if user click on empty zone of container...
+          textAreaBlock.focus();
+          
+          // ...and prevent native scroll for fix issues at some browsers
+          preventNativeScroll();
+        }
+      }
+    }
+    
+    // -- Use previous function on "click" event at container -- //
+    if (isTextArea === true) {
+      eventListener("add", self, "click", setFocusOnTextArea);
+    }
+    
     // -- Event of scrolling by text selection -- //
     if (scrollBySelection === true) {
       self.onmousedown = function (event) {
@@ -1747,61 +1795,7 @@ Element.prototype.scrollable = function (settings) {
         // get cross-browser "target" element
         var target = event.target || event.srcElement;
         
-        // set focus
-        if (isTextArea === true) { // if we work with textarea...
-          
-          function setSelectionRange(input, selectionStart, selectionEnd) {
-            if (input.setSelectionRange) {
-              input.focus();
-              input.setSelectionRange(selectionStart, selectionEnd);
-            }
-            else if (input.createTextRange) {
-              var range = input.createTextRange();
-              range.collapse(true);
-              range.moveEnd('character', selectionEnd);
-              range.moveStart('character', selectionStart);
-              range.select();
-            }
-          }
-          
-          function setCaretToPos(input, pos) {
-            setSelectionRange(input, pos, pos);
-          }
-          
-          // ...get container coords
-          var selfCoords = self.getBoundingClientRect();
-          
-          // ...get coords of empty zone in container
-          var emptyContainerZone = {
-            top: textAreaBlock.getBoundingClientRect().bottom,
-            left: selfCoords.left + self.clientLeft
-          };
-          
-          // ...calculate right edge of this zone...
-          if (verticalScroller === true) { // ...if vertical scroller exist
-            emptyContainerZone.right = scrollerY.getBoundingClientRect().left;
-          } else { // ...if vertical scroller does`t exist
-            emptyContainerZone.right = selfCoords.right - parseFloat(getStyle(self).borderRightWidth);
-          }
-          
-          // ...calculate bottom edge of this zone...
-          if (horizontalScroller === true) { // ...if horizontal scroller exist
-            emptyContainerZone.bottom = scrollerX.getBoundingClientRect().top;
-          } else {  // ...if horizontal scroller does`t exist
-            emptyContainerZone.bottom = selfCoords.bottom - parseFloat(getStyle(self).borderBottomWidth);
-          }
-          
-          // ...set focus to...
-          if ((event.clientY >= emptyContainerZone.top) && (event.clientY <= emptyContainerZone.bottom) && ((event.clientX >= emptyContainerZone.left) && (event.clientY <= emptyContainerZone.right))) {
-            // ...textarea, if user click on empty zone of container
-            textAreaBlock.focus();
-            setCaretToPos(textAreaBlock, 1);
-          } else if (target.getAttribute("data-type") !== "TextArea") {
-            // ...container, if it not textarea
-            self.focus();
-          }
-        } else { // if we work with not textarea-block...
-          // ...set focus to container
+        if (target.getAttribute("data-type") !== "TextArea") {
           self.focus();
         }
         
