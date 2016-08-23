@@ -23,7 +23,7 @@ container.scrollable({
   useWheelScroll: true, // возможность прокрутки колесиком мыши (флаги "true", "false")
   useKeyboardScroll: true, // возможность прокрутки клавишами "Стрелки", "PageUp" и "PageDown" (флаги "true", "false")
   dynamicContent: true,
-  autoHide: true, // наличие эффекта исчезающей полосы прокрутки (флаги "true", "false")
+  autoHide: false, // наличие эффекта исчезающей полосы прокрутки (флаги "true", "false")
   scrollerOpacityActive: 1, // прозрачность в активном состоянии
   scrollerOpacityPassive: 0.5, // прозрачность в пассивном состоянии
   scrollerOpacityHidden: 0.2, // прозрачность в "спрятанном" состоянии
@@ -38,7 +38,7 @@ container.style.left = (document.documentElement.clientWidth - textarea.offsetWi
 textarea.style.left = (document.documentElement.clientWidth - container.offsetWidth) / 2 - textarea.offsetWidth / 2 + "px";
 
 textarea.scrollable({
-  verticalScroller: "auto",
+  verticalScroller: true,
   scrollerYClass: "scroller-y-field", // css-класс скроллера
   horizontalScroller: true, // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
   scrollerXClass: "scroller-x-field",

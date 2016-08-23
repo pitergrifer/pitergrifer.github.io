@@ -17,9 +17,11 @@
   min-height: "0px";
   margin: none;
   font: inherit;
+  /*
   white-space: pre;
   word-break: normal;
   word-wrap: normal;
+  */
 }
 
 #test {

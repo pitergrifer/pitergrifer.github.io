@@ -1001,6 +1001,17 @@ Element.prototype.scrollable = function (settings) {
           sliderPick.wrapperY = textAreaBlock.scrollTop * -1;
         }
         
+        // prevent wrong position, when slider leave scrollers borders
+        if ((updatedSliderYTop + sliderHeight) > sliderFieldY) {
+          updatedSliderYTop -= updatedSliderYTop + sliderHeight - sliderFieldY;
+          
+          // also, fix wrapper position and update info about it
+          if (isTextArea === false) {
+            sliderPick.wrapperY = (wrapper.offsetHeight - self.offsetHeight + selfPadding.top + selfBorder.top + selfPadding.bottom + selfBorder.bottom) * -1;
+            wrapper.style.top = sliderPick.wrapperY + "px";
+          }
+        }
+        
         // correct pisition, if arrow exist
         if (arrows === true) {
           updatedSliderYTop += arrowUp.offsetHeight;
@@ -1019,6 +1030,17 @@ Element.prototype.scrollable = function (settings) {
           
           // also, update info about scrolled zone
           sliderPick.wrapperX = textAreaBlock.scrollLeft * -1;
+        }
+        
+        // prevent wrong position, when slider leave scrollers borders
+        if ((updatedSliderXLeft + sliderWidth) > sliderFieldX) {
+          updatedSliderXLeft -= updatedSliderXLeft + sliderWidth - sliderFieldX;
+          
+          // also, fix wrapper position
+          if (isTextArea === false) {
+            sliderPick.wrapperX = (wrapper.offsetWidth - self.offsetWidth + selfPadding.left + selfBorder.left + selfPadding.right + selfBorder.right) * -1;
+            wrapper.style.left = sliderPick.wrapperX + "px";
+          }
         }
         
         // correct pisition, if arrow exist
@@ -1041,12 +1063,14 @@ Element.prototype.scrollable = function (settings) {
           if (wrapper.offsetHeight !== wrapperHeight) {
             wrapperHeight = wrapper.offsetHeight;
             
-            // besides, set new slider size and pisition...
+            // set new slider size
             setSliderSize("Y");
-            updateSliderPosition("Y");
             
-            // ...and calculate ratio factor again 
+            // calculate ratio factor again 
             calcRatioFactor();
+            
+            // set new slider pisition
+            updateSliderPosition("Y");
           }
         }
         
@@ -1062,25 +1086,39 @@ Element.prototype.scrollable = function (settings) {
           if (wrapper.offsetWidth !== wrapperWidth) {
             wrapperWidth = wrapper.offsetWidth;
             
-            // besides, set new slider size and pisition...
+            // set new slider size
             setSliderSize("X");
-            updateSliderPosition("X");
             
-            // ...and calculate ratio factor again
+            // calculate ratio factor again 
             calcRatioFactor();
+            
+            // set new slider pisition
+            updateSliderPosition("X");
           }
         }
         
         // if container is not a textarea, call function again 
-        if (isTextArea !== true) {
+        if (isTextArea === false) {
           checkContentSize();
         }
       }, 4);
     }
     
     // -- Call function, which autoconfigurat wrapper and sliders, if content is dynamic -- //
-    if ((dynamicContent === true) && (isTextArea !== true)) {
+    if ((dynamicContent === true) && (isTextArea === false)) {
       checkContentSize();
+      
+      //test
+      /*
+      setInterval(function () {
+        document.getElementsByTagName("span")[0].innerHTML += " text";
+        document.getElementById("test").style.width = parseFloat(getStyle(document.getElementById("test")).width) + 10 + "px";
+      }, 1000);
+      
+      setTimeout(function () {
+        document.getElementById("test").style.width = 900 + "px";
+      }, 3000);
+      */
     }
     
     // -- Part of code, where sets listeners on updating content of textarea -- //
@@ -1088,19 +1126,24 @@ Element.prototype.scrollable = function (settings) {
       // function, which... 
       function updateTextAreaContent(axis) {
         if (axis === "Y") { // ...in case for Y-axis...
-          // ...update vertical slider size, and...
+          // ...update vertical slider size...
           setSliderSize("Y");
-          // ...slider poisition...
+          
+          // ...recalc ratio factor, and...
+          calcRatioFactor();
+          
+          // ...update slider poisition
           updateSliderPosition("Y");
         } else if (axis === "X") { // in case for X-axis...
           // ... update horizontal slider size, ...
           setSliderSize("X");
-          // ...and slider poisition...
+          
+          // ...recalc ratio factor, and...
+          calcRatioFactor();
+          
+          // ...update slider poisition
           updateSliderPosition("X"); 
         }
-        
-        // ...and recalc ratio factor
-        calcRatioFactor();
       }
       
       // object with data about timers, which start and end update content in textarea
