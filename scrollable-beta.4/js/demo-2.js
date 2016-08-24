@@ -4,7 +4,7 @@ container.style.top = document.documentElement.clientHeight / 2 - container.offs
 container.scrollable({
   verticalScroller: true,
   scrollerYClass: "scroller-y-field", // css-класс скроллера
-  horizontalScroller: true, // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
+  horizontalScroller: "auto", // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
   scrollerXClass: "scroller-x-field",
   scrollerShift: true, // наличие смещения контента для скроллера (флаги "true", "false")
   arrows: true, // наличие стрелок (флаги значения: "true", "false") 
@@ -19,7 +19,7 @@ container.scrollable({
   sliderSize: "auto", // высота ползунка ("auto" - расчитывается в зависимости от контента; число (без указания пикселей или процентов) - высота в пикселях)
   sliderSizeMin: 30, // минимальная высота ползунка в пикселях (указывать еденицу измерения ненужно)
   stepMultipler: 15, // скорость прокрутки
-  scrollBySelection: true, // возможность прокрутки при выделении текста (флаги "true", "false")
+  scrollBySelection: false, // возможность прокрутки при выделении текста (флаги "true", "false")
   useWheelScroll: true, // возможность прокрутки колесиком мыши (флаги "true", "false")
   useKeyboardScroll: true, // возможность прокрутки клавишами "Стрелки", "PageUp" и "PageDown" (флаги "true", "false")
   dynamicContent: true,
@@ -38,9 +38,9 @@ container.style.left = (document.documentElement.clientWidth - textarea.offsetWi
 textarea.style.left = (document.documentElement.clientWidth - container.offsetWidth) / 2 - textarea.offsetWidth / 2 + "px";
 
 textarea.scrollable({
-  verticalScroller: true,
+  verticalScroller: "auto",
   scrollerYClass: "scroller-y-field", // css-класс скроллера
-  horizontalScroller: true, // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
+  horizontalScroller: "auto", // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
   scrollerXClass: "scroller-x-field",
   scrollerShift: true, // наличие смещения контента для скроллера (флаги "true", "false")
   arrows: true, // наличие стрелок (флаги значения: "true", "false") 

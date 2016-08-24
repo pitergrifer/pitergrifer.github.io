@@ -60,12 +60,13 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Block with main variables -- //
     var verticalScroller = setOption(settings.verticalScroller, true),
+      verticalScrollerPrimary = verticalScroller,
       horizontalScroller = setOption(settings.horizontalScroller, true),
+      horizontalScrollerPrimary = horizontalScroller,
       scrollerShift = setOption(settings.scrollerShift, true),
       arrows = setOption(settings.arrows, true),
       sliderClass = settings.sliderClass,
       sliderSize = setOption(settings.sliderSize, "auto"),
-      sliderStarterSize = sliderSize,
       stepMultipler = setOption(settings.stepMultipler, 15),
       scrollBySelection = setOption(settings.scrollBySelection, true),
       useWheelScroll = setOption(settings.useWheelScroll, true),
@@ -78,14 +79,14 @@ Element.prototype.scrollable = function (settings) {
     if (verticalScroller === "auto" || verticalScroller === true) {
       var scrollerYClass = settings.scrollerYClass,
         sliderHeight = sliderSize,
-        sliderStarterHeight = sliderHeight;
+        sliderHeightPrimary = sliderHeight;
     }
     
     // set class for scroller and width for slider, if horizontal (X) scroller available
     if (horizontalScroller === "auto" || horizontalScroller === true) {
       var scrollerXClass = settings.scrollerXClass,
         sliderWidth = sliderSize,
-        sliderStarterWidth = sliderWidth;
+        sliderWidthPrimary = sliderWidth;
     }
     
     // set class for arrows fields and inset HTML-code in there of "chevrones" (yes, you can use Font Awesome), if arrows available
@@ -310,6 +311,22 @@ Element.prototype.scrollable = function (settings) {
     // -- Some of elements must have 'data-type' identifier -- //
     self.setAttribute("data-type", "container");
     
+    // -- Get borders of container for future calculations -- //
+    var selfBorder = {
+      top: parseFloat(getStyle(self).borderTopWidth),
+      bottom: parseFloat(getStyle(self).borderBottomWidth),
+      left: parseFloat(getStyle(self).borderLeftWidth),
+      right: parseFloat(getStyle(self).borderRightWidth)
+    };
+    
+    // -- Get paddings of container -- //
+    var selfPadding = {
+      top: parseFloat(getStyle(self).paddingTop),
+      bottom: parseFloat(getStyle(self).paddingBottom),
+      left: parseFloat(getStyle(self).paddingLeft),
+      right: parseFloat(getStyle(self).paddingRight)
+    };
+    
     // -- Function of adding standart css propertys -- //
     function makeByStandart(element, parent, position, className) {
       parent.appendChild(element);
@@ -343,14 +360,88 @@ Element.prototype.scrollable = function (settings) {
       }
     }
     
-    // -- Function for detection existense of vertical scroller -- //
+    // -- Some duplicate actions with options of smooth effect -- //
+    function smoothActionPack(action) {
+      if (action === "set") { // in case, where need add smooth effect 
+        // if vertical scroller exist...
+        if (verticalScroller === true) {
+          // ...set this effect on it 
+          smoothly("set", sliderY);
+        }
+        
+        // if horizontal scroller exist...
+        if (horizontalScroller === true) {
+          // ...set this effect on it
+          smoothly("set", sliderX);
+        }
+        
+        // set this effect on wrapper
+        smoothly("set", wrapper);
+      } else if (action === "remove") { // in case, where need delete smooth effect
+        // if vertical scroller exist...
+        if (verticalScroller === true) {
+          // ...remove this effect from it
+          smoothly("remove", sliderY);
+        }
+        
+        // if horizontal scroller exist...
+        if (horizontalScroller === true) {
+          // ...remove this effect from it
+          smoothly("remove", sliderX);
+        }
+        
+        // remove this effect from wrapper
+        smoothly("remove", wrapper);
+      }
+    }
+    
+    /*
+    // -- Function for detection existence of vertical scroller -- //
     function verticalScrollerExist() {
       if (verticalScroller === "auto") { // start detection only, if vertical option set to "auto" 
-        if ((self.clientHeight - parseFloat(getStyle(self).paddingTop) - parseFloat(getStyle(self).paddingBottom)) < wrapper.offsetHeight) { // if content to big...
+        if ((self.clientHeight - selfPadding.top - selfPadding.bottom) < wrapper.offsetHeight) { // if content to big...
           // ... activate vertical scroller
           verticalScroller = true;
         } else { // if wrapper can show all content by Y-axis, don`t use vertical scroller
           verticalScroller = false;
+        }
+      }
+    }
+    */
+    
+    // -- Function for detection existence of scrollers -- //
+    function checkScrollerExistence(axis) {
+      if (isTextArea === false) { // detect scrollers at regular block
+        if (axis === "Y") { // detect existence of vertical scroller
+          if ((self.clientHeight - selfPadding.top - selfPadding.bottom) < wrapper.offsetHeight) { // if content to big...
+            // ... activate vertical scroller
+            verticalScroller = true;
+          } else { // if wrapper can show all content by Y-axis, don`t use vertical scroller
+            verticalScroller = false;
+          }
+        } else if (axis === "X") { // detect existence of horizontal scroller
+          if ((self.clientWidth - selfPadding.left - selfPadding.right) < wrapper.offsetWidth) { // if content to big...
+            // ... activate horizontal scroller
+            horizontalScroller = true;
+          } else { // if wrapper can show all content by X-axis, don`t use horizontal scroller
+            horizontalScroller = false;
+          }
+        }
+      } else { // detect scrollers ar textarea
+        if (axis === "Y") { // detect existence of vertical scroller
+          if ((self.clientHeight - selfPadding.top - selfPadding.bottom) < textAreaBlock.scrollHeight) { // if content to big...
+            // ... activate vertical scroller
+            verticalScroller = true;
+          } else { // if wrapper can show all content by Y-axis, don`t use vertical scroller
+            verticalScroller = false;
+          }
+        } else if (axis === "X") { // detect existence of horizontal scroller
+          if ((self.clientWidth - selfPadding.left - selfPadding.right) < textAreaBlock.scrollWidth) { // if content to big...
+            // ... activate vertical scroller
+            horizontalScroller = true;
+          } else { // if wrapper can show all content by Y-axis, don`t use vertical scroller
+            horizontalScroller = false;
+          }
         }
       }
     }
@@ -369,16 +460,9 @@ Element.prototype.scrollable = function (settings) {
         }
       }
       
-      // set new width for wrapper, if content of it to big...
-      if (contentMaxWidth > wrapper.offsetWidth) {
+      // set new width for wrapper, if content have bigger or smaller size
+      if (contentMaxWidth !== wrapper.offsetWidth) {
         wrapper.style.width = contentMaxWidth + "px";
-        
-        // ...and activate horizontal scroller if option set to "auto" 
-        if (horizontalScroller === "auto" ) {
-          horizontalScroller = true;  
-        }
-      } else if (horizontalScroller === "auto") { // ...or deactivate horizontal scroller
-        horizontalScroller = false;
       }
     }
     
@@ -407,9 +491,6 @@ Element.prototype.scrollable = function (settings) {
       // inset HTML-code of conteiner content in to wrapper
       wrapper.innerHTML = content;
       
-      // detect existense of vertical scroller
-      verticalScrollerExist();
-      
       // set wrapper width, if horizontal scrolling avalible
       if (horizontalScroller === "auto" || horizontalScroller === true) {
         setWrapperWidth(wrapper);
@@ -418,6 +499,16 @@ Element.prototype.scrollable = function (settings) {
       // save wrapper width and height for future calculations
       var wrapperHeight = wrapper.offsetHeight,
         wrapperWidth = wrapper.offsetWidth;
+    }
+    
+    // detect existense of vertical scroller...
+    if (verticalScroller === "auto") { // ...if autodetection is active
+      checkScrollerExistence("Y");
+    }
+    
+    // detect existense of horizontal scroller...
+    if (horizontalScroller === "auto") { // ...if autodetection is active
+      checkScrollerExistence("X");
     }
     
     // -- Function for updating sizes for textarea and wrapper -- //
@@ -431,6 +522,7 @@ Element.prototype.scrollable = function (settings) {
       }
     }
     
+    /*
     // -- Get borders of container for future calculations -- //
     var selfBorder = {
       top: parseFloat(getStyle(self).borderTopWidth),
@@ -438,6 +530,7 @@ Element.prototype.scrollable = function (settings) {
       left: parseFloat(getStyle(self).borderLeftWidth),
       right: parseFloat(getStyle(self).borderRightWidth)
     };
+    */
     
     // -- Function for creation vertical and horizontal scrollbars -- //
     function makeScroller(axis) {
@@ -458,8 +551,9 @@ Element.prototype.scrollable = function (settings) {
         }
         
         // grow right padding at container, if option of scroller shift is active active
-        if (scrollerShift === true) { 
-          self.style.paddingRight = parseFloat(getStyle(self).paddingRight) + scroller.offsetWidth + "px";
+        if (scrollerShift === true) {
+          selfPadding.right += scroller.offsetWidth;
+          self.style.paddingRight = selfPadding.right + "px";
           
           // also, change textarea size, if it exist
           if (isTextArea === true) {
@@ -485,7 +579,8 @@ Element.prototype.scrollable = function (settings) {
         
         // grow bottom padding at container, if option of scroller shift is active active
         if (scrollerShift === true) {
-          self.style.paddingBottom = parseFloat(getStyle(self).paddingBottom) + scroller.offsetHeight + "px";
+          selfPadding.bottom += scroller.offsetHeight;
+          self.style.paddingBottom = selfPadding.bottom + "px";
           
           // also, change textarea size, if it exist
           if (isTextArea === true) {
@@ -617,6 +712,7 @@ Element.prototype.scrollable = function (settings) {
       }
     }
     
+    /*
     // -- Get paddings of container -- //
     var selfPadding = {
       top: parseFloat(getStyle(self).paddingTop),
@@ -624,11 +720,12 @@ Element.prototype.scrollable = function (settings) {
       left: parseFloat(getStyle(self).paddingLeft),
       right: parseFloat(getStyle(self).paddingRight)
     };
+    */
     
     // -- Function for calculate height or width for sliders  -- //
     function setSliderSize(axis) {
       if (axis === "Y") { // algorithm for vertical slider
-        if (sliderStarterHeight === "auto") { // if slider size is "auto", strt calculation
+        if (sliderHeightPrimary === "auto") { // if slider size is "auto", strt calculation
           // ratio factor of container and wrapper heights
           var selfWrapperRatioY;
           
@@ -670,7 +767,7 @@ Element.prototype.scrollable = function (settings) {
         // finaly, set calculated size
         sliderY.style.height = sliderHeight + "px";
       } else if (axis === "X") { // algorithm for horizontal slider
-        if (sliderStarterWidth === "auto") {
+        if (sliderWidthPrimary === "auto") {
           // ratio factor of container and wrapper widths
           var selfWrapperRatioX;
           
@@ -1058,7 +1155,7 @@ Element.prototype.scrollable = function (settings) {
       // set listener on updating content 
       var timerContent = setTimeout(function () {
         // case for vertical scroller
-        if ((verticalScroller === "auto") || (verticalScroller === true)) {
+        if ((verticalScrollerPrimary === "auto") || (verticalScrollerPrimary === true)) {
           // if current wrapper height does not equal old value, update it  
           if (wrapper.offsetHeight !== wrapperHeight) {
             wrapperHeight = wrapper.offsetHeight;
@@ -1075,12 +1172,9 @@ Element.prototype.scrollable = function (settings) {
         }
         
         // case for horizontal scroller
-        if ((horizontalScroller === "auto") || (horizontalScroller === true)) {
+        if ((horizontalScrollerPrimary === "auto") || (horizontalScrollerPrimary === true)) {
           // set new wrapper width 
           setWrapperWidth(wrapper);
-          
-          // activate horizontal scroller
-          horizontalScroller = true;
           
           // if current wrapper width does not equal old value, update it
           if (wrapper.offsetWidth !== wrapperWidth) {
@@ -1663,43 +1757,8 @@ Element.prototype.scrollable = function (settings) {
     
     // -- If smooth effect on scrolling is on... -- //
     if (smoothlyScroll === true) {
-      var transitionDuration = getTransitionDurationMs(), // ...get time on transition
+      var transitionDuration = getTransitionDurationMs(), // ...get time of transition
         removeSmoothTimer = "empty"; // ...set ID for future timer
-    }
-    
-    // -- Some duplicate actions with options of smooth effect -- //
-    function smoothActionPack(action) {
-      if (action === "set") { // in case, where need add smooth effect 
-        // if vertical scroller exist...
-        if (verticalScroller === true) {
-          // ...set this effect on it 
-          smoothly("set", sliderY);
-        }
-        
-        // if horizontal scroller exist...
-        if (horizontalScroller === true) {
-          // ...set this effect on it
-          smoothly("set", sliderX);
-        }
-        
-        // set this effect on wrapper
-        smoothly("set", wrapper);
-      } else if (action === "remove") { // in case, where need delete smooth effect
-        // if vertical scroller exist...
-        if (verticalScroller === true) {
-          // ...remove this effect from it
-          smoothly("remove", sliderY);
-        }
-        
-        // if horizontal scroller exist...
-        if (horizontalScroller === true) {
-          // ...remove this effect from it
-          smoothly("remove", sliderX);
-        }
-        
-        // remove this effect from wrapper
-        smoothly("remove", wrapper);
-      }
     }
     
     // -- Event of scrolling by keyboard (wrap event "onkey..." in "onfocus" to avoid conflict with native scroller) -- //

@@ -17,17 +17,15 @@
   min-height: "0px";
   margin: none;
   font: inherit;
-  /*
   white-space: pre;
   word-break: normal;
   word-wrap: normal;
-  */
 }
 
 #test {
   position: relative;
   display: block;
-  width: 1000px;
+  width: 400px;
   height: 1px;
   background-color: red;
 }
