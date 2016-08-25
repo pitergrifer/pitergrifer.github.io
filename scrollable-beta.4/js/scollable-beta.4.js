@@ -448,21 +448,28 @@ Element.prototype.scrollable = function (settings) {
     
     // -- Function for set wrapper width -- //
     function setWrapperWidth(wrapper) {
-      var wrappedContent = wrapper.children, // create array from all elements in wrapper,.. 
-        wrappedContentLength = wrappedContent.length, // ...save length of it
-        contentMaxWidth = wrappedContent[0].offsetWidth; // ... and save width of first children
-      
-      // strat cycle for detect max width of all childrens
-      for (var wrapperCounter = 1; wrapperCounter < wrappedContentLength; wrapperCounter++) {
-        // update "contentMaxWidth", if current children has width bigger, then previoust
-        if (wrappedContent[wrapperCounter].offsetWidth > contentMaxWidth) {
-          contentMaxWidth = wrappedContent[wrapperCounter].offsetWidth;
+      if (horizontalScroller === "auto" || horizontalScroller === true) { // in case of existance of horizontal scroller
+        var wrappedContent = wrapper.children, // create array from all elements in wrapper,.. 
+          wrappedContentLength = wrappedContent.length, // ...save length of it
+          contentMaxWidth = wrappedContent[0].offsetWidth; // ... and save width of first children
+        
+        // strat cycle for detect max width of all childrens
+        for (var wrapperCounter = 1; wrapperCounter < wrappedContentLength; wrapperCounter++) {
+          // update "contentMaxWidth", if current children has width bigger, then previoust
+          if (wrappedContent[wrapperCounter].offsetWidth > contentMaxWidth) {
+            contentMaxWidth = wrappedContent[wrapperCounter].offsetWidth;
+          }
         }
-      }
-      
-      // set new width for wrapper, if content have bigger or smaller size
-      if (contentMaxWidth !== wrapper.offsetWidth) {
-        wrapper.style.width = contentMaxWidth + "px";
+        
+        // set new width for wrapper, if content have bigger or smaller size
+        if (contentMaxWidth !== wrapper.offsetWidth) {
+          wrapper.style.width = contentMaxWidth + "px";
+        }
+      } else { // case, when horizontal scroller does't exist
+        // change wrapper width to "100%", if it value not set already
+        if (wrapper.style.width !== "100%") {
+          wrapper.style.width = "100%";
+        }
       }
     }
     
@@ -492,35 +499,34 @@ Element.prototype.scrollable = function (settings) {
       wrapper.innerHTML = content;
       
       // set wrapper width, if horizontal scrolling avalible
-      if (horizontalScroller === "auto" || horizontalScroller === true) {
-        setWrapperWidth(wrapper);
-      }
+      setWrapperWidth(wrapper);
       
       // save wrapper width and height for future calculations
       var wrapperHeight = wrapper.offsetHeight,
         wrapperWidth = wrapper.offsetWidth;
     }
     
-    // detect existense of vertical scroller...
-    if (verticalScroller === "auto") { // ...if autodetection is active
-      checkScrollerExistence("Y");
-    }
-    
-    // detect existense of horizontal scroller...
-    if (horizontalScroller === "auto") { // ...if autodetection is active
-      checkScrollerExistence("X");
-    }
-    
-    // -- Function for updating sizes for textarea and wrapper -- //
-    function updateTextAreaSize(textAreaSelect, size) {
-      if (size === "height") { // case, where updating heights for textarea and wrapper 
-        textAreaBlock.style.height = getTextAreaSize(textAreaSelect, "height") + "px";
-        wrapper.style.height = getTextAreaSize(textAreaSelect, "height") + "px";
-      } else if (size === "width") { // case, where updating widths for textarea and wrapper
-        textAreaBlock.style.width = getTextAreaSize(textAreaSelect, "width") + "px";
-        wrapper.style.width = getTextAreaSize(textAreaSelect, "width") + "px";
+    // -- Detect existense of scrollers -- //
+    if ((dynamicContent === false) && (isTextArea === false)) { // ...in case, when "dynamicContent" opton is off 
+      // detect existense of vertical scroller
+      if (verticalScroller === "auto") { // ...if autodetection is active
+        checkScrollerExistence("Y");
+      }
+      
+      // detect existense of horizontal scroller
+      if (horizontalScroller === "auto") { // ...if autodetection is active
+        checkScrollerExistence("X");
+      }
+      
+      // update wrapper width and info about it sizes
+      if (isTextArea === false) {
+        setWrapperWidth(wrapper);
+        
+        wrapperHeight = wrapper.offsetHeight,
+        wrapperWidth = wrapper.offsetWidth;
       }
     }
+    
     
     /*
     // -- Get borders of container for future calculations -- //
@@ -544,7 +550,7 @@ Element.prototype.scrollable = function (settings) {
         // set attribute at vertical scroller
         scroller.setAttribute("data-type", "scrollerY");
         
-        if (horizontalScroller === true) { // set height for vertical scroller with considering horizontal scroller, if it exist
+        if ((horizontalScroller === "auto") || (horizontalScroller === true)) { // set height for vertical scroller with considering horizontal scroller, if it exist
           scroller.style.height = self.clientHeight - scroller.offsetWidth + "px";
         } else { // set width for vertical scroller without considering horizontal scroller
           scroller.style.height = self.clientHeight + "px";
@@ -571,7 +577,7 @@ Element.prototype.scrollable = function (settings) {
         // set attribute at vertical scroller
         scroller.setAttribute("data-type", "scrollerX");
         
-        if (verticalScroller === true) { // set width for horizontal scroller with considering vertical scroller width, if it exist
+        if ((verticalScroller === "auto") || (verticalScroller === true)) { // set width for horizontal scroller with considering vertical scroller width, if it exist
           scroller.style.width = self.clientWidth - scrollerY.offsetWidth + "px";
         } else { // set width for horizontal scroller without considering horizontal scroller height
           scroller.style.width = self.clientWidth + "px";
@@ -614,31 +620,36 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Create a vertical scroll bar -- //
-    if (verticalScroller === true) {
-      var scrollerY = makeScroller("Y");
+    if ((verticalScroller === "auto") || (verticalScroller === true)) {
+      var scrollerY = makeScroller("Y"),
+        scrollerYPrimalWidth = scrollerY.offsetWidth,
+        scrollerYPrimalHeight = scrollerY.offsetHeight;
     }
     
     // -- Create a horizontal scroll bar -- //
-    if (horizontalScroller === true) {
-      var scrollerX = makeScroller("X");
+    if ((horizontalScroller === "auto") || (horizontalScroller === true)) {
+      var scrollerX = makeScroller("X"),
+        scrollerXPrimalWidth = scrollerX.offsetWidth,
+        scrollerXPrimalHeight = scrollerX.offsetHeight;
     }
     
+    //if (arrows === true && ((verticalScroller === true) || (horizontalScroller === true))) {
     // -- Create a arrows, if corresponding option activate and at least one of two scrollers are exist -- //
-    if (arrows === true && ((verticalScroller === true) || (horizontalScroller === true))) {
+    if (arrows === true && (((verticalScroller === "auto") || (verticalScroller === true)) || ((horizontalScroller === "auto") || (horizontalScroller === true)))) {
       // create arrays for working with cycle 
       var arrowsPack = [],
         chevronPack = [],
         arrowSize;
       
       // set size for arrows, based on scrollers width or height
-      if (verticalScroller === true) {
+      if ((verticalScroller === "auto") || (verticalScroller === true)) {
         arrowSize = scrollerY.clientWidth;
-      } else if (horizontalScroller === true) {
+      } else if ((horizontalScroller === "auto") || (horizontalScroller === true)) {
         arrowSize = scrollerX.clientHeight;
       }
       
       // create "Up" and "Down" arrows and put it in array, if vertical scroller exist
-      if (verticalScroller === true) {
+      if ((verticalScroller === "auto") || (verticalScroller === true)) {
         var arrowUp = document.createElement("div"),
           arrowDown = document.createElement("div");
         arrowsPack.push(arrowUp, arrowDown),
@@ -646,7 +657,7 @@ Element.prototype.scrollable = function (settings) {
       }
       
       // create "Left" and "Right" arrows and put it in array, if horizontal scroller exist
-      if (horizontalScroller === true) {
+      if ((horizontalScroller === "auto") || (horizontalScroller === true)) {
         var arrowLeft = document.createElement("div"),
           arrowRight = document.createElement("div");
         arrowsPack.push(arrowLeft, arrowRight);
@@ -675,12 +686,12 @@ Element.prototype.scrollable = function (settings) {
           // other generick options
           generickArrowsOptions(arrowCounter);
         } else if (arrowsCount == 2) { // algorithm, if only one scroller exist
-          if (verticalScroller === true) { // setup arrows at vertical scroller, if it exist
+          if ((verticalScroller === "auto") || (verticalScroller === true)) { // setup arrows at vertical scroller, if it exist
             makeByStandart(arrowsPack[arrowCounter], scrollerY, "absolute", arrowsClass);
             generickArrowsOptions(arrowCounter);
           }
           
-          if (horizontalScroller === true) { // setup arrows at horizontal scroller, if it exist
+          if ((horizontalScroller === "auto") || (horizontalScroller === true)) { // setup arrows at horizontal scroller, if it exist
             makeByStandart(arrowsPack[arrowCounter], scrollerX, "absolute", arrowsClass);
             generickArrowsOptions(arrowCounter);
           }
@@ -688,25 +699,25 @@ Element.prototype.scrollable = function (settings) {
       }
       
       // positioning "Down" arrow, and get data about margins of walking for slider
-      if (verticalScroller === true) {
+      if ((verticalScroller === "auto") || (verticalScroller === true)) {
         arrowDown.style.top = scrollerY.clientHeight - arrowDown.offsetHeight + "px";
         var topEdge = arrowUp.offsetWidth,
           sliderFieldY = scrollerY.clientHeight - (arrowUp.offsetHeight + arrowDown.offsetHeight); 
       }
       
       // positioning "Right" arrow, and get data about margins of walking for slider
-      if (horizontalScroller === true) {
+      if ((horizontalScroller === "auto") || (horizontalScroller === true)) {
         arrowRight.style.left = scrollerX.clientWidth - arrowRight.offsetWidth + "px";
         var leftEdge = arrowLeft.offsetWidth,
           sliderFieldX = scrollerX.clientWidth - (arrowLeft.offsetWidth + arrowRight.offsetWidth);
       }
     } else { // get data about margins of walking for slider, if arrows doesn't exist...
-      if (verticalScroller === true) { // ...and vertical scroller exist
+      if ((verticalScroller === "auto") || (verticalScroller === true)) { // ...and vertical scroller exist
         var topEdge = 0,
           sliderFieldY = scrollerY.clientHeight;  
       }
       
-      if (horizontalScroller === true) { // ...and horizontal scroller exist
+      if ((horizontalScroller === "auto") || (horizontalScroller === true)) { // ...and horizontal scroller exist
         var leftEdge = 0,
           sliderFieldX = scrollerX.clientWidth;
       }
@@ -848,19 +859,19 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Create a vertical slider -- //
-    if (verticalScroller === true) {
+    if ((verticalScroller === "auto") || (verticalScroller === true)) {
       var sliderY = createSlider("Y");
       setSliderSize("Y");
     }
     
     // -- Create a horizontal slider -- //
-    if (horizontalScroller === true) {
+    if ((horizontalScroller === "auto") || (horizontalScroller === true)) {
       var sliderX = createSlider("X");
       setSliderSize("X");
     }
     
     // -- Insert plug in hole between scrollers -- //
-    if ((horizontalScroller === true) && (verticalScroller === true)) { // ...if both scrollers exist 
+    if (((verticalScroller === "auto") || (verticalScroller === true)) && ((horizontalScroller === "auto") || (horizontalScroller === true))) { // ...if both scrollers exist 
       var plug = document.createElement("div"),
         selfCoords = self.getBoundingClientRect();
       self.appendChild(plug);
@@ -870,7 +881,47 @@ Element.prototype.scrollable = function (settings) {
       plug.style.width = selfCoords.bottom - selfBorder.bottom - scrollerY.getBoundingClientRect().bottom + "px";
       plug.style.height = selfCoords.right - selfBorder.right - scrollerX.getBoundingClientRect().right + "px";
       plug.style.backgroundColor = getStyle(scrollerY).backgroundColor;
+      
+      var plugPrimalWidth = plug.offsetWidth,
+        plugPrimalHeight = plug.offsetHeight;
     }
+    
+    // -- Function, which change scrollers conditions and do appropriate changes -- //
+    function changeScrollersConditions() {
+      checkScrollerExistence("Y");
+      checkScrollerExistence("X");
+      
+      if ((verticalScroller === true) && (horizontalScroller === true)) {
+        scrollerY.style.width = scrollerYPrimalWidth + "px";
+        scrollerY.style.height = scrollerYPrimalHeight + "px";
+        
+        scrollerX.style.width = scrollerXPrimalWidth + "px";
+        scrollerX.style.height = scrollerXPrimalHeight + "px";
+        
+        plug.style.width = plugPrimalWidth + "px";
+        plug.style.height = plugPrimalWidth + "px";
+      } else if (verticalScroller === true) {
+        scrollerY.style.width = scrollerYPrimalWidth + "px";
+        scrollerY.style.height = scrollerYPrimalHeight + scrollerXPrimalHeight + "px";
+        
+        scrollerX.style.width = scrollerXPrimalWidth + "px";
+        scrollerX.style.height = "0px";
+        
+        plug.style.width = plugPrimalWidth + "px";
+        plug.style.height = "0px";
+      } else if (horizontalScroller === true) {
+        scrollerY.style.width = "0px";
+        scrollerY.style.height = scrollerYPrimalHeight + "px";
+        
+        scrollerX.style.width = scrollerXPrimalWidth + scrollerYPrimalWidth + "px";
+        scrollerX.style.height = scrollerXPrimalHeight + "px";
+        
+        plug.style.width = "0px";
+        plug.style.height = plugPrimalHeight + "px";
+      }
+    }
+    
+    changeScrollersConditions();
     
     // -- Function for set "transition" and "opacity" in cross-browser way -- //
     function adaptiveHide(element, value) {
@@ -1160,19 +1211,23 @@ Element.prototype.scrollable = function (settings) {
           if (wrapper.offsetHeight !== wrapperHeight) {
             wrapperHeight = wrapper.offsetHeight;
             
-            // set new slider size
-            setSliderSize("Y");
-            
-            // calculate ratio factor again 
-            calcRatioFactor();
-            
-            // set new slider pisition
-            updateSliderPosition("Y");
+            if (verticalScroller === true) {
+              // set new slider size
+              setSliderSize("Y");
+              
+              // calculate ratio factor again 
+              calcRatioFactor();
+              
+              // set new slider pisition
+              updateSliderPosition("Y");
+            }
           }
         }
         
         // case for horizontal scroller
         if ((horizontalScrollerPrimary === "auto") || (horizontalScrollerPrimary === true)) {
+          horizontalScroller = true;
+          
           // set new wrapper width 
           setWrapperWidth(wrapper);
           
@@ -1180,14 +1235,18 @@ Element.prototype.scrollable = function (settings) {
           if (wrapper.offsetWidth !== wrapperWidth) {
             wrapperWidth = wrapper.offsetWidth;
             
-            // set new slider size
-            setSliderSize("X");
+            checkScrollerExistence("X");
             
-            // calculate ratio factor again 
-            calcRatioFactor();
-            
-            // set new slider pisition
-            updateSliderPosition("X");
+            if (horizontalScroller === true) {
+              // set new slider size
+              setSliderSize("X");
+              
+              // calculate ratio factor again 
+              calcRatioFactor();
+              
+              // set new slider pisition
+              updateSliderPosition("X");
+            }
           }
         }
         
