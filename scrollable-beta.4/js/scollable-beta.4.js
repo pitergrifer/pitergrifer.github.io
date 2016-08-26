@@ -499,7 +499,9 @@ Element.prototype.scrollable = function (settings) {
       wrapper.innerHTML = content;
       
       // set wrapper width, if horizontal scrolling avalible
-      setWrapperWidth(wrapper);
+      setTimeout(function () {
+        setWrapperWidth(wrapper);
+      }, 0);
       
       // save wrapper width and height for future calculations
       var wrapperHeight = wrapper.offsetHeight,
@@ -516,14 +518,6 @@ Element.prototype.scrollable = function (settings) {
       // detect existense of horizontal scroller
       if (horizontalScroller === "auto") { // ...if autodetection is active
         checkScrollerExistence("X");
-      }
-      
-      // update wrapper width and info about it sizes
-      if (isTextArea === false) {
-        setWrapperWidth(wrapper);
-        
-        wrapperHeight = wrapper.offsetHeight,
-        wrapperWidth = wrapper.offsetWidth;
       }
     }
     
@@ -624,6 +618,13 @@ Element.prototype.scrollable = function (settings) {
       var scrollerY = makeScroller("Y"),
         scrollerYPrimalWidth = scrollerY.offsetWidth,
         scrollerYPrimalHeight = scrollerY.offsetHeight;
+      
+      if (scrollerShift === true) {
+        var selfPaddingRightPrimal = selfPadding.right;
+      }
+    } else {
+      var scrollerYPrimalWidth = 0,
+        scrollerYPrimalHeight = 0;
     }
     
     // -- Create a horizontal scroll bar -- //
@@ -631,6 +632,13 @@ Element.prototype.scrollable = function (settings) {
       var scrollerX = makeScroller("X"),
         scrollerXPrimalWidth = scrollerX.offsetWidth,
         scrollerXPrimalHeight = scrollerX.offsetHeight;
+      
+      if (scrollerShift === true) {
+        var selfPaddingBottomPrimal = selfPadding.bottom;
+      }
+    } else {
+      var scrollerXPrimalWidth = 0,
+        scrollerXPrimalHeight = 0;
     }
     
     //if (arrows === true && ((verticalScroller === true) || (horizontalScroller === true))) {
@@ -700,26 +708,34 @@ Element.prototype.scrollable = function (settings) {
       
       // positioning "Down" arrow, and get data about margins of walking for slider
       if ((verticalScroller === "auto") || (verticalScroller === true)) {
-        arrowDown.style.top = scrollerY.clientHeight - arrowDown.offsetHeight + "px";
         var topEdge = arrowUp.offsetWidth,
-          sliderFieldY = scrollerY.clientHeight - (arrowUp.offsetHeight + arrowDown.offsetHeight); 
+          sliderFieldY = scrollerY.clientHeight - (arrowUp.offsetHeight + arrowDown.offsetHeight),
+          sliderFieldYPrimal = sliderFieldY,
+          arrowDownPrimalPosition = scrollerY.clientHeight - arrowDown.offsetHeight;
+        
+        arrowDown.style.top = scrollerY.clientHeight - arrowDown.offsetHeight + "px";
       }
       
       // positioning "Right" arrow, and get data about margins of walking for slider
       if ((horizontalScroller === "auto") || (horizontalScroller === true)) {
-        arrowRight.style.left = scrollerX.clientWidth - arrowRight.offsetWidth + "px";
         var leftEdge = arrowLeft.offsetWidth,
-          sliderFieldX = scrollerX.clientWidth - (arrowLeft.offsetWidth + arrowRight.offsetWidth);
+          sliderFieldX = scrollerX.clientWidth - (arrowLeft.offsetWidth + arrowRight.offsetWidth),
+          sliderFieldXPrimal = sliderFieldX,
+          arrowRightPrimalPosition = scrollerX.clientWidth - arrowRight.offsetWidth;
+        
+        arrowRight.style.left = scrollerX.clientWidth - arrowRight.offsetWidth + "px";
       }
     } else { // get data about margins of walking for slider, if arrows doesn't exist...
       if ((verticalScroller === "auto") || (verticalScroller === true)) { // ...and vertical scroller exist
         var topEdge = 0,
-          sliderFieldY = scrollerY.clientHeight;  
+          sliderFieldY = scrollerY.clientHeight,
+          sliderFieldYPrimal = sliderFieldY; 
       }
       
       if ((horizontalScroller === "auto") || (horizontalScroller === true)) { // ...and horizontal scroller exist
         var leftEdge = 0,
-          sliderFieldX = scrollerX.clientWidth;
+          sliderFieldX = scrollerX.clientWidth,
+          sliderFieldXPrimal = sliderFieldX;
       }
     }
     
@@ -736,7 +752,7 @@ Element.prototype.scrollable = function (settings) {
     // -- Function for calculate height or width for sliders  -- //
     function setSliderSize(axis) {
       if (axis === "Y") { // algorithm for vertical slider
-        if (sliderHeightPrimary === "auto") { // if slider size is "auto", strt calculation
+        if (sliderHeightPrimary === "auto") { // if slider size is "auto", start calculation
           // ratio factor of container and wrapper heights
           var selfWrapperRatioY;
           
@@ -884,44 +900,190 @@ Element.prototype.scrollable = function (settings) {
       
       var plugPrimalWidth = plug.offsetWidth,
         plugPrimalHeight = plug.offsetHeight;
+    } else {
+      var plugPrimalWidth = 0,
+        plugPrimalHeight = 0;
     }
     
     // -- Function, which change scrollers conditions and do appropriate changes -- //
     function changeScrollersConditions() {
-      checkScrollerExistence("Y");
-      checkScrollerExistence("X");
+      if (verticalScrollerPrimary === "auto") {
+        checkScrollerExistence("Y");
+      }
+      
+      if (horizontalScrollerPrimary === "auto") {
+        checkScrollerExistence("X");
+      }
       
       if ((verticalScroller === true) && (horizontalScroller === true)) {
         scrollerY.style.width = scrollerYPrimalWidth + "px";
         scrollerY.style.height = scrollerYPrimalHeight + "px";
+        scrollerY.style.borderWidth = "1px";
         
         scrollerX.style.width = scrollerXPrimalWidth + "px";
         scrollerX.style.height = scrollerXPrimalHeight + "px";
+        scrollerX.style.borderWidth = "1px";
+        
+        if (scrollerShift === true) {
+          selfPadding.right = selfPaddingRightPrimal;
+          self.style.paddingRight = selfPadding.right + "px";
+          
+          selfPadding.bottom = selfPaddingBottomPrimal;
+          self.style.paddingBottom = selfPadding.bottom + "px";
+          
+          if (isTextArea === true) {
+            textAreaBlock.style.width = setTextAreaSize(self, "width") + "px";
+            textAreaBlock.style.height = setTextAreaSize(self, "height") + "px";
+          }
+        }
+        
+        if (arrows === true) {
+          arrowDown.style.top = arrowDownPrimalPosition + "px";
+          arrowRight.style.left = arrowRightPrimalPosition + "px";
+        }
+        
+        setSliderSize("Y");
+        setSliderSize("X");
+        
+        sliderFieldY = sliderFieldYPrimal;
+        sliderFieldX = sliderFieldXPrimal;
         
         plug.style.width = plugPrimalWidth + "px";
         plug.style.height = plugPrimalWidth + "px";
       } else if (verticalScroller === true) {
         scrollerY.style.width = scrollerYPrimalWidth + "px";
         scrollerY.style.height = scrollerYPrimalHeight + scrollerXPrimalHeight + "px";
+        scrollerY.style.borderWidth = "1px";
         
-        scrollerX.style.width = scrollerXPrimalWidth + "px";
-        scrollerX.style.height = "0px";
+        if (horizontalScrollerPrimary !== false) {
+          scrollerX.style.width = scrollerXPrimalWidth + "px";
+          scrollerX.style.height = "0px";
+          scrollerX.style.borderWidth = "0px";
+        }
         
-        plug.style.width = plugPrimalWidth + "px";
-        plug.style.height = "0px";
+        if (scrollerShift === true) {
+          selfPadding.right = selfPaddingRightPrimal;
+          self.style.paddingRight = selfPadding.right + "px";
+          
+          if (horizontalScrollerPrimary !== false) {
+            selfPadding.bottom = selfPaddingBottomPrimal - scrollerXPrimalHeight;
+            self.style.paddingBottom = selfPadding.bottom + "px";
+          }
+          
+          if (isTextArea === true) {
+            textAreaBlock.style.width = setTextAreaSize(self, "width") + "px";
+            textAreaBlock.style.height = setTextAreaSize(self, "height") + "px";
+          }
+        }
+        
+        if (arrows === true) {
+          arrowDown.style.top = arrowDownPrimalPosition + plugPrimalHeight + "px";
+          
+          if (horizontalScrollerPrimary !== false) {
+            arrowRight.style.left = arrowRightPrimalPosition + "px";
+          }
+        }
+        
+        sliderFieldY = sliderFieldYPrimal + scrollerXPrimalHeight;
+        
+        setSliderSize("Y");
+        
+        if ((verticalScrollerPrimary !== false) && (horizontalScrollerPrimary !== false)) {
+          plug.style.width = plugPrimalWidth + "px";
+          plug.style.height = "0px";
+        }
       } else if (horizontalScroller === true) {
-        scrollerY.style.width = "0px";
-        scrollerY.style.height = scrollerYPrimalHeight + "px";
+        if (verticalScrollerPrimary !== false) {
+          scrollerY.style.width = "0px";
+          scrollerY.style.height = scrollerYPrimalHeight + "px";
+          scrollerY.style.borderWidth = "0px";  
+        }
         
         scrollerX.style.width = scrollerXPrimalWidth + scrollerYPrimalWidth + "px";
         scrollerX.style.height = scrollerXPrimalHeight + "px";
+        scrollerX.style.borderWidth = "1px";
         
-        plug.style.width = "0px";
-        plug.style.height = plugPrimalHeight + "px";
+        if (scrollerShift === true) {
+          if (verticalScrollerPrimary !== false) {
+            selfPadding.right = selfPaddingRightPrimal - scrollerYPrimalWidth;
+            self.style.paddingRight = selfPadding.right + "px";
+          }
+          
+          selfPadding.bottom = selfPaddingBottomPrimal;
+          self.style.paddingBottom = selfPadding.bottom + "px";
+          
+          if (isTextArea === true) {
+            textAreaBlock.style.width = setTextAreaSize(self, "width") + "px";
+            textAreaBlock.style.height = setTextAreaSize(self, "height") + "px";
+          }
+        }
+        
+        if (arrows === true) {
+          if (verticalScrollerPrimary !== false) {
+            arrowDown.style.top = arrowDownPrimalPosition + "px";
+          }
+          
+          arrowRight.style.left = arrowRightPrimalPosition + plugPrimalWidth + "px";
+        }
+        
+        sliderFieldX = sliderFieldXPrimal + scrollerYPrimalWidth;
+        
+        setSliderSize("X");
+        
+        if ((verticalScrollerPrimary !== false) && (horizontalScrollerPrimary !== false)) {
+          plug.style.width = "0px";
+          plug.style.height = plugPrimalHeight + "px";
+        }
+      } else {
+        if (verticalScrollerPrimary !== false) {
+          scrollerY.style.width = "0px";
+          scrollerY.style.height = scrollerYPrimalHeight + "px";
+          scrollerY.style.borderWidth = "0px";  
+        }
+        
+        if (horizontalScrollerPrimary !== false) {
+          scrollerX.style.width = scrollerXPrimalWidth + "px";
+          scrollerX.style.height = "0px";
+          scrollerX.style.borderWidth = "0px";
+        }
+        
+        if (scrollerShift === true) {
+          if (verticalScrollerPrimary !== false) {
+            selfPadding.right = selfPaddingRightPrimal - scrollerYPrimalWidth;
+            self.style.paddingRight = selfPadding.right + "px";
+          }
+          
+          if (horizontalScrollerPrimary !== false) {
+            selfPadding.bottom = selfPaddingBottomPrimal - scrollerXPrimalHeight;
+            self.style.paddingBottom = selfPadding.bottom + "px";
+          }
+          
+          if (isTextArea === true) {
+            textAreaBlock.style.width = setTextAreaSize(self, "width") + "px";
+            textAreaBlock.style.height = setTextAreaSize(self, "height") + "px";
+          }
+        }
+        /*
+        if (arrows === true) {
+          if (verticalScrollerPrimary !== false) {
+            arrowDown.style.top = arrowDownPrimalPosition + "px";
+          }
+          
+          if (horizontalScrollerPrimary !== false) {
+            arrowRight.style.left = arrowRightPrimalPosition + "px";
+          }
+        }
+        */
+        if ((verticalScrollerPrimary !== false) && (horizontalScrollerPrimary !== false)) {
+          plug.style.width = "0px";
+          plug.style.height = "0px";
+        }
       }
     }
     
-    changeScrollersConditions();
+    if ((dynamicContent === true) || (isTextArea === true)) {
+      changeScrollersConditions();
+    }
     
     // -- Function for set "transition" and "opacity" in cross-browser way -- //
     function adaptiveHide(element, value) {
@@ -1172,13 +1334,14 @@ Element.prototype.scrollable = function (settings) {
         var updatedSliderXLeft;
         
         if (isTextArea === false) { // ...if we work with regular block
-          updatedSliderXLeft = (parseFloat(getStyle(wrapper).left) / ratioFactor.horizontal) * -1;
+          updatedSliderXLeft = ((wrapper.getBoundingClientRect().left - (self.getBoundingClientRect().left + self.clientLeft + selfPadding.left)) / ratioFactor.horizontal) * -1;
         } else { // ...if we work with textarea
           updatedSliderXLeft = textAreaBlock.scrollLeft / ratioFactor.horizontal;
           
           // also, update info about scrolled zone
           sliderPick.wrapperX = textAreaBlock.scrollLeft * -1;
         }
+        
         
         // prevent wrong position, when slider leave scrollers borders
         if ((updatedSliderXLeft + sliderWidth) > sliderFieldX) {
@@ -1211,10 +1374,9 @@ Element.prototype.scrollable = function (settings) {
           if (wrapper.offsetHeight !== wrapperHeight) {
             wrapperHeight = wrapper.offsetHeight;
             
+            changeScrollersConditions();
+            
             if (verticalScroller === true) {
-              // set new slider size
-              setSliderSize("Y");
-              
               // calculate ratio factor again 
               calcRatioFactor();
               
@@ -1235,12 +1397,9 @@ Element.prototype.scrollable = function (settings) {
           if (wrapper.offsetWidth !== wrapperWidth) {
             wrapperWidth = wrapper.offsetWidth;
             
-            checkScrollerExistence("X");
+            changeScrollersConditions();
             
             if (horizontalScroller === true) {
-              // set new slider size
-              setSliderSize("X");
-              
               // calculate ratio factor again 
               calcRatioFactor();
               
@@ -1278,6 +1437,8 @@ Element.prototype.scrollable = function (settings) {
     if (isTextArea === true) {
       // function, which... 
       function updateTextAreaContent(axis) {
+        changeScrollersConditions();
+        
         if (axis === "Y") { // ...in case for Y-axis...
           // ...update vertical slider size...
           setSliderSize("Y");
@@ -1316,13 +1477,13 @@ Element.prototype.scrollable = function (settings) {
       
       // update sliders sizes and positions, also ratio factor, when event of scrolling calling
       textAreaBlock.onscroll = function () {
-        if (verticalScroller === true) {
+        //if (verticalScroller === true) {
           updateTextAreaContent("Y");  
-        }
+        //}
         
-        if (horizontalScroller === true) {
+        //if (horizontalScroller === true) {
           updateTextAreaContent("X");
-        }
+        //}
       };
       
       // listener at "keydown" event, which start updating content
@@ -1345,13 +1506,13 @@ Element.prototype.scrollable = function (settings) {
           
           // ...start updating content
           textAreaTimers.start = setInterval(function () {
-            if (verticalScroller === true) {
+            //if (verticalScroller === true) {
               updateTextAreaContent("Y");  
-            }
+            //}
             
-            if (horizontalScroller === true) {
+            //if (horizontalScroller === true) {
               updateTextAreaContent("X");
-            }
+            //}
           }, 0);
         }  
       });
@@ -1468,7 +1629,7 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Event "Drag'n Drop" for vertical slider -- //
-    if (verticalScroller === true) {
+    if ((verticalScrollerPrimary === "auto") || (verticalScrollerPrimary === true)) {
       sliderY.onmousedown = function (event) {
         event = event || window.event;
         
@@ -1551,7 +1712,7 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // -- Event "Drag'n Drop" for horizontal slider -- //
-    if (horizontalScroller === true) {
+    if ((horizontalScrollerPrimary === "auto") || (horizontalScrollerPrimary === true)) {
       sliderX.onmousedown = function (event) {
         event = event || window.event;
         
@@ -1927,7 +2088,7 @@ Element.prototype.scrollable = function (settings) {
           }
           
           // condition for bottons "Arrow up" and "Page Up"
-          if ((event.keyCode == 38 || event.keyCode == 33) && (sliderHeight > 0) && (verticalScroller === true)) {
+          if ((event.keyCode == 38 || event.keyCode == 33) && (sliderHeight > 0) && ((verticalScrollerPrimary === "auto") || (verticalScrollerPrimary === true))) {
             if ((isTextArea == true) && (activeNavigation == true)) { // in case if it textarea
               keyboardScrollY(event, 38, 33, -1);
             } else if (isTextArea == false) { // in other cases
@@ -1936,7 +2097,7 @@ Element.prototype.scrollable = function (settings) {
           }
           
           // condition for bottons "Arrow down" and "Page Down"
-          if ((event.keyCode == 40 || event.keyCode == 34) && (sliderHeight > 0) && (verticalScroller === true)) {
+          if ((event.keyCode == 40 || event.keyCode == 34) && (sliderHeight > 0) && ((verticalScrollerPrimary === "auto") || (verticalScrollerPrimary === true))) {
             if ((isTextArea == true) && (activeNavigation == true)) { // in case if it textarea
               keyboardScrollY(event, 40, 34, 1);
             } else if (isTextArea == false) { // in other cases
@@ -1945,7 +2106,7 @@ Element.prototype.scrollable = function (settings) {
           }
           
           // condition for bottons "Arrow left" and "Home"
-          if ((event.keyCode == 37 || event.keyCode == 36) && (sliderWidth > 0) && (horizontalScroller === true)) {
+          if ((event.keyCode == 37 || event.keyCode == 36) && (sliderWidth > 0) && ((horizontalScrollerPrimary === "auto") || (horizontalScrollerPrimary === true))) {
             if ((isTextArea == true) && (activeNavigation == true)) { // in case if it textarea
               keyboardScrollX(event, 37, 36, -1);
             } else if (isTextArea == false) { // in other cases
@@ -1954,7 +2115,7 @@ Element.prototype.scrollable = function (settings) {
           }
           
           // condition for bottons "Arrow right" and "End"
-          if ((event.keyCode == 39 || event.keyCode == 35) && (sliderWidth > 0) && (horizontalScroller === true)) {
+          if ((event.keyCode == 39 || event.keyCode == 35) && (sliderWidth > 0) && ((horizontalScrollerPrimary === "auto") || (horizontalScrollerPrimary === true))) {
             if ((isTextArea == true) && (activeNavigation == true)) { // in case if it textarea
               keyboardScrollX(event, 39, 35, 1);
             } else if (isTextArea == false) { // in other cases
@@ -2115,6 +2276,7 @@ Element.prototype.scrollable = function (settings) {
           var result = scrollXGeneric(event, scrollStep);
           
           // set calculated positions for wrapper and horizontal slider
+          console.log(horizontalScroller);
           sliderX.style.left = result.newSliderLeft + "px";
           
           if (isTextArea === false) { // if we work with regular block...
@@ -2378,14 +2540,14 @@ Element.prototype.scrollable = function (settings) {
     }
     
     // set event listeners for...
-    if (verticalScroller === true) { // ... vertical scroller, if it exist
+    if ((verticalScrollerPrimary === "auto") || (verticalScrollerPrimary === true)) { // ... vertical scroller, if it exist
       // listener of "mousedown" event, which scrolling and run loops
       eventListener("add", scrollerY, "mousedown", virtualScrolling);
       // listener of "mouseup" event, which stop all loops
       eventListener("add", scrollerY, "mouseup", stopVirtualScrolling);
     }
     
-    if (horizontalScroller === true) { // ... horizontal scroller, if it exist
+    if ((horizontalScrollerPrimary === "auto") || (horizontalScrollerPrimary === true)) { // ... horizontal scroller, if it exist
       // listener of "mousedown" event, which scrolling and run loops
       eventListener("add", scrollerX, "mousedown", virtualScrolling);
       // listener of "mouseup" event, which stop all loops

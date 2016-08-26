@@ -2,7 +2,7 @@ var container = document.getElementById("container");
 container.style.top = document.documentElement.clientHeight / 2 - container.offsetHeight / 2 + "px";
 
 container.scrollable({
-  verticalScroller: true,
+  verticalScroller: "auto",
   scrollerYClass: "scroller-y-field", // css-класс скроллера
   horizontalScroller: "auto", // наличие горизонтальной прокрутки (флаги "true", "false" и "auto")
   scrollerXClass: "scroller-x-field",
@@ -19,7 +19,7 @@ container.scrollable({
   sliderSize: "auto", // высота ползунка ("auto" - расчитывается в зависимости от контента; число (без указания пикселей или процентов) - высота в пикселях)
   sliderSizeMin: 30, // минимальная высота ползунка в пикселях (указывать еденицу измерения ненужно)
   stepMultipler: 15, // скорость прокрутки
-  scrollBySelection: false, // возможность прокрутки при выделении текста (флаги "true", "false")
+  scrollBySelection: true, // возможность прокрутки при выделении текста (флаги "true", "false")
   useWheelScroll: true, // возможность прокрутки колесиком мыши (флаги "true", "false")
   useKeyboardScroll: true, // возможность прокрутки клавишами "Стрелки", "PageUp" и "PageDown" (флаги "true", "false")
   dynamicContent: true,
